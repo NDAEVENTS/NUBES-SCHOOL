@@ -1,12 +1,13 @@
 // Builds the site into dist/: one page for every address, the Supabase library and the app.
-// Needs SUPABASE_URL, SUPABASE_ANON_KEY and SITE_URL (Cloudflare Pages > Settings > Variables).
-// Without them (or with NUBES_DEMO=1) it builds the demo: same screens, example data, nothing is saved.
+// Connects to the Nubes School Supabase project (URL and anon key are public by design; SUPABASE_URL / SUPABASE_ANON_KEY override them).
+// With NUBES_DEMO=1 it builds the demo: same screens, example data, nothing is saved.
 import { build } from 'esbuild';
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, cpSync } from 'node:fs';
 
 const ORDER = ['course', 'app', 'sync', 'web', 'legal', 'portal', 'panel'];
-const url = process.env.SUPABASE_URL, key = process.env.SUPABASE_ANON_KEY;
-const demo = !!process.env.NUBES_DEMO || !url || !key;
+const url = process.env.SUPABASE_URL || 'https://ygohsuldpcbfmljtfemw.supabase.co';
+const key = process.env.SUPABASE_ANON_KEY || 'sb_publishable_PgJMxp-Uzh7XB6L1rb7F0g_321haDNq';
+const demo = !!process.env.NUBES_DEMO;
 const site = process.env.SITE_URL || 'https://nubesdealgodonschool.com';
 
 rmSync('dist', { recursive: true, force: true }); mkdirSync('dist');
@@ -29,8 +30,6 @@ ${readFileSync('src/shell.html', 'utf8')}
 <script src="/config.js?v=${v}"></script><script src="/vendor.js?v=${v}"></script><script src="/app.js?v=${v}" defer></script>
 </head><body><div id="root"><noscript>Activa JavaScript para ver la web de Nubes de Algodón School.</noscript></div></body></html>
 `);
-// Every address (/, /portal, /legal/privacidad…) opens the same page; the app draws the right screen
-writeFileSync('dist/_redirects', '/* /index.html 200\n');
 writeFileSync('dist/_headers', `/*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff

@@ -58,15 +58,14 @@ Igual que en el portal de Events, con **Resend**:
 2. Resend → **API Keys → Create**.
 3. Supabase → **Authentication → Emails → SMTP Settings → Enable custom SMTP**: host `smtp.resend.com`, puerto `465`, usuario `resend`, contraseña = la API key, remitente `hola@nubesdealgodonschool.com`, nombre `Nubes de Algodón School`.
 4. **Authentication → Emails → Templates**: pega [`supabase/email-invite.html`](supabase/email-invite.html) en *Invite user* y [`supabase/email-recovery.html`](supabase/email-recovery.html) en *Reset password* (el asunto está en la primera línea de cada archivo).
-5. **Authentication → URL Configuration**: Site URL `https://nubesdealgodonschool.com`; Redirect URLs `https://nubesdealgodonschool.com/**` y `https://nubes-school.pages.dev/**`.
+5. **Authentication → URL Configuration**: Site URL `https://nubesdealgodonschool.com`; Redirect URLs `https://nubesdealgodonschool.com/**` y `https://nubes-school.*.workers.dev/**`.
 
 ## 6. Cloudflare: publicar la web 👉
 
-1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages → Create → Pages → Connect to Git** → **NDAEVENTS/NUBES-SCHOOL**.
-2. Framework preset **None** · Build command `npm run build` · Output `dist`.
-3. **Environment variables:** `SUPABASE_URL`, `SUPABASE_ANON_KEY` (paso 1) y `SITE_URL` = `https://nubesdealgodonschool.com`.
-4. **Save and Deploy** → en un par de minutos está en `https://nubes-school.pages.dev`.
-5. **Custom domains → Set up a custom domain** → `nubesdealgodonschool.com` (y `www.`). Cloudflare te dice qué registro añadir donde tengas el dominio.
+1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages → Create → Import a repository** → **NDAEVENTS/NUBES-SCHOOL**.
+2. Nombre del proyecto: `nubes-school` (en minúsculas). El resto se queda como viene: el archivo `wrangler.jsonc` del repositorio ya dice cómo construir y publicar la web. No hace falta añadir variables.
+3. **Deploy** → en un par de minutos está en `https://nubes-school.<tu-cuenta>.workers.dev`.
+4. **Settings → Domains & Routes → Add → Custom domain** → `nubesdealgodonschool.com` (y `www.nubesdealgodonschool.com`). Si el dominio no está en Cloudflare, te dice qué registro añadir donde lo tengas.
 
 ---
 
