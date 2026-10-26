@@ -62,7 +62,7 @@ Igual que en el portal de Events, con **Resend**:
 
 ## 6. Cloudflare: publicar la web 👉
 
-1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages → Create → Pages → Connect to Git** → **NDAEVENTS/nubes-school**.
+1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages → Create → Pages → Connect to Git** → **NDAEVENTS/NUBES-SCHOOL**.
 2. Framework preset **None** · Build command `npm run build` · Output `dist`.
 3. **Environment variables:** `SUPABASE_URL`, `SUPABASE_ANON_KEY` (paso 1) y `SITE_URL` = `https://nubesdealgodonschool.com`.
 4. **Save and Deploy** → en un par de minutos está en `https://nubes-school.pages.dev`.
