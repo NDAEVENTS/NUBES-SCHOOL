@@ -20,8 +20,7 @@ function panel(){
   const body=({'':hoy,alumnas:()=>arg?alumnaDetail(arg):alumnas(),curso:()=>pCurso(arg,kind,k),web:pWeb,tutorias:pTutorias,agenda:pAgenda,biblioteca:pBiblioteca,leads:pLeads,ventas:pVentas})[pg||'']?.()||hoy();
   return `<div class="app"><aside class="side">${brand()}
     ${NMENU.map(([k,t])=>`<a class="sidelink" href="/panel${k?'/'+k:''}" aria-current="${(pg||'')===k}">${t}${k===''&&nRev+nTut?`<span class="count">${nRev+nTut}</span>`:''}</a>`).join('')}
-    <div class="me"><form data-form="asAlumna" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px"><span class="label">Ver el portal como alumna</span><select id="asplan" name="plan" aria-label="Nivel">${Object.entries(PLANS).map(([k,p])=>`<option value="${k}" ${k==='completo'?'selected':''}>${p.t}</option>`).join('')}</select><button class="btn sm" type="submit">Entrar como alumna</button></form>
-      ${esc(S.me.name)} · equipo Nubes<br><button type="button" class="btn sm" data-act="signOut" style="margin-top:8px">Cerrar sesión</button></div></aside>
+    <div class="me">${esc(S.me.name)} · equipo Nubes<br><button type="button" class="btn sm" data-act="signOut" style="margin-top:8px">Cerrar sesión</button></div></aside>
     <main class="main">${body}</main></div>`;
 }
 function hoy(){
@@ -59,6 +58,7 @@ function alumnas(){
   const rows=list.filter(m=>!f||m.plan===f);
   return `<header><h1>Alumnas</h1><p>${list.length} alumnas. Pulsa en una para ver su portal: progreso, entregas, tutorías y “Mi negocio”.</p></header>
   <div class="spread"><div class="tabs">${[['','Todas'],...Object.entries(PLANS).map(([k,p])=>[k,p.t])].map(([k,t])=>`<button type="button" data-act="aflt" data-arg="${k}" aria-pressed="${f===k}">${t}</button>`).join('')}</div><button type="button" class="btn primary" data-act="modal" data-arg="invite">Añadir alumna</button></div>
+  <form class="sheet pad row" data-form="asAlumna" style="align-items:end"><div class="field" style="flex:1;min-width:220px"><span>Ver el portal como una alumna nueva de nivel…</span><select id="asplan" name="plan">${Object.entries(PLANS).map(([k,p])=>`<option value="${k}" ${k==='completo'?'selected':''}>${p.t}</option>`).join('')}</select></div><button class="btn" type="submit">Ver el portal</button><p class="hint" style="flex-basis:100%">Para ver el de una alumna concreta, con su progreso, entra en su ficha y pulsa “Ver su portal”. Nada de lo que hagas en esa vista se guarda.</p></form>
   <div class="sheet pad"><div class="tblwrap"><table><thead><tr><th>Alumna</th><th>País</th><th>Nivel</th><th>Va por</th><th>Progreso</th><th>Atención</th></tr></thead><tbody>
     ${rows.map(m=>{ const a=attention(m); return `<tr class="click" data-act="go" data-arg="/panel/alumnas/${m.user_id}"><td>${esc(m.name)}<br><small class="hint">${esc(m.email)}</small></td><td>${esc(m.country||'')}</td><td>${plan(m).t}</td><td>Etapa ${stageNow(m)}</td><td class="num">${pctOf(m)} %</td><td><span class="pill ${a[0]}">${esc(a[1])}</span></td></tr>`; }).join('')||`<tr><td colspan="6" class="empty">Todavía no hay alumnas en este nivel.</td></tr>`}</tbody></table></div></div>
   ${ui('modal')==='invite'?inviteModal():''}`;
@@ -80,7 +80,7 @@ function alumnaDetail(id){
   const m=S.members.find(x=>x.user_id===id); if(!m) return alumnas();
   const done=new Set(progOf(id).map(p=>p.lesson)), subs=S.allSubs.filter(s=>s.user_id===id), tuts=S.allTuts.filter(t=>t.user_id===id), p=plan(m);
   const used=tuts.filter(t=>t.status==='done'||t.status==='booked').reduce((a,t)=>a+(+t.hours||0),0);
-  return `<div class="row"><a class="btn sm" href="/panel/alumnas">← Alumnas</a></div>
+  return `<div class="spread"><a class="btn sm" href="/panel/alumnas">← Alumnas</a><button type="button" class="btn sm primary" data-act="asStudent" data-arg="${id}">Ver su portal</button></div>
   <header><span class="eyebrow">${p.t} · desde el ${fdate(m.started_at)}</span><h1>${esc(m.name)}</h1><p>${esc(m.email)}${m.country?' · '+esc(m.country):''} · ${pctOf(m)} % del programa · última actividad ${ago(lastActive(m))}</p></header>
   <div class="grid2">
     <div class="sheet pad"><h3 style="font-size:20px">Progreso por módulo</h3><div class="list">${COURSE.filter(M=>inPlan(m,stageOf(M.n).n)).map(M=>{ const d=M.lessons.filter((_,i)=>done.has(lessonKey(M.n,i))).length; return `<div class="li"><div class="t"><b style="font-weight:400">Módulo ${modNo(M.n)}. ${esc(M.t)}</b><div class="bar" style="margin-top:6px"><i style="width:${(M.lessons.length?Math.round(d/M.lessons.length*100):0)}%"></i></div></div><span class="hint num">${d}/${M.lessons.length}</span></div>`; }).join('')}</div></div>
@@ -162,11 +162,19 @@ function asAlumna(planKey,open){
   S.progress={}; S.subs={}; S.tuts=[]; S.biz={}; S.notes=[{id:'preview',body:'Aquí verá la alumna los mensajes que le escribáis desde su ficha.',by:S.realMe.name,created_at:new Date().toISOString()}];
   ui('lesson',null); nav('/portal');
 }
+// One real student's portal, with her progress, answers and tutorials (read only)
+ACT.asStudent=async id=>{ const m=S.members.find(x=>x.user_id===id); if(!m) return;
+  if(!S.realMe){ S.realMe=S.me; S.panelState={progress:S.progress,subs:S.subs,tuts:S.tuts,biz:S.biz,notes:S.notes}; }
+  const extra=await DB.studentExtra(id);
+  S.me=Object.assign({},m,{viewing:true}); S.progress=Object.fromEntries(S.allProgress.filter(p=>p.user_id===id).map(p=>[p.lesson,p.done_at]));
+  S.subs=Object.fromEntries(S.allSubs.filter(x=>x.user_id===id).map(x=>[x.exercise,x])); S.tuts=S.allTuts.filter(t=>t.user_id===id); S.biz=extra.biz; S.notes=extra.notes;
+  ui('lesson',null); nav('/portal'); };
 ACT.asPlan=k=>asAlumna(k,S.me.unlocked);
 ACT.asOpen=v=>asAlumna(S.me.plan,v==='1');
-ACT.exitAlumna=()=>{ S.me=S.realMe; S.realMe=null; Object.assign(S,S.panelState); ui('lesson',null); nav('/panel'); };
+ACT.exitAlumna=()=>{ const back=S.me.viewing?'/panel/alumnas/'+S.me.user_id:'/panel/alumnas'; S.me=S.realMe; S.realMe=null; Object.assign(S,S.panelState); ui('lesson',null); nav(back); };
 function previewBar(){ if(!S.realMe) return '';
-  return `<div class="demo-note">Estás viendo el portal como una alumna de nivel <b>${plan(S.me).t}</b>. Nada de lo que hagas aquí se guarda.
+  if(S.me.viewing) return `<div class="demo-note">Estás viendo el portal de <b>${esc(S.me.name)}</b> (${plan(S.me).t}) tal como lo ve ella. Nada de lo que hagas aquí se guarda. <button type="button" class="btn sm primary" data-act="exitAlumna">Volver a su ficha</button></div>`;
+  return `<div class="demo-note">Estás viendo el portal como una alumna nueva de nivel <b>${plan(S.me).t}</b>. Nada de lo que hagas aquí se guarda.
     ${Object.entries(PLANS).map(([k,p])=>`<button type="button" class="btn sm" data-act="asPlan" data-arg="${k}" aria-pressed="${S.me.plan===k}">${p.t}</button>`).join('')}
     <button type="button" class="btn sm" data-act="asOpen" data-arg="${S.me.unlocked?'':'1'}">${S.me.unlocked?'Verlo como el primer día':'Abrir todas las etapas'}</button>
     <button type="button" class="btn sm primary" data-act="exitAlumna">Volver al panel</button></div>`; }

@@ -91,6 +91,9 @@ const DB={
     S.tuts.push(row); if(CFG.demo||S.realMe) return; ok(await sb.from('tutorials').insert(row)); },
   async saveBusiness(){ if(CFG.demo||S.realMe) return; ok(await sb.from('business').upsert({user_id:S.user.id,data:S.biz,updated_at:new Date().toISOString()})); },
 
+  async studentExtra(id){ if(CFG.demo) return {biz:id==='u-lucia'?S.panelState.biz:{},notes:id==='u-lucia'?S.panelState.notes:[]};
+    const [B,N]=await Promise.all([sb.from('business').select('data').eq('user_id',id).maybeSingle(),sb.from('notes').select('*').eq('user_id',id).order('created_at',{ascending:false})]).then(rs=>rs.map(ok));
+    return {biz:B?.data||{},notes:N}; },
   // ---------- Web ----------
   async addLead(name,email,source,extra){ if(CFG.demo) return; ok(await sb.rpc('add_lead',{p_name:name,p_email:email,p_source:source,p_extra:extra||{}})); },
   async checkout(planKey,email,installments){ if(CFG.demo) return null;

@@ -22,7 +22,7 @@ const FORMAT_HINT='Escribe como en un email: deja una línea en blanco para empe
 function pCurso(arg,kind,k){
   if(arg&&cMod(arg)){ if(kind==='l') return pLesson(cMod(arg),k); if(kind==='e') return pExercise(cMod(arg),k); return pModule(cMod(arg)); }
   const st=S.cAll.stages;
-  return `<header><h1>Edición del curso</h1><p>Así se organiza The Wedding Creators en el portal de las alumnas. Ordenad etapas y módulos, y entrad en cada módulo para escribir sus lecciones, añadir vídeos y archivos, y preparar sus ejercicios. Lo que guardáis lo ven al momento.</p></header>
+  return `<header><h1>Edición del curso</h1><p>Así se organiza The Wedding Creators en el portal de las alumnas. Ordenad etapas y módulos, y entrad en cada módulo para escribir sus lecciones, añadir vídeos y archivos, y preparar sus ejercicios. Lo que guardáis lo ven al momento.</p><div class="row"><button type="button" class="btn sm" data-act="courseAsAlumna">Ver el curso como alumna</button></div></header>
   ${st.length?'':`<div class="sheet pad"><p class="empty">Todavía no hay curso en la base de datos. Ejecuta <b>supabase/curso.sql</b> en Supabase (lo explica la guía) para importar el temario.</p></div>`}
   ${st.map(s=>{ const ms=cStageMods(s.n);
     return `<section class="sheet pad">
@@ -137,3 +137,4 @@ FORM.lessonFile=async (f,form)=>{ const m=cMod(form.dataset.n), L=itemOf(m,'l',f
   const up=await DB.uploadFile('course',file); (L.files=L.files||[]).push(up); await DB.saveModule(m); render(); toast('Archivo subido'); };
 ACT.delLessonFile=async a=>{ const [n,k,j]=a.split('|'), m=cMod(n), L=itemOf(m,'l',k), [f]=L.files.splice(+j,1);
   await DB.removeCourseFile(f.path); await DB.saveModule(m); render(); toast('Archivo quitado'); };
+ACT.courseAsAlumna=()=>{ asAlumna('completo',true); nav('/portal/formacion'); };
