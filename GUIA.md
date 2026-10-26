@@ -52,6 +52,7 @@ Si se cambia el dossier: `python3 tools/extract.py tools/temario.txt > src/cours
    - `stripe-webhook` → [`supabase/functions/stripe-webhook/index.ts`](supabase/functions/stripe-webhook/index.ts)
    - `invite` → [`supabase/functions/invite/index.ts`](supabase/functions/invite/index.ts)
 2. En **stripe-webhook → Settings**, desactiva **Verify JWT** (Stripe no puede enviarlo; la función comprueba la firma de Stripe).
+3. Haz lo mismo en **checkout → Settings**: la llaman visitantes de la web sin sesión, y la clave pública nueva (sb_publishable_…) no es un JWT, así que con Verify JWT activo el pago falla.
 3. **Edge Functions → Secrets → Add new secret**:
    - `STRIPE_SECRET_KEY` = la Secret key de Stripe
    - `SITE_URL` = `https://school.nubesdealgodonevents.com`
