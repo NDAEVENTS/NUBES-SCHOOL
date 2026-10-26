@@ -44,7 +44,7 @@ Son 6 bloques. Los marcados con 👉 los haces tú (necesitan tu cuenta). Las cl
 2. En **stripe-webhook → Settings**, desactiva **Verify JWT** (Stripe no puede enviarlo; la función comprueba la firma de Stripe).
 3. **Edge Functions → Secrets → Add new secret**:
    - `STRIPE_SECRET_KEY` = la Secret key de Stripe
-   - `SITE_URL` = `https://nubesdealgodonschool.com`
+   - `SITE_URL` = `https://school.nubesdealgodonevents.com`
 4. En Stripe → **Developers → Webhooks → Add endpoint**:
    - URL: `https://xxxx.supabase.co/functions/v1/stripe-webhook` (tu Project URL)
    - Evento: **checkout.session.completed**
@@ -54,18 +54,21 @@ Son 6 bloques. Los marcados con 👉 los haces tú (necesitan tu cuenta). Las cl
 
 Igual que en el portal de Events, con **Resend**:
 
-1. [resend.com](https://resend.com) → **Domains → Add domain** → `nubesdealgodonschool.com`. Añade los registros DNS que te da donde tengas el dominio (pásame una captura si quieres y te digo qué poner).
+1. [resend.com](https://resend.com) → **Domains**: si `nubesdealgodonevents.com` ya está verificado (portal de Events), se usa el mismo. Si no, **Add domain** → `nubesdealgodonevents.com` y añade en Webempresa los registros DNS que te da.
 2. Resend → **API Keys → Create**.
-3. Supabase → **Authentication → Emails → SMTP Settings → Enable custom SMTP**: host `smtp.resend.com`, puerto `465`, usuario `resend`, contraseña = la API key, remitente `hola@nubesdealgodonschool.com`, nombre `Nubes de Algodón School`.
+3. Supabase → **Authentication → Emails → SMTP Settings → Enable custom SMTP**: host `smtp.resend.com`, puerto `465`, usuario `resend`, contraseña = la API key, remitente `hola@nubesdealgodonevents.com`, nombre `Nubes de Algodón School`.
 4. **Authentication → Emails → Templates**: pega [`supabase/email-invite.html`](supabase/email-invite.html) en *Invite user* y [`supabase/email-recovery.html`](supabase/email-recovery.html) en *Reset password* (el asunto está en la primera línea de cada archivo).
-5. **Authentication → URL Configuration**: Site URL `https://nubesdealgodonschool.com`; Redirect URLs `https://nubesdealgodonschool.com/**` y `https://nubes-school.*.workers.dev/**`.
+5. **Authentication → URL Configuration**: Site URL `https://school.nubesdealgodonevents.com`; Redirect URLs `https://school.nubesdealgodonevents.com/**` y `https://nubes-school.pages.dev/**`.
 
-## 6. Cloudflare: publicar la web 👉
+## 6. Cloudflare Pages + Webempresa: publicar la web 👉
 
-1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages → Create → Import a repository** → **NDAEVENTS/NUBES-SCHOOL**.
-2. Nombre del proyecto: `nubes-school` (en minúsculas). El resto se queda como viene: el archivo `wrangler.jsonc` del repositorio ya dice cómo construir y publicar la web. No hace falta añadir variables.
-3. **Deploy** → en un par de minutos está en `https://nubes-school.<tu-cuenta>.workers.dev`.
-4. **Settings → Domains & Routes → Add → Custom domain** → `nubesdealgodonschool.com` (y `www.nubesdealgodonschool.com`). Si el dominio no está en Cloudflare, te dice qué registro añadir donde lo tengas.
+La web vive gratis en Cloudflare Pages y se ve en `school.nubesdealgodonevents.com`, un subdominio del dominio de Events que ya está en Webempresa. Ninguna página de Events enlaza aquí.
+
+1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages → Create → pestaña Pages → Import an existing Git repository** → **NUBES-SCHOOL** → **Begin setup**.
+2. Project name `nubes-school` · Framework preset **None** · Build command `npm run build` · Build output directory `dist` → **Save and Deploy**. No hace falta añadir variables.
+3. Cuando termine: **Custom domains → Set up a custom domain** → `school.nubesdealgodonevents.com` → Cloudflare dice que añadas un registro **CNAME**.
+4. Webempresa → panel (cPanel) → **Zone Editor** del dominio `nubesdealgodonevents.com` → **+ CNAME**: nombre `school`, destino `nubes-school.pages.dev` (o el que muestre Cloudflare en el paso 3).
+5. En Cloudflare pulsa **Check DNS records**. En unos minutos (hasta unas horas) se activa con candado.
 
 ---
 

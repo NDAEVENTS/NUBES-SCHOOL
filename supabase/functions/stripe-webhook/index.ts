@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
     await stripe('subscriptions/' + s.subscription, { cancel_at: Math.floor(end.getTime() / 1000) + 3600 });
   }
 
-  const site = Deno.env.get('SITE_URL') || 'https://nubesdealgodonschool.com';
+  const site = Deno.env.get('SITE_URL') || 'https://school.nubesdealgodonevents.com';
   const today = new Date().toISOString().slice(0, 10);
   const year = addMonths(new Date(), 12).toISOString().slice(0, 10);
   const { data: existing } = await admin.from('members').select('*').eq('email', email).maybeSingle();

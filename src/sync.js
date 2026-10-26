@@ -15,7 +15,7 @@ async function boot(){
 }
 async function loadMe(user){
   const me=ok(await sb.from('members').select('*').eq('user_id',user.id).maybeSingle());
-  if(!me){ await sb.auth.signOut(); S.err='Tu acceso todavía no está activo. Escríbenos a hola@nubesdealgodonschool.com y lo revisamos.'; return; }
+  if(!me){ await sb.auth.signOut(); S.err='Tu acceso todavía no está activo. Escríbenos a hola@nubesdealgodonevents.com y lo revisamos.'; return; }
   S.user=user; S.me=me;
   if(me.role==='nubes') await loadPanel(); else await loadAlumna();
   if(S.route==='/acceso'||S.route==='/') { history.replaceState({},'',me.role==='nubes'?'/panel':'/portal'); S.route=location.pathname; }
@@ -77,7 +77,7 @@ const DB={
   // ---------- Web ----------
   async addLead(name,email,source,extra){ if(CFG.demo) return; ok(await sb.rpc('add_lead',{p_name:name,p_email:email,p_source:source,p_extra:extra||{}})); },
   async checkout(planKey,email,installments){ if(CFG.demo) return null;
-    const r=await sb.functions.invoke('checkout',{body:{plan:planKey,email,installments}}); if(r.error||!r.data?.url) throw Object.assign(new Error('checkout'),{friendly:'No hemos podido abrir el pago. Vuelve a intentarlo o escríbenos a hola@nubesdealgodonschool.com.'}); return r.data.url; },
+    const r=await sb.functions.invoke('checkout',{body:{plan:planKey,email,installments}}); if(r.error||!r.data?.url) throw Object.assign(new Error('checkout'),{friendly:'No hemos podido abrir el pago. Vuelve a intentarlo o escríbenos a hola@nubesdealgodonevents.com.'}); return r.data.url; },
 
   // ---------- Equipo ----------
   async review(sub,feedback){ Object.assign(sub,{status:'rev',feedback,feedback_by:S.me.name,feedback_at:new Date().toISOString()}); if(CFG.demo) return;

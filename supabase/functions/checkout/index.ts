@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
     const P = PLANS[plan];
     const mail = String(email || '').trim().toLowerCase();
     if (!P || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return reply({ error: 'missing data' }, 400);
-    const site = Deno.env.get('SITE_URL') || 'https://nubesdealgodonschool.com';
+    const site = Deno.env.get('SITE_URL') || 'https://school.nubesdealgodonevents.com';
     const split = installments && P.installments ? P.installments : null;
 
     let discounts: unknown[] | undefined;

@@ -8,7 +8,7 @@ const ORDER = ['course', 'app', 'sync', 'web', 'legal', 'portal', 'panel'];
 const url = process.env.SUPABASE_URL || 'https://ygohsuldpcbfmljtfemw.supabase.co';
 const key = process.env.SUPABASE_ANON_KEY || 'sb_publishable_PgJMxp-Uzh7XB6L1rb7F0g_321haDNq';
 const demo = !!process.env.NUBES_DEMO;
-const site = process.env.SITE_URL || 'https://nubesdealgodonschool.com';
+const site = process.env.SITE_URL || 'https://school.nubesdealgodonevents.com';
 
 rmSync('dist', { recursive: true, force: true }); mkdirSync('dist');
 if (existsSync('public')) cpSync('public', 'dist', { recursive: true });

@@ -1,5 +1,5 @@
 // ---------- Public web (Spanish, for future students) ----------
-const CONTACT='hola@nubesdealgodonschool.com';
+const CONTACT='hola@nubesdealgodonevents.com';
 const totalLessons=ALL_LESSONS.length;
 function brand(){ return `<a class="brand" href="/" style="text-decoration:none;color:inherit"><b>Nubes de Algodón</b><span>School</span></a>`; }
 function webPage(){

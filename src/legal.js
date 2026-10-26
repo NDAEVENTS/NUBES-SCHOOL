@@ -3,7 +3,7 @@
 const CO={name:'<span class="ph">[Razón social S.L.]</span>',cif:'<span class="ph">[CIF]</span>',addr:'<span class="ph">[Domicilio social]</span>',reg:'<span class="ph">[Datos del Registro Mercantil]</span>'};
 const LEGAL={
   'aviso-legal':['Aviso legal',`
-<p>En cumplimiento de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que este sitio web, nubesdealgodonschool.com, pertenece a:</p>
+<p>En cumplimiento de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que este sitio web, school.nubesdealgodonevents.com, pertenece a:</p>
 <ul><li>Titular: ${CO.name}, que opera con la marca Nubes de Algodón School</li><li>CIF: ${CO.cif}</li><li>Domicilio: ${CO.addr}</li><li>Registro: ${CO.reg}</li><li>Email: ${CONTACT}</li></ul>
 <h2>Uso del sitio</h2><p>Al navegar por esta web aceptas usarla de forma lícita. Los contenidos del programa The Wedding Creators (textos, plantillas, vídeos y materiales) son propiedad del titular y están protegidos por la normativa de propiedad intelectual. No se pueden copiar, distribuir ni revender sin autorización por escrito.</p>
 <h2>Responsabilidad</h2><p>Trabajamos para que la información de esta web sea correcta y esté actualizada, pero no garantizamos la ausencia de errores puntuales. La información legal y fiscal del programa es orientativa y no sustituye el asesoramiento de una gestoría o abogado.</p>
@@ -22,7 +22,7 @@ const LEGAL={
 <p>Esta web solo usa el almacenamiento técnico necesario para que funcione: mantener tu sesión iniciada en el portal de alumnas y recordar el paso en el que estás. No usamos cookies de publicidad ni de analítica de terceros, por eso no te pedimos consentimiento.</p>
 <p>Si en el futuro añadimos herramientas de analítica o publicidad, actualizaremos esta política y te pediremos permiso antes de activarlas.</p>`],
   'condiciones':['Condiciones de venta',`
-<p>Estas condiciones regulan la compra del programa online The Wedding Creators en nubesdealgodonschool.com, ofrecido por ${CO.name} (CIF ${CO.cif}).</p>
+<p>Estas condiciones regulan la compra del programa online The Wedding Creators en school.nubesdealgodonevents.com, ofrecido por ${CO.name} (CIF ${CO.cif}).</p>
 <h2>1. Qué compras</h2><p>Acceso personal e intransferible al programa durante 12 meses desde la compra, con el contenido del nivel elegido:</p>
 <ul><li><b>Etapa 1 (197 €):</b> módulos 1 y 2 con sus plantillas y ejercicios. Si en los 60 días siguientes compras Online o Completo, te descontamos los 197 €.</li>
 <li><b>Online (590 €):</b> las 4 etapas, plantillas, ejercicios guiados, una sesión grupal de dudas al mes y certificado.</li>
