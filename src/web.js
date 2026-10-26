@@ -18,7 +18,12 @@ const WEB_DEFAULT={
     online:['Las 4 etapas y los 9 módulos en tu portal','Todas las plantillas y descargables','Ejercicios guiados y tu espacio “Mi negocio”','1 sesión grupal de dudas al mes, en directo','Certificado al terminar'],
     completo:['Todo lo de Online','12 h de tutorías individuales por videollamada','Feedback personal en cada ejercicio','Seguimiento de tu proyecto en “Mi negocio”'],
     signature:['Todo lo de Completo','Fin de semana de workshops y mentorías en la Costa Brava','Asistencia a un shooting real con nosotras','Módulo extra: bodas destino y clientes internacionales'],
-    etapa1:'¿Quieres probar primero? La Etapa 1 está disponible por 197 €, y te los descontamos si después te pasas al programa.'},
+    etapa1:'¿Quieres probar primero? La Etapa 1 está disponible por 197 €, y te los descontamos si después te pasas al programa.',
+    forOnline:'Para ti si te apasionan las bodas, tu trabajo ya no te llena y quieres aprender la profesión a tu ritmo, sin dejarlo todo todavía.',
+    forCompleto:'Para ti si ya has decidido lanzarte y quieres que alguien con experiencia revise cada paso de tu negocio contigo.',
+    forSignature:'Para ti si ya trabajas en bodas o eventos y quieres dar el salto al lujo y a las bodas destino, a nuestro lado.',
+    edition:'Próxima edición: febrero de 2027 · 8 plazas',
+    upgrade:'Si después quieres subir de nivel, solo pagas la diferencia.'},
   guide:{title:'Los 7 errores que hunden a una wedding planner en su primer año',sub:'Y cómo evitarlos desde el principio.'},
   faq:{title:'Antes de empezar',items:[
     {q:'¿Necesito experiencia previa?',a:'No. El programa empieza por la base de la profesión y te acompaña hasta montar tu empresa.'},
@@ -86,11 +91,12 @@ function webPage(){
     <h2>${em(w.prices.title)}</h2>
     <p class="intro">${esc(w.prices.intro)}</p>
     <div class="plans">
-      ${planCard('online','o 3 cuotas de 197 €',w.prices.online)}
-      ${planCard('completo','o 6 cuotas de 332 €',w.prices.completo,true)}
-      ${planCard('signature','plazas limitadas por edición',w.prices.signature)}
+      ${planCard('online','o 3 cuotas de 197 €',w.prices.online,false,w.prices.forOnline)}
+      ${planCard('completo','o 6 cuotas de 332 €',w.prices.completo,true,w.prices.forCompleto)}
+      ${planCard('signature',w.prices.edition,w.prices.signature,false,w.prices.forSignature)}
     </div>
     <p class="hint">${esc(w.prices.etapa1)} <button type="button" class="btn sm" data-act="buy" data-arg="etapa1">Empezar con la Etapa 1</button></p>
+    ${w.prices.upgrade?`<p class="hint">${esc(w.prices.upgrade)}</p>`:''}
   </section>
 
   <section class="sec" id="guia">
@@ -112,18 +118,21 @@ function webPage(){
   <footer class="pub"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   </div>${ui('buy')?buyModal():''}`;
 }
-function planCard(k,sub,items,star){ const p=PLANS[k];
-  return `<div class="sheet plan${star?' star':''}">${star?'<span class="pill prog tag">La más elegida</span>':''}<h3>${p.t}</h3><div class="price num">${eur(p.price)}<br><small>${sub}</small></div><ul>${items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><button type="button" class="btn${star?' primary':''}" data-act="buy" data-arg="${k}">${k==='signature'?'Solicitar plaza':'Inscribirme'}</button></div>`; }
+// Online is bought straight away; Completo and Signature start with a 20-minute call
+const CALL=k=>k==='completo'||k==='signature';
+function planCard(k,sub,items,star,who){ const p=PLANS[k];
+  return `<div class="sheet plan${star?' star':''}">${star?'<span class="pill prog tag">La más elegida</span>':''}<h3>${p.t}</h3><div class="price num">${eur(p.price)}<br><small>${esc(sub)}</small></div>${who?`<p class="for">${esc(who)}</p>`:''}<ul>${items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><button type="button" class="btn${star?' primary':''}" data-act="buy" data-arg="${k}">${CALL(k)?'Hablemos 20 minutos':'Inscribirme'}</button></div>`; }
 function faq(q,a){ return `<details><summary>${q}</summary><p>${a}</p></details>`; }
 const INST={online:[3,197],completo:[6,332]};
 function buyModal(){
-  const k=ui('buy'), p=PLANS[k], sig=k==='signature';
+  const k=ui('buy'), p=PLANS[k], sig=CALL(k);
   return `<div class="overlay"><form class="sheet pad modal" role="dialog" aria-modal="true" aria-labelledby="buyt" data-form="${sig?'apply':'buy'}">
-    <span class="label">${sig?'Solicitud de plaza':'Inscripción'}</span>
+    <span class="label">${sig?'Hablemos 20 minutos':'Inscripción'}</span>
     <h3 id="buyt" style="font-size:24px">The Wedding Creators · ${p.t}</h3>
-    ${sig?`<p class="hint">Signature tiene plazas limitadas. Cuéntanos un poco de ti y te escribimos en 48 horas para hablar por videollamada.</p>
+    ${sig?`<p class="hint">${k==='signature'?`Signature se hace por ediciones: dos al año, en febrero y octubre. ${esc(W().prices.edition)}. `:''}Cuéntanos un poco de ti y te escribimos en 48 horas para buscar un hueco de 20 minutos por videollamada. Así vemos juntas si es el nivel que necesitas.</p>
       <div class="field"><span>Nombre</span><input id="aname" name="name" required></div>
       <div class="field"><span>Email</span><input id="amail" name="email" type="email" required></div>
+      <div class="field"><span>Teléfono o WhatsApp (opcional)</span><input id="aphone" name="phone" type="tel" autocomplete="tel"></div>
       <div class="field"><span>País</span><input id="acountry" name="country" required></div>
       <div class="field"><span>¿Por qué quieres ser wedding planner y en qué punto estás?</span><textarea id="awhy" name="why" required></textarea></div>
       <label class="check"><input id="aok" type="checkbox" required> He leído y acepto la <a href="/legal/privacidad">política de privacidad</a>.</label>`:
@@ -132,8 +141,8 @@ function buyModal(){
       <label class="check"><input id="bdes" type="checkbox" required> Quiero empezar ya: acepto que el acceso al contenido digital comienza al pagar y que, desde ese momento, pierdo el derecho de desistimiento de 14 días.</label>
       <label class="check"><input id="bcond" type="checkbox" required> Acepto las <a href="/legal/condiciones">condiciones de venta</a>.</label>
       ${INST[k]?`<div class="field"><span>Forma de pago</span><select id="binst" name="installments"><option value="">Pago único de ${eur(p.price)}</option><option value="1">${INST[k][0]} cuotas mensuales de ${eur(INST[k][1])}</option></select></div>`:''}
-      <p class="hint">Te llevamos a la página de pago seguro de Stripe: tarjeta, Apple Pay, Google Pay o PayPal.</p>`}
-    <div class="row"><button type="submit" class="btn primary" ${S.busy?'disabled':''}>${sig?'Enviar solicitud':S.busy?'Abriendo el pago…':'Ir al pago'}</button><button type="button" class="btn" data-act="closeBuy">Cancelar</button></div>
+      <p class="hint">${k==='online'?'Si compraste la Etapa 1 en los últimos 60 días, te descontamos lo que pagaste. ':''}Te llevamos a la página de pago seguro de Stripe: tarjeta, Apple Pay, Google Pay o PayPal.</p>`}
+    <div class="row"><button type="submit" class="btn primary" ${S.busy?'disabled':''}>${sig?'Pedir la llamada':S.busy?'Abriendo el pago…':'Ir al pago'}</button><button type="button" class="btn" data-act="closeBuy">Cancelar</button></div>
   </form></div>`;
 }
 function thanksPage(){
@@ -147,5 +156,6 @@ ACT.buy=k=>{ ui('buy',k); render(); };
 ACT.closeBuy=()=>{ ui('buy',null); render(); };
 FORM.buy=async f=>{ if(CFG.demo){ ui('buy',null); toast('En la versión real, aquí se abre la página de pago de Stripe.'); return; }
   S.busy=true; render(); const url=await DB.checkout(ui('buy'),f.email.trim(),!!f.installments); location.href=url; };
-FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',{country:f.country,why:f.why}); ui('buy',null); toast('Solicitud enviada. Te escribimos en 48 horas.'); };
+// Call requests are stored as leads with source 'signature' (the only other source the database accepts) and the level in extra.plan
+FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',{plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why}); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
 FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia'); ui('leadDone',true); render(); };

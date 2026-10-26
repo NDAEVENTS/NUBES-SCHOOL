@@ -65,7 +65,7 @@ Deno.serve(async (req) => {
   const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
   // The same payment can arrive twice: the session id makes it count once
-  const { error: dup } = await admin.from('purchases').insert({ stripe_session: s.id, email, name, plan, amount: n > 1 ? PLANS[plan].installments!.each * n : (s.amount_total ?? PLANS[plan].price * 100) / 100, installments: n });
+  const { error: dup } = await admin.from('purchases').insert({ stripe_session: s.id, email, name, plan, amount: n > 1 ? (+(s.metadata?.each || 0) || PLANS[plan].installments!.each) * n : (s.amount_total ?? PLANS[plan].price * 100) / 100, installments: n });
   if (dup) { if (/duplicate|unique/i.test(dup.message)) return new Response('already done'); throw dup; }
 
   // Instalments: the subscription ends by itself after the last monthly payment

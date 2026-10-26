@@ -45,6 +45,7 @@ function home(){
   const lockedNext=STAGES.find(s=>inPlan(me,s.n)&&!stageOpen(me,s.n));
   return `<header><span class="eyebrow">Etapa ${cs.n} · ${cs.t}</span><h1>Hola, ${esc(me.name.split(' ')[0])}</h1><p>${pct===100?'¡Has completado todo el programa! Enhorabuena.':nl?`Esta semana toca: ${esc(MOD(nl[0]).t.toLowerCase())}.`:lockedNext?`Has terminado lo que está abierto. La Etapa ${lockedNext.n} se abre el ${fdate(stageOpensOn(me,lockedNext.n),{weekday:'long',day:'numeric',month:'long'})}.`:''}</p></header>
   ${nl?`<div class="next"><div><span class="label">Tu siguiente paso</span><h3>Módulo ${modNo(nl[0])} · ${esc(MOD(nl[0]).lessons[nl[1]].t)}</h3></div><button type="button" class="btn" data-act="lesson" data-arg="${nl[0]}-${nl[1]}">${done?'Continuar':'Empezar'}</button></div>`:''}
+  ${upgradeCard(me)}
   <div class="sheet pad"><div class="spread"><h3 style="font-size:20px">Tu progreso</h3><span class="num">${pct} %</span></div><div class="bar"><i style="width:${pct}%"></i></div>
     <div class="stagebar">${myStages(me).map(s=>{ const ks=s.mods.flatMap(m=>MOD(m).lessons.map((_,i)=>lessonKey(m,i))), d=ks.filter(k=>S.progress[k]).length; return `<div><span>Etapa ${s.n}${stageOpen(me,s.n)?'':' · se abre el '+fdate(stageOpensOn(me,s.n),{day:'numeric',month:'short'})}</span><b>${s.t}</b><div class="bar"><i style="width:${(ks.length?Math.round(d/ks.length*100):0)}%"></i></div></div>`; }).join('')}</div></div>
   <div class="grid2">
@@ -53,6 +54,14 @@ function home(){
     <div class="sheet pad"><span class="label">Del equipo Nubes</span>${S.notes.length?S.notes.slice(0,2).map(n=>`<div class="fb"><p>${esc(n.body)}</p><small>${esc(n.by)} · ${ago(n.created_at)}</small></div>`).join(''):`<p class="hint">Aquí verás nuestros mensajes y comentarios sobre tu proyecto.</p>`}</div>
   </div>`;
 }
+// Moving up: Etapa 1 students who finish their stage are offered Online; Online students who finish Etapa 2, Completo
+const stageDone=(n)=>{ const st=STG(n); return !!st&&st.mods.every(m=>MOD(m).lessons.every(l=>S.progress[l.k])); };
+function upgradeCard(me){
+  if(me.plan==='etapa1'&&STAGES[0]&&stageDone(STAGES[0].n)) return `<div class="sheet pad up"><span class="label">Tu siguiente nivel</span><h3 style="font-size:22px">¿Seguimos? Continúa con el programa Online</h3><p class="hint">Ya has terminado la Etapa 1. Si te pasas a Online en los 60 días siguientes a tu compra, te descontamos los 197 € que pagaste.</p><a class="btn primary sm" style="align-self:flex-start" href="/#precios">Ver el programa Online</a></div>`;
+  if(me.plan==='online'&&STAGES[1]&&stageDone(STAGES[1].n)) return `<div class="sheet pad up"><span class="label">Tu siguiente nivel</span><h3 style="font-size:22px">¿Quieres que revisemos tu negocio contigo?</h3><p class="hint">Ya has terminado la Etapa 2. Con Completo tienes 12 h de tutorías y feedback personal en cada ejercicio, y solo pagas la diferencia. Hablamos 20 minutos y lo vemos juntas.</p>${ui('upAsked')?`<p class="ok">¡Hecho! Te escribimos en 48 horas para agendar la llamada.</p>`:`<button type="button" class="btn primary sm" style="align-self:flex-start" data-act="askUpgrade">Quiero hablarlo</button>`}</div>`;
+  return '';
+}
+ACT.askUpgrade=async()=>{ if(!S.realMe) await DB.addLead(S.me.name,S.me.email,'signature',{plan:'completo',why:'Alumna Online que ha terminado la Etapa 2 y quiere pasar a Completo.'}); ui('upAsked',true); render(); };
 function formacion(){
   const me=S.me, p=plan(me);
   return `<header><h1>Mi formación</h1><p>Se abre una etapa nueva cada semana. Puedes volver a cualquier lección siempre que quieras.</p></header>

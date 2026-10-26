@@ -1,6 +1,7 @@
 // Opens a Stripe Checkout page for one level of the programme, paid at once or in monthly instalments.
 // Public: anyone on the web can call it. The amount always comes from PLANS below, never from the browser.
-// Someone who bought Etapa 1 in the last 60 days gets its 197 € off Online or Completo.
+// Moving up a level: what she already paid for lower levels is taken off (Etapa 1 and Online count for 60 days;
+// anything counts towards Signature, which opens in editions). Only payments made at once count: instalments may still be running.
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
 // ---------- Shared with the other functions (keep the copies equal) ----------
@@ -50,17 +51,22 @@ Deno.serve(async (req) => {
     const site = Deno.env.get('SITE_URL') || 'https://school.nubesdealgodonevents.com';
     const split = installments && P.installments ? P.installments : null;
 
-    let discounts: unknown[] | undefined;
-    if (plan === 'online' || plan === 'completo') {
-      const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-      const since = new Date(Date.now() - 60 * 864e5).toISOString();
-      const { data } = await admin.from('purchases').select('id').eq('email', mail).eq('plan', 'etapa1').gte('created_at', since).limit(1);
-      if (data?.length) {
-        const c = await stripe('coupons', { amount_off: PLANS.etapa1.price * 100, currency: 'eur', duration: 'once', name: 'Etapa 1 ya pagada', max_redemptions: 1 });
-        discounts = [{ coupon: c.id }];
-      }
+    const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+    const since = plan === 'signature' ? '2000-01-01' : new Date(Date.now() - 60 * 864e5).toISOString();
+    const lower = Object.keys(RANK).filter(k => RANK[k] < RANK[plan]);
+    let credit = 0;
+    if (lower.length) {
+      const { data } = await admin.from('purchases').select('amount').eq('email', mail).eq('installments', 1).in('plan', lower).gte('created_at', since);
+      credit = Math.min(P.price - 1, Math.round((data || []).reduce((a, r) => a + Number(r.amount || 0), 0)));
     }
-    const meta = { plan, installments: split ? split.n : 1 };
+    // With instalments the rest is spread over the same number of months; paid at once it is a one-off coupon
+    const each = split ? Math.ceil((P.price - credit) / split.n) : 0;
+    let discounts: unknown[] | undefined;
+    if (credit > 0 && !split) {
+      const c = await stripe('coupons', { amount_off: credit * 100, currency: 'eur', duration: 'once', name: 'Lo que ya has pagado', max_redemptions: 1 });
+      discounts = [{ coupon: c.id }];
+    }
+    const meta = { plan, installments: split ? split.n : 1, each, credit };
     const body: Record<string, unknown> = {
       mode: split ? 'subscription' : 'payment',
       customer_email: mail,
@@ -69,9 +75,9 @@ Deno.serve(async (req) => {
         quantity: 1,
         price_data: {
           currency: 'eur',
-          unit_amount: (split ? split.each : P.price) * 100,
+          unit_amount: (split ? each : P.price) * 100,
           tax_behavior: 'inclusive',
-          product_data: { name: P.name + (split ? ` · ${split.n} cuotas mensuales` : '') },
+          product_data: { name: P.name + (split ? ` · ${split.n} cuotas mensuales` : '') + (split && credit ? ' (descontado lo ya pagado)' : '') },
           ...(split ? { recurring: { interval: 'month' } } : {}),
         },
       }],

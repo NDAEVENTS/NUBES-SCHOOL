@@ -7,7 +7,7 @@ const WEB_SECTIONS=[
   ['method','El método',[['eyebrow','Antetítulo'],['intro','Texto','area']]],
   ['about','Quiénes os enseñan',[['eyebrow','Antetítulo'],['title','Título'],['text','Texto (una línea en blanco separa párrafos)','area'],['quote','Frase destacada','area']]],
   ['testimonials','Testimonios',[['eyebrow','Antetítulo'],['title','Título']]],
-  ['prices','Precios',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['online','Qué incluye Online (una línea por punto)','lines'],['completo','Qué incluye Completo (una línea por punto)','lines'],['signature','Qué incluye Signature (una línea por punto)','lines'],['etapa1','Texto de la Etapa 1','area']]],
+  ['prices','Precios',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['online','Qué incluye Online (una línea por punto)','lines'],['completo','Qué incluye Completo (una línea por punto)','lines'],['signature','Qué incluye Signature (una línea por punto)','lines'],['forOnline','Para quién es Online','area'],['forCompleto','Para quién es Completo','area'],['forSignature','Para quién es Signature','area'],['edition','Próxima edición de Signature (debajo del precio)'],['etapa1','Texto de la Etapa 1','area'],['upgrade','Texto sobre subir de nivel','area']]],
   ['guide','Guía gratuita',[['title','Título'],['sub','Subtítulo']]],
   ['faq','Preguntas frecuentes',[['title','Título']]],
 ];
