@@ -32,7 +32,7 @@ Son 6 bloques. Los marcados con 👉 los haces tú (necesitan tu cuenta). Las cl
 
 **SQL Editor → New query** → pega todo [`supabase/curso.sql`](supabase/curso.sql) → **Run**. Abajo debe salir `modulos = 9`.
 
-Crea las tablas del curso y de los textos de la web, y mete el temario del dossier. Desde ese momento todo se edita en el panel: **Curso** (etapas, módulos, lecciones, vídeos, archivos y ejercicios), **Web** (textos, foto y testimonios de la página pública) y **Ver el portal como alumna** (abajo en el menú). Se puede volver a ejecutar sin miedo: nunca pisa lo que hayáis editado.
+Crea las tablas del curso y de los textos de la web, y mete el temario del dossier. Desde ese momento todo se edita en el panel: **Edición del curso** (etapas, módulos, lecciones, vídeos, archivos y ejercicios), **Editar landing** (textos, foto y testimonios de la página pública) y **Ver el portal como alumna** (abajo en el menú). Se puede volver a ejecutar sin miedo: nunca pisa lo que hayáis editado.
 
 Si se cambia el dossier: `python3 tools/extract.py tools/temario.txt > src/course.js` y `node tools/curso-sql.mjs` regeneran el archivo (solo sirve para proyectos nuevos o para la demo).
 

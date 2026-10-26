@@ -1,4 +1,4 @@
-// ---------- Panel → Web: the texts of the public page ----------
+// ---------- Panel → Editar landing: the texts of the public page ----------
 // One form per section; saving a section stores it in site_content and visitors see it on their next visit.
 const WEB_SECTIONS=[
   ['hero','Portada',[['eyebrow','Antetítulo'],['title','Título (entre *asteriscos* va en cursiva)'],['lede','Subtítulo','area'],['cta1','Botón principal'],['cta2','Botón de la guía']]],
@@ -17,7 +17,7 @@ const WEB_LISTS={facts:['items','cifra',[['num','Cifra'],['text','Texto']]],who:
 const webField=(id,label,kind,val)=>`<div class="field"><span>${label}</span>${kind?`<textarea id="${id}" name="${id}" rows="${kind==='lines'?5:3}">${esc(kind==='lines'?(val||[]).join('\n'):val||'')}</textarea>`:`<input id="${id}" name="${id}" value="${esc(val||'')}">`}</div>`;
 function pWeb(){
   const w=W();
-  return `<header><h1>Web</h1><p>Los textos de la página que ve quien entra en la web. Cada sección se guarda por separado. Los importes de los precios no se cambian aquí porque son los que cobra Stripe: pídenoslo y lo cambiamos en los dos sitios.</p>
+  return `<header><h1>Editar landing</h1><p>Los textos de la página que ve quien entra en la web. Cada sección se guarda por separado. Los importes de los precios no se cambian aquí porque son los que cobra Stripe: pídenoslo y lo cambiamos en los dos sitios.</p>
     <div class="row"><a class="btn sm" href="/" target="_blank" rel="noopener">Abrir la web en otra pestaña</a></div></header>
   ${WEB_SECTIONS.map(([sec,title,fields])=>{ const L=WEB_LISTS[sec], items=L?(L[0]?w[sec][L[0]]:w[sec])||[]:null;
     return `<form class="sheet pad" data-form="web" data-sec="${sec}" id="web-${sec}"><h3 style="font-size:20px">${title}</h3>

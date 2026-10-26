@@ -1,4 +1,4 @@
-// ---------- Panel → Curso: the team organises stages and modules and writes lessons and exercises ----------
+// ---------- Panel → Edición del curso: the team organises stages and modules and writes lessons and exercises ----------
 // Everything is saved to course_stages / course_modules and students see it the next time they open the portal.
 // Lesson text is plain writing: a blank line starts a new paragraph, "## " a subheading and "- " a bullet point.
 function blocksToText(b){ return (b||[]).map(([k,t],i,a)=>(i?(k==='li'&&a[i-1][0]==='li'?'\n':'\n\n'):'')+(k==='h'?'## ':k==='li'?'- ':'')+t).join(''); }
@@ -22,7 +22,7 @@ const FORMAT_HINT='Escribe como en un email: deja una línea en blanco para empe
 function pCurso(arg,kind,k){
   if(arg&&cMod(arg)){ if(kind==='l') return pLesson(cMod(arg),k); if(kind==='e') return pExercise(cMod(arg),k); return pModule(cMod(arg)); }
   const st=S.cAll.stages;
-  return `<header><h1>Curso</h1><p>Así se organiza The Wedding Creators en el portal de las alumnas. Ordenad etapas y módulos, y entrad en cada módulo para escribir sus lecciones, añadir vídeos y archivos, y preparar sus ejercicios. Lo que guardáis lo ven al momento.</p></header>
+  return `<header><h1>Edición del curso</h1><p>Así se organiza The Wedding Creators en el portal de las alumnas. Ordenad etapas y módulos, y entrad en cada módulo para escribir sus lecciones, añadir vídeos y archivos, y preparar sus ejercicios. Lo que guardáis lo ven al momento.</p></header>
   ${st.length?'':`<div class="sheet pad"><p class="empty">Todavía no hay curso en la base de datos. Ejecuta <b>supabase/curso.sql</b> en Supabase (lo explica la guía) para importar el temario.</p></div>`}
   ${st.map(s=>{ const ms=cStageMods(s.n);
     return `<section class="sheet pad">
@@ -54,7 +54,7 @@ ACT.modMove=async a=>{ const [n,d]=a.split('|').map(Number), m=cMod(n), ms=cStag
 
 function pModule(m){
   const st=S.cAll.stages.find(s=>s.n===m.stage);
-  return `<div class="row"><a class="btn sm" href="/panel/curso">← Curso</a></div>
+  return `<div class="row"><a class="btn sm" href="/panel/curso">← Edición del curso</a></div>
   <header><span class="eyebrow">Etapa ${m.stage}${st?' · '+esc(st.title):''}</span><h1>Módulo ${cNo(m.n)}. ${esc(m.title)}</h1><p>${m.published===false?'Oculto: las alumnas todavía no lo ven.':'Visible en el portal.'}${m.updated_by?` Última edición: ${esc(m.updated_by)}, ${ago(m.updated_at)}.`:''}</p></header>
   <form class="sheet pad" data-form="mod" data-n="${m.n}">
     <div class="formgrid"><div class="field"><span>Título del módulo</span><input id="mt" name="title" value="${esc(m.title)}" required></div>

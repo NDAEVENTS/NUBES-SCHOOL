@@ -2,7 +2,7 @@
 // The syllabus on the web: titles only. Visitors get it from course_outline(); the demo has the whole course
 const pub=()=>S.pub||{stages:STAGES,mods:COURSE};
 const CONTACT='hola@nubesdealgodonevents.com';
-// Texts of the web. The team edits them in Panel → Web (table site_content); these are the starting texts.
+// Texts of the web. The team edits them in Panel → Editar landing (table site_content); these are the starting texts.
 // In titles, *word* is shown in italics. Prices are not here: they are charged by Stripe (see PLANS and the checkout function).
 const WEB_DEFAULT={
   hero:{eyebrow:'The Wedding Creators · programa online',title:'Aprende a organizar bodas *de lujo* con quienes las organizan cada semana.',

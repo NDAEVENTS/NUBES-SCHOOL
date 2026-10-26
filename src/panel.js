@@ -1,5 +1,5 @@
 // ---------- Team panel (Ainoa and Pilar) ----------
-const NMENU=[['','Hoy'],['alumnas','Alumnas'],['curso','Curso'],['web','Web'],['tutorias','Tutorías'],['agenda','Agenda'],['biblioteca','Biblioteca'],['leads','Leads'],['ventas','Ventas']];
+const NMENU=[['','Hoy'],['alumnas','Alumnas'],['curso','Edición del curso'],['web','Editar landing'],['tutorias','Tutorías'],['agenda','Agenda'],['biblioteca','Biblioteca'],['leads','Leads'],['ventas','Ventas']];
 const npage=()=>S.route.replace(/^\/panel\/?/,'').split('/');
 const students=()=>S.members.filter(m=>m.role==='alumna');
 const progOf=id=>S.allProgress.filter(p=>p.user_id===id);

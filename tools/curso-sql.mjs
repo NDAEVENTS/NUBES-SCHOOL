@@ -9,7 +9,7 @@ const DDL = readFileSync('supabase/curso-tables.sql', 'utf8');
 const q = s => "'" + String(s).replace(/'/g, "''") + "'";
 const json = v => '$j$' + JSON.stringify(v) + '$j$::jsonb';
 const stageOf = n => STAGE_SEED.find(s => s.mods.includes(n));
-let out = `-- Nubes de Algodón School · Curso y textos de la web\n-- Paste all of it in Supabase → SQL Editor → Run. It can be run again: it never overwrites what you edited in Panel → Curso.\n\n${DDL}\n-- ---------- First version of the programme (the dossier) ----------\n`;
+let out = `-- Nubes de Algodón School · Curso y textos de la web\n-- Paste all of it in Supabase → SQL Editor → Run. It can be run again: it never overwrites what you edited in Panel → Edición del curso.\n\n${DDL}\n-- ---------- First version of the programme (the dossier) ----------\n`;
 out += 'insert into public.course_stages(n,title,opens) values\n' + STAGE_SEED.map(s => `  (${s.n},${q(s.title)},${s.opens})`).join(',\n') + '\non conflict (n) do nothing;\n\n';
 for (const m of COURSE_SEED) {
   const st = stageOf(m.n);

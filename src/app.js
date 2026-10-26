@@ -14,7 +14,7 @@ const ago=ts=>{ if(!ts) return ''; const d=Math.floor((Date.now()-new Date(ts))/
 const uid=p=>(p||'x')+Math.random().toString(36).slice(2,10);
 
 // ---------- Programme ----------
-// The course lives in the database (course_stages, course_modules) and the team edits it in Panel → Curso.
+// The course lives in the database (course_stages, course_modules) and the team edits it in Panel → Edición del curso.
 // S.cAll keeps everything, drafts included, for the editor; COURSE and STAGES are what students see.
 // Lessons and exercises have a stable key (k) that progress and submissions point to, so reordering never loses work.
 let COURSE=[], STAGES=[];
