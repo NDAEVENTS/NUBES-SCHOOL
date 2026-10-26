@@ -24,7 +24,7 @@ const WEB_DEFAULT={
     forSignature:'Para ti si ya trabajas en bodas o eventos y quieres dar el salto al lujo y a las bodas destino, a nuestro lado.',
     edition:'Próxima edición: febrero de 2027 · 8 plazas',
     upgrade:'Si después quieres subir de nivel, solo pagas la diferencia.'},
-  guide:{title:'Los 7 errores que hunden a una wedding planner en su primer año',sub:'Y cómo evitarlos desde el principio.'},
+  guide:{mode:'auto'},
   faq:{title:'Antes de empezar',items:[
     {q:'¿Necesito experiencia previa?',a:'No. El programa empieza por la base de la profesión y te acompaña hasta montar tu empresa.'},
     {q:'¿Cuánto tiempo tengo acceso?',a:'12 meses desde la compra. Las etapas se abren una por semana y después puedes volver a cualquier lección cuando quieras.'},
@@ -37,6 +37,14 @@ const WEB_DEFAULT={
 // Saved texts over the defaults: a section the team never touched keeps its starting text
 const W=()=>{ const d=S.web||{}, out={}; for(const k in WEB_DEFAULT) out[k]=Object.assign({},WEB_DEFAULT[k],d[k]||{}); return out; };
 const em=t=>esc(t).replace(/\*([^*]+)\*/g,'<em>$1</em>');
+// The free guides (PDFs in public/, written in tools/guia*.html). 'auto' shows a different one each month.
+const GUIDES=[
+  {id:'senales',t:'¿Puedo ser wedding planner? *7 señales* de que esto es para ti',sub:'Para ti si te encantan las bodas, tu trabajo ya no te llena y te preguntas si podrías dedicarte a esto.',pdf:'/guia-senales.pdf'},
+  {id:'numeros',t:'Cuánto gana una wedding planner *en España*',sub:'Cómo se cobra, qué te queda de verdad y por qué cobrar poco es el error más caro.',pdf:'/guia-numeros.pdf'},
+  {id:'90dias',t:'De la oficina a las bodas: *el plan de 90 días*',sub:'Para empezar tu negocio sin dejar tu trabajo todavía, con unas horas a la semana.',pdf:'/guia-90-dias.pdf'},
+  {id:'errores',t:'Los 7 errores que hunden a una wedding planner *en su primer año*',sub:'Y cómo evitarlos desde el principio.',pdf:'/guia-wedding-planner.pdf'},
+];
+function guideNow(){ const m=W().guide.mode, d=new Date(); return GUIDES.find(g=>g.id===m)||GUIDES[(d.getFullYear()*12+d.getMonth())%GUIDES.length]; }
 const fill=t=>esc(t).replace('{modulos}',pub().mods.length).replace('{lecciones}',pub().mods.reduce((a,m)=>a+m.lessons.length,0));
 function brand(){ return `<a class="brand" href="/" style="text-decoration:none;color:inherit"><b>Nubes de Algodón</b><span>School</span></a>`; }
 function webPage(){
@@ -101,8 +109,8 @@ function webPage(){
 
   <section class="sec" id="guia">
     <div class="lead">
-      <div><span class="eyebrow">Guía gratuita</span><h2>${em(w.guide.title)}</h2><p class="hint" style="margin-top:8px">${esc(w.guide.sub)}</p></div>
-      ${ui('leadDone')?`<div style="display:flex;flex-direction:column;gap:10px"><p class="ok">¡Gracias! Aquí tienes tu guía.</p><a class="btn primary" href="/guia-wedding-planner.pdf" target="_blank" rel="noopener">Descargar la guía (PDF)</a></div>`:
+      <div><span class="eyebrow">Guía gratuita</span><h2>${em(guideNow().t)}</h2><p class="hint" style="margin-top:8px">${esc(guideNow().sub)}</p></div>
+      ${ui('leadDone')?`<div style="display:flex;flex-direction:column;gap:10px"><p class="ok">¡Gracias! Aquí tienes tu guía.</p><a class="btn primary" href="${guideNow().pdf}" target="_blank" rel="noopener">Descargar la guía (PDF)</a></div>`:
       `<form data-form="lead"><div class="field"><span>Tu nombre</span><input id="lname" name="name" required autocomplete="given-name"></div>
         <div class="field"><span>Tu email</span><input id="lmail" name="email" type="email" required autocomplete="email"></div>
         <label class="check"><input id="lok" name="ok" type="checkbox" required> He leído y acepto la <a href="/legal/privacidad">política de privacidad</a> y quiero recibir la guía y emails de Nubes de Algodón School.</label>
@@ -158,4 +166,4 @@ FORM.buy=async f=>{ if(CFG.demo){ ui('buy',null); toast('En la versión real, aq
   S.busy=true; render(); const url=await DB.checkout(ui('buy'),f.email.trim(),!!f.installments); location.href=url; };
 // Call requests are stored as leads with source 'signature' (the only other source the database accepts) and the level in extra.plan
 FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',{plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why}); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
-FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia'); ui('leadDone',true); render(); };
+FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',{guide:guideNow().id}); ui('leadDone',true); render(); };

@@ -8,13 +8,18 @@ const WEB_SECTIONS=[
   ['about','Quiénes os enseñan',[['eyebrow','Antetítulo'],['title','Título'],['text','Texto (una línea en blanco separa párrafos)','area'],['quote','Frase destacada','area']]],
   ['testimonials','Testimonios',[['eyebrow','Antetítulo'],['title','Título']]],
   ['prices','Precios',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['online','Qué incluye Online (una línea por punto)','lines'],['completo','Qué incluye Completo (una línea por punto)','lines'],['signature','Qué incluye Signature (una línea por punto)','lines'],['forOnline','Para quién es Online','area'],['forCompleto','Para quién es Completo','area'],['forSignature','Para quién es Signature','area'],['edition','Próxima edición de Signature (debajo del precio)'],['etapa1','Texto de la Etapa 1','area'],['upgrade','Texto sobre subir de nivel','area']]],
-  ['guide','Guía gratuita',[['title','Título'],['sub','Subtítulo']]],
+  ['guide','Guía gratuita',[['mode','Qué guía se ofrece en la web','guide']]],
   ['faq','Preguntas frecuentes',[['title','Título']]],
 ];
 // Repeated items inside a section: [list key, button text, fields]
 const WEB_LISTS={facts:['items','cifra',[['num','Cifra'],['text','Texto']]],who:['items','perfil',[['t','Título'],['d','Texto','area']]],
   testimonials:['items','testimonio',[['quote','Lo que dice','area'],['name','Nombre'],['detail','Detalle (p. ej. alumna 2026 · Madrid)']]],faq:['items','pregunta',[['q','Pregunta'],['a','Respuesta','area']]]};
-const webField=(id,label,kind,val)=>`<div class="field"><span>${label}</span>${kind?`<textarea id="${id}" name="${id}" rows="${kind==='lines'?5:3}">${esc(kind==='lines'?(val||[]).join('\n'):val||'')}</textarea>`:`<input id="${id}" name="${id}" value="${esc(val||'')}">`}</div>`;
+const guideOpts=val=>[['auto','Una distinta cada mes, por turnos'],...GUIDES.map(g=>[g.id,g.t.replace(/\*/g,'')])].map(([k,t])=>`<option value="${k}" ${k===(val||'auto')?'selected':''}>${esc(t)}</option>`).join('');
+// Downloads per guide, to see which one brings more people (older leads, before there were several guides, were the 7 errors)
+const guideCount=id=>S.leads.filter(l=>l.source==='guia'&&(l.extra?.guide||'errores')===id).length;
+const webField=(id,label,kind,val)=>kind==='guide'?`<div class="field"><span>${label}</span><select id="${id}" name="${id}">${guideOpts(val)}</select></div>
+  <p class="hint">Ahora mismo se ofrece: <b>${esc(guideNow().t.replace(/\*/g,''))}</b>.</p>
+  <div class="list">${GUIDES.map(g=>`<div class="li"><div class="t"><b style="font-weight:400">${esc(g.t.replace(/\*/g,''))}</b><small>${guideCount(g.id)} descarga${guideCount(g.id)===1?'':'s'}</small></div>${g.id===guideNow().id?'<span class="pill done">En la web</span>':''}<a class="btn sm" href="${g.pdf}" target="_blank" rel="noopener">Ver PDF</a></div>`).join('')}</div>`:`<div class="field"><span>${label}</span>${kind?`<textarea id="${id}" name="${id}" rows="${kind==='lines'?5:3}">${esc(kind==='lines'?(val||[]).join('\n'):val||'')}</textarea>`:`<input id="${id}" name="${id}" value="${esc(val||'')}">`}</div>`;
 function pWeb(){
   const w=W();
   return `<header><h1>Editar landing</h1><p>Los textos de la página que ve quien entra en la web. Cada sección se guarda por separado. Los importes de los precios no se cambian aquí porque son los que cobra Stripe: pídenoslo y lo cambiamos en los dos sitios.</p>
