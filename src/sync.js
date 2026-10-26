@@ -6,19 +6,36 @@ const ok=r=>{ if(r.error) throw r.error; return r.data; };
 
 async function boot(){
   if(CFG.demo){ demoSeed(); return; }
+  // What the public web needs: the syllabus titles and the texts the team edited
+  const outline=Promise.all([
+    sb.rpc('course_outline').then(r=>{ if(r.data) S.pub=pubFrom(r.data); }),
+    sb.from('site_content').select('data').eq('id','web').maybeSingle().then(r=>{ if(r.data) S.web=r.data.data; }),
+  ]).catch(()=>{});
   const {data}=await sb.auth.getSession();
   const user=data.session?.user;
-  if(!user) return;
   const tp=HASH.get('type');
-  if(tp==='invite'||tp==='recovery'){ S.user=user; S.ui.setPass=tp; history.replaceState({},'','/acceso'); S.route='/acceso'; return; }
-  await loadMe(user);
+  if(user&&(tp==='invite'||tp==='recovery')){ S.user=user; S.ui.setPass=tp; history.replaceState({},'','/acceso'); S.route='/acceso'; }
+  else if(user) await loadMe(user);
+  await outline;
 }
 async function loadMe(user){
   const me=ok(await sb.from('members').select('*').eq('user_id',user.id).maybeSingle());
   if(!me){ await sb.auth.signOut(); S.err='Tu acceso todavía no está activo. Escríbenos a hola@nubesdealgodonevents.com y lo revisamos.'; return; }
   S.user=user; S.me=me;
+  await loadCourse();
   if(me.role==='nubes') await loadPanel(); else await loadAlumna();
   if(S.route==='/acceso'||S.route==='/') { history.replaceState({},'',me.role==='nubes'?'/panel':'/portal'); S.route=location.pathname; }
+}
+// The team gets every module, drafts included; a student only the stages her level includes (the database checks it)
+async function loadCourse(){
+  const [st,ms]=await Promise.all([sb.from('course_stages').select('*'),sb.from('course_modules').select('*')]).then(rs=>rs.map(ok));
+  setCourse(st,ms);
+}
+// course_outline() → the same shape the web uses in the demo
+function pubFrom(o){
+  const mods=(o.modules||[]).sort((a,b)=>a.stage-b.stage||a.position-b.position).map(m=>({n:m.n,stage:m.stage,t:m.title,h:+m.hours||0,lessons:(m.lessons||[]).map(t=>({t})),exercises:(m.exercises||[]).map(t=>({t}))}));
+  const stages=(o.stages||[]).sort((a,b)=>a.n-b.n).map(s=>({n:s.n,t:s.title,opens:+s.opens||0,mods:mods.filter(m=>m.stage===s.n).map(m=>m.n)})).filter(s=>s.mods.length);
+  return {stages,mods:stages.flatMap(s=>s.mods.map(n=>mods.find(m=>m.n===n)))};
 }
 async function loadAlumna(){
   const id=S.user.id;
@@ -53,26 +70,26 @@ async function loadPanel(){
 const DB={
   async signIn(email,password){ if(CFG.demo) return demoAs('alumna');
     const r=await sb.auth.signInWithPassword({email,password}); if(r.error) throw Object.assign(r.error,{friendly:'El email o la contraseña no son correctos.'}); await loadMe(r.data.user); },
-  async signOut(){ if(!CFG.demo) await sb.auth.signOut(); S.user=null; S.me=null; },
+  async signOut(){ if(!CFG.demo) await sb.auth.signOut(); S.user=null; S.me=null; S.realMe=null; },
   async resetPassword(email){ if(CFG.demo) return; const r=await sb.auth.resetPasswordForEmail(email,{redirectTo:CFG.site+'/acceso'}); if(r.error) throw r.error; },
   async setPassword(password){ if(CFG.demo) return; const r=await sb.auth.updateUser({password}); if(r.error) throw Object.assign(r.error,{friendly:'No se ha podido guardar la contraseña. Usa al menos 8 caracteres.'}); await loadMe(r.data.user); },
 
   // ---------- Alumna ----------
-  async markLesson(key){ S.progress[key]=new Date().toISOString(); if(CFG.demo) return;
+  async markLesson(key){ S.progress[key]=new Date().toISOString(); if(CFG.demo||S.realMe) return;
     ok(await sb.from('progress').upsert({user_id:S.user.id,lesson:key})); },
   async saveSubmission(ex,text,files,send){
     const cur=S.subs[ex]||{}; const row={id:cur.id||crypto.randomUUID(),user_id:S.user.id,exercise:ex,text,files:files||cur.files||[],status:send?'sent':(cur.status==='rev'?'rev':'draft'),updated_at:new Date().toISOString()};
-    S.subs[ex]=Object.assign({},cur,row); if(CFG.demo){ S.allSubs=S.allSubs.filter(x=>x.exercise!==ex||x.user_id!==S.user.id).concat(S.subs[ex]); return; }
+    S.subs[ex]=Object.assign({},cur,row); if(S.realMe) return; if(CFG.demo){ S.allSubs=S.allSubs.filter(x=>x.exercise!==ex||x.user_id!==S.user.id).concat(S.subs[ex]); return; }
     ok(await sb.from('submissions').upsert(row)); },
   async uploadFile(bucket,file){
     const path=`${S.user.id}/${Date.now()}-${file.name.replace(/[^\w.\-]+/g,'_')}`;
-    if(CFG.demo) return {path,name:file.name};
+    if(CFG.demo||(S.realMe&&bucket==='entregas')) return {path,name:file.name};
     ok(await sb.storage.from(bucket).upload(path,file)); return {path,name:file.name}; },
   async fileUrl(bucket,path){ if(CFG.demo) return null; const r=await sb.storage.from(bucket).createSignedUrl(path,600); return ok(r).signedUrl; },
   async requestTutorial(module,note){
     const row={id:crypto.randomUUID(),user_id:S.user.id,module,hours:MOD(module).h,status:'requested',note,created_at:new Date().toISOString()};
-    S.tuts.push(row); if(CFG.demo) return; ok(await sb.from('tutorials').insert(row)); },
-  async saveBusiness(){ if(CFG.demo) return; ok(await sb.from('business').upsert({user_id:S.user.id,data:S.biz,updated_at:new Date().toISOString()})); },
+    S.tuts.push(row); if(CFG.demo||S.realMe) return; ok(await sb.from('tutorials').insert(row)); },
+  async saveBusiness(){ if(CFG.demo||S.realMe) return; ok(await sb.from('business').upsert({user_id:S.user.id,data:S.biz,updated_at:new Date().toISOString()})); },
 
   // ---------- Web ----------
   async addLead(name,email,source,extra){ if(CFG.demo) return; ok(await sb.rpc('add_lead',{p_name:name,p_email:email,p_source:source,p_extra:extra||{}})); },
@@ -91,12 +108,33 @@ const DB={
   async saveEvent(ev){ if(CFG.demo){ if(!S.events.includes(ev)) S.events.push(ev); return; } ok(await sb.from('events').upsert(ev)); },
   async deleteEvent(ev){ S.events=S.events.filter(x=>x!==ev); if(CFG.demo) return; ok(await sb.from('events').delete().eq('id',ev.id)); },
   async addLibrary(item,file){ if(file){ const up=await DB.uploadFile('course',file); item.path=up.path; item.file=up.name; } if(!CFG.demo) ok(await sb.from('library').insert(item)); S.library.push(item); },
+  // ---------- Curso ----------
+  // A module is saved whole (its lessons and exercises travel inside it)
+  async saveModule(m){ m.updated_at=new Date().toISOString(); m.updated_by=S.me.name;
+    if(!S.cAll.mods.includes(m)) S.cAll.mods.push(m); setCourse(S.cAll.stages,S.cAll.mods); if(CFG.demo) return;
+    const {n,stage,position,title,hours,tutoria,published,lessons,exercises,updated_at,updated_by}=m;
+    ok(await sb.from('course_modules').upsert({n,stage,position,title,hours,tutoria,published,lessons,exercises,updated_at,updated_by})); },
+  async deleteModule(m){ S.cAll.mods=S.cAll.mods.filter(x=>x!==m); setCourse(S.cAll.stages,S.cAll.mods); if(CFG.demo) return; ok(await sb.from('course_modules').delete().eq('n',m.n)); },
+  async saveStage(st){ if(!S.cAll.stages.includes(st)) S.cAll.stages.push(st); setCourse(S.cAll.stages,S.cAll.mods); if(CFG.demo) return;
+    ok(await sb.from('course_stages').upsert({n:st.n,title:st.title,opens:st.opens})); },
+  async deleteStage(st){ S.cAll.stages=S.cAll.stages.filter(x=>x!==st); setCourse(S.cAll.stages,S.cAll.mods); if(CFG.demo) return; ok(await sb.from('course_stages').delete().eq('n',st.n)); },
+  // ---------- Web ----------
+  // Re-read before writing so that two people editing different sections never undo each other
+  async saveWeb(sec,data){
+    if(!CFG.demo){ const r=await sb.from('site_content').select('data').eq('id','web').maybeSingle(); S.web=ok(r)?.data||{}; }
+    S.web=Object.assign({},S.web); if(data===null) delete S.web[sec]; else S.web[sec]=data; if(CFG.demo) return;
+    ok(await sb.from('site_content').upsert({id:'web',data:S.web,updated_at:new Date().toISOString(),updated_by:S.me.name})); },
+  async uploadWebImage(file){ if(CFG.demo) return URL.createObjectURL(file);
+    const path=`${Date.now()}-${file.name.replace(/[^\w.\-]+/g,'_')}`; ok(await sb.storage.from('web').upload(path,file,{contentType:file.type}));
+    return sb.storage.from('web').getPublicUrl(path).data.publicUrl; },
+  async removeCourseFile(path){ if(CFG.demo||!path) return; await sb.storage.from('course').remove([path]); },
   async deleteLibrary(item){ S.library=S.library.filter(x=>x!==item); if(CFG.demo) return; if(item.path) await sb.storage.from('course').remove([item.path]); ok(await sb.from('library').delete().eq('id',item.id)); },
 };
 
 // ---------- Demo data ----------
 function demoSeed(){
   const now=Date.now(), iso=d=>new Date(now+d*864e5).toISOString();
+  const c=seedCourse(); setCourse(c.stages,c.mods);
   S.demo={
     alumna:{user_id:'u-lucia',role:'alumna',name:'Lucía Martín',email:'lucia@ejemplo.com',plan:'completo',started_at:addDays(todayISO(),-9),access_until:addDays(todayISO(),356),country:'España',last_seen:iso(0),created_at:iso(-9)},
     nubes:{user_id:'u-ainoa',role:'nubes',name:'Ainoa',email:'ainoa@ejemplo.com'},
@@ -117,7 +155,7 @@ function demoSeed(){
     {user_id:'u-vale',role:'alumna',name:'Valentina Gómez',email:'valentina@ejemplo.com',plan:'online',started_at:addDays(todayISO(),-17),access_until:addDays(todayISO(),348),country:'Colombia',last_seen:iso(0),created_at:iso(-17)},
     {user_id:'u-marta',role:'alumna',name:'Marta Soler',email:'marta@ejemplo.com',plan:'completo',started_at:addDays(todayISO(),-30),access_until:addDays(todayISO(),335),country:'España',last_seen:iso(-12),created_at:iso(-30)},
     S.demo.nubes];
-  S.allProgress=[...Object.entries(S.progress).map(([lesson,done_at])=>({user_id:'u-lucia',lesson,done_at})),...ALL_LESSONS.slice(0,40).map(l=>({user_id:'u-vale',lesson:l,done_at:iso(-2)})),...ALL_LESSONS.slice(0,50).map(l=>({user_id:'u-marta',lesson:l,done_at:iso(-12)})),...ALL_LESSONS.slice(0,3).map(l=>({user_id:'u-carmen',lesson:l,done_at:iso(-1)}))];
+  S.allProgress=[...Object.entries(S.progress).map(([lesson,done_at])=>({user_id:'u-lucia',lesson,done_at})),...allLessons().slice(0,40).map(l=>({user_id:'u-vale',lesson:l,done_at:iso(-2)})),...allLessons().slice(0,50).map(l=>({user_id:'u-marta',lesson:l,done_at:iso(-12)})),...allLessons().slice(0,3).map(l=>({user_id:'u-carmen',lesson:l,done_at:iso(-1)}))];
   S.allSubs=Object.values(S.subs);
   S.allTuts=[...S.tuts,{id:'t4',user_id:'u-carmen',module:1,hours:1,status:'requested',note:'Mejor por las tardes (hora de México).',created_at:iso(-1)}];
   S.leads=[{id:'d1',name:'Paula',email:'paula@ejemplo.com',source:'guia',created_at:iso(-1)},{id:'d2',name:'Andrea',email:'andrea@ejemplo.com',source:'signature',extra:{country:'Argentina',why:'Organizo eventos corporativos y quiero pasarme a bodas.'},created_at:iso(-2)},{id:'d3',name:'Sofía',email:'sofia@ejemplo.com',source:'guia',created_at:iso(-4)}];

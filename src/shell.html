@@ -89,6 +89,7 @@ details.mod summary b{font-family:var(--display);font-weight:400;font-size:20px}
 details.mod ul{margin:10px 0 0;padding-left:18px;color:var(--muted);columns:2;column-gap:32px;font-size:14px}
 .about{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,56px);align-items:center}
 .portrait{aspect-ratio:4/5;max-width:100%;border-radius:14px;background:linear-gradient(170deg,var(--rose-soft),var(--sky-soft));display:flex;align-items:flex-end;padding:18px;color:var(--muted);font-size:13px}
+img.portrait{width:100%;object-fit:cover;padding:0;display:block}
 .about blockquote{margin:0;font-family:var(--display);font-style:italic;font-size:clamp(22px,2.6vw,30px);line-height:1.25}
 .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
 .plan{display:flex;flex-direction:column;gap:12px;padding:24px}
@@ -155,6 +156,7 @@ footer.pub{padding-block:36px;border-top:1px solid var(--line);display:flex;just
 .reader{max-width:66ch;display:flex;flex-direction:column;gap:14px;font-size:16.5px;line-height:1.7}
 .reader h2{font-size:32px}
 .media{aspect-ratio:16/9;max-width:100%;border-radius:12px;background:linear-gradient(135deg,var(--sky-soft),var(--rose-soft));display:grid;place-items:center;color:var(--muted);font-size:14px}
+.media.video{display:block;background:#000;overflow:hidden}.media.video iframe{width:100%;height:100%;border:0;display:block}
 .fb{border-left:2px solid var(--rose);padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:4px}
 .fb small{color:var(--muted)}
 .hours{display:flex;gap:4px;flex-wrap:wrap}

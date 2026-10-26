@@ -4,7 +4,8 @@
 import { build } from 'esbuild';
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, cpSync } from 'node:fs';
 
-const ORDER = ['course', 'app', 'sync', 'web', 'legal', 'portal', 'panel'];
+// The course text lives in the database; only the demo carries it in the code
+const ORDER = ['course', 'app', 'sync', 'web', 'legal', 'portal', 'panel', 'curso', 'webedit'];
 const url = process.env.SUPABASE_URL || 'https://ygohsuldpcbfmljtfemw.supabase.co';
 const key = process.env.SUPABASE_ANON_KEY || 'sb_publishable_PgJMxp-Uzh7XB6L1rb7F0g_321haDNq';
 const demo = !!process.env.NUBES_DEMO;
@@ -14,7 +15,7 @@ rmSync('dist', { recursive: true, force: true }); mkdirSync('dist');
 if (existsSync('public')) cpSync('public', 'dist', { recursive: true });
 await build({ stdin: { contents: "export { createClient } from '@supabase/supabase-js';", resolveDir: '.' },
   bundle: true, format: 'iife', globalName: 'supabase', minify: true, outfile: 'dist/vendor.js', target: 'es2020' });
-const app = ORDER.map(f => readFileSync(`src/${f}.js`, 'utf8')).join('\n;\n') + '\nstart();\n';
+const app = ORDER.filter(f => demo || f !== 'course').map(f => readFileSync(`src/${f}.js`, 'utf8')).join('\n;\n') + '\nstart();\n';
 const v = Date.now().toString(36);
 writeFileSync('dist/app.js', app);
 writeFileSync('dist/config.js', `window.NUBES_CONFIG=${JSON.stringify({ url: demo ? '' : url, key: demo ? '' : key, demo, site, v })};\n`);
