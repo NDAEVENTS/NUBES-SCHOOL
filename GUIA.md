@@ -21,7 +21,9 @@ Son 6 bloques. Los marcados con 👉 los haces tú (necesitan tu cuenta). Las cl
 
    ```sql
    insert into members(user_id, role, name, email)
-   select id, 'nubes', 'Ainoa', email from auth.users where email = 'TU-EMAIL-AQUÍ';
+   select id, 'nubes', 'Ainoa', email from auth.users where lower(email) = 'tu-email-aquí'
+   on conflict (user_id) do update set role = 'nubes';
+   select name, email, role from members;  -- debe salir tu fila con role nubes
    ```
 
    Para Pilar, lo mismo con su email (crea antes su usuario en el paso 2.2).
