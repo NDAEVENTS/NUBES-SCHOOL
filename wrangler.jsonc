@@ -1,8 +1,0 @@
-// Cloudflare Workers: builds the site and serves dist/.
-// Every address (/, /portal, /legal/privacidad…) opens index.html; the app draws the right screen.
-{
-  "name": "nubes-school",
-  "compatibility_date": "2026-10-01",
-  "build": { "command": "npm run build" },
-  "assets": { "directory": "./dist", "not_found_handling": "single-page-application" }
-}
