@@ -33,11 +33,13 @@ const PLANS={
   completo:{t:'Completo',price:1990,stages:99,hours:12,feedback:true,qa:true},
   signature:{t:'Signature',price:3500,stages:99,hours:12,feedback:true,qa:true,workshop:true},
 };
-// Modules and stages as they come from the database → what students see
-function setCourse(stages,mods){
+// A module is common to every level (no plans) or only for the levels it lists
+const forPlan=(m,k)=>!(m?.plans||[]).length||m.plans.includes(k);
+// Modules and stages as they come from the database → what students see (planKey: only what that level sees)
+function setCourse(stages,mods,planKey=S.coursePlan){
   const st=[...stages].sort((a,b)=>a.n-b.n), ms=[...mods].sort((a,b)=>a.stage-b.stage||a.position-b.position||a.n-b.n);
   S.cAll={stages:st,mods:ms};
-  COURSE=ms.filter(m=>m.published!==false&&st.some(s=>s.n===m.stage)).map(m=>({n:m.n,stage:m.stage,t:m.title,h:+m.hours||0,tutoria:m.tutoria||'',
+  COURSE=ms.filter(m=>m.published!==false&&st.some(s=>s.n===m.stage)&&(!planKey||forPlan(m,planKey))).map(m=>({n:m.n,stage:m.stage,t:m.title,h:+m.hours||0,tutoria:m.tutoria||'',plans:m.plans||[],
     lessons:(m.lessons||[]).filter(l=>!l.draft),exercises:(m.exercises||[]).filter(x=>!x.draft)}));
   STAGES=st.map(s=>({n:s.n,t:s.title,opens:+s.opens||0,mods:COURSE.filter(m=>m.stage===s.n).map(m=>m.n)})).filter(s=>s.mods.length);
 }
@@ -65,7 +67,7 @@ const stageOpen=(mem,n)=>inPlan(mem,n)&&!!STG(n)&&(mem.unlocked||daysSince(mem.s
 const myStages=mem=>STAGES.filter(s=>inPlan(mem,s.n));
 
 // ---------- State ----------
-const S={route:location.pathname,cAll:{stages:[],mods:[]},booting:true,user:null,me:null,toast:'',busy:false,err:'',
+const S={route:location.pathname,cAll:{stages:[],mods:[]},coursePlan:null,booting:true,user:null,me:null,toast:'',busy:false,err:'',
   // alumna
   progress:{},subs:{},tuts:[],biz:{},notes:[],events:[],library:[],
   // equipo

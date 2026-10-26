@@ -22,7 +22,7 @@ async function loadMe(user){
   const me=ok(await sb.from('members').select('*').eq('user_id',user.id).maybeSingle());
   if(!me){ await sb.auth.signOut(); S.err='Tu acceso todavía no está activo. Escríbenos a hola@nubesdealgodonevents.com y lo revisamos.'; return; }
   S.user=user; S.me=me;
-  await loadCourse();
+  S.coursePlan=me.role==='alumna'?me.plan:null; await loadCourse();
   if(me.role==='nubes') await loadPanel(); else await loadAlumna();
   if(S.route==='/acceso'||S.route==='/') { history.replaceState({},'',me.role==='nubes'?'/panel':'/portal'); S.route=location.pathname; }
 }
@@ -33,7 +33,7 @@ async function loadCourse(){
 }
 // course_outline() → the same shape the web uses in the demo
 function pubFrom(o){
-  const mods=(o.modules||[]).sort((a,b)=>a.stage-b.stage||a.position-b.position).map(m=>({n:m.n,stage:m.stage,t:m.title,h:+m.hours||0,lessons:(m.lessons||[]).map(t=>({t})),exercises:(m.exercises||[]).map(t=>({t}))}));
+  const mods=(o.modules||[]).sort((a,b)=>a.stage-b.stage||a.position-b.position).map(m=>({n:m.n,stage:m.stage,t:m.title,h:+m.hours||0,plans:m.plans||[],lessons:(m.lessons||[]).map(t=>({t})),exercises:(m.exercises||[]).map(t=>({t}))}));
   const stages=(o.stages||[]).sort((a,b)=>a.n-b.n).map(s=>({n:s.n,t:s.title,opens:+s.opens||0,mods:mods.filter(m=>m.stage===s.n).map(m=>m.n)})).filter(s=>s.mods.length);
   return {stages,mods:stages.flatMap(s=>s.mods.map(n=>mods.find(m=>m.n===n)))};
 }
@@ -115,8 +115,8 @@ const DB={
   // A module is saved whole (its lessons and exercises travel inside it)
   async saveModule(m){ m.updated_at=new Date().toISOString(); m.updated_by=S.me.name;
     if(!S.cAll.mods.includes(m)) S.cAll.mods.push(m); setCourse(S.cAll.stages,S.cAll.mods); if(CFG.demo) return;
-    const {n,stage,position,title,hours,tutoria,published,lessons,exercises,updated_at,updated_by}=m;
-    ok(await sb.from('course_modules').upsert({n,stage,position,title,hours,tutoria,published,lessons,exercises,updated_at,updated_by})); },
+    const {n,stage,position,title,hours,tutoria,published,lessons,exercises,updated_at,updated_by}=m, plans=m.plans||[];
+    ok(await sb.from('course_modules').upsert({n,stage,position,title,hours,tutoria,published,plans,lessons,exercises,updated_at,updated_by})); },
   async deleteModule(m){ S.cAll.mods=S.cAll.mods.filter(x=>x!==m); setCourse(S.cAll.stages,S.cAll.mods); if(CFG.demo) return; ok(await sb.from('course_modules').delete().eq('n',m.n)); },
   async saveStage(st){ if(!S.cAll.stages.includes(st)) S.cAll.stages.push(st); setCourse(S.cAll.stages,S.cAll.mods); if(CFG.demo) return;
     ok(await sb.from('course_stages').upsert({n:st.n,title:st.title,opens:st.opens})); },

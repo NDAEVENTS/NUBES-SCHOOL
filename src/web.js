@@ -61,7 +61,7 @@ function webPage(){
     <h2>${pub().stages.length?(['Una etapa','Dos etapas','Tres etapas','Cuatro etapas','Cinco etapas','Seis etapas'][pub().stages.length-1]||pub().stages.length+' etapas')+', una por semana':'Paso a paso, una etapa por semana'}</h2>
     <p class="intro">${esc(w.method.intro)}</p>
     <div class="stages">${pub().stages.map(s=>`<div class="stage"><span class="wk">Etapa ${s.n} · semana ${Math.floor(s.opens/7)+1}</span><h3>${esc(s.t)}</h3><ul>${s.mods.map(n=>`<li>${esc(pub().mods.find(m=>m.n===n)?.t)}</li>`).join('')}</ul></div>`).join('')}</div>
-    <div>${pub().mods.map((m,i)=>`<details class="mod"><summary><b>Módulo ${i+1}. ${esc(m.t)}</b><span class="hint">${m.lessons.length} lecciones · tutoría ${m.h} h</span></summary><ul>${m.lessons.map(l=>`<li>${esc(l.t)}</li>`).join('')}${m.exercises.map(x=>`<li>Ejercicio: ${esc(x.t)}</li>`).join('')}</ul></details>`).join('')}</div>
+    <div>${pub().mods.map((m,i)=>`<details class="mod"><summary><b>Módulo ${i+1}. ${esc(m.t)}</b>${(m.plans||[]).length?`<span class="pill">Solo ${esc(m.plans.map(k=>PLANS[k]?.t||k).join(' y '))}</span>`:''}<span class="hint">${m.lessons.length} lecciones · tutoría ${m.h} h</span></summary><ul>${m.lessons.map(l=>`<li>${esc(l.t)}</li>`).join('')}${m.exercises.map(x=>`<li>Ejercicio: ${esc(x.t)}</li>`).join('')}</ul></details>`).join('')}</div>
   </section>
 
   <section class="sec" id="nosotras">

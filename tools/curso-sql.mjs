@@ -17,6 +17,11 @@ for (const m of COURSE_SEED) {
   const exercises = m.exercises.map((x, i) => ({ k: `${m.n}-e${i}`, t: x.t, b: x.b }));
   out += `insert into public.course_modules(n,stage,position,title,hours,tutoria,published,lessons,exercises) values (${m.n},${st.n},${st.mods.indexOf(m.n)},${q(m.t)},${m.h},${q(m.tutoria || '')},true,\n  ${json(lessons)},\n  ${json(exercises)})\non conflict (n) do nothing;\n\n`;
 }
-out += "select count(*) as modulos from public.course_modules;  -- debe decir 9\n";
+out += `-- Signature's extra module (promised on the web): hidden until you write it in Panel → Edición del curso → Signature
+insert into public.course_modules(n,stage,position,title,hours,tutoria,published,plans) values (10,4,3,'Bodas destino y clientes internacionales',2,'',false,'{signature}')
+on conflict (n) do nothing;
+
+`;
+out += "select count(*) as modulos from public.course_modules;  -- debe decir 10\n";
 writeFileSync('supabase/curso.sql', out);
 console.log('supabase/curso.sql', (out.length / 1024).toFixed(0) + ' KB');

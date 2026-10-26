@@ -3,9 +3,9 @@ const NMENU=[['','Hoy'],['alumnas','Alumnas'],['curso','Edición del curso'],['w
 const npage=()=>S.route.replace(/^\/panel\/?/,'').split('/');
 const students=()=>S.members.filter(m=>m.role==='alumna');
 const progOf=id=>S.allProgress.filter(p=>p.user_id===id);
-const pctOf=m=>{ const mine=myStages(m).flatMap(s=>s.mods.flatMap(n=>MOD(n).lessons.map((_,i)=>lessonKey(n,i)))); const done=new Set(progOf(m.user_id).map(p=>p.lesson)); return mine.length?Math.round(mine.filter(k=>done.has(k)).length/mine.length*100):0; };
+const pctOf=m=>{ const mine=myStages(m).flatMap(s=>s.mods.filter(n=>forPlan(MOD(n),m.plan)).flatMap(n=>MOD(n).lessons.map((_,i)=>lessonKey(n,i)))); const done=new Set(progOf(m.user_id).map(p=>p.lesson)); return mine.length?Math.round(mine.filter(k=>done.has(k)).length/mine.length*100):0; };
 const lastActive=m=>progOf(m.user_id).map(p=>p.done_at).sort().pop()||m.last_seen||m.created_at;
-const stageNow=m=>{ const done=new Set(progOf(m.user_id).map(p=>p.lesson)); return (STAGES.find(s=>inPlan(m,s.n)&&!s.mods.every(n=>MOD(n).lessons.every((_,i)=>done.has(lessonKey(n,i)))))||myStages(m).pop()||{n:1}).n; };
+const stageNow=m=>{ const done=new Set(progOf(m.user_id).map(p=>p.lesson)); return (STAGES.find(s=>inPlan(m,s.n)&&!s.mods.filter(n=>forPlan(MOD(n),m.plan)).every(n=>MOD(n).lessons.every((_,i)=>done.has(lessonKey(n,i)))))||myStages(m).pop()||{n:1}).n; };
 const nameOf=id=>S.members.find(m=>m.user_id===id)?.name||'Alumna';
 const exTitle=k=>{ for(const m of S.cAll.mods){ const x=(m.exercises||[]).find(e=>e.k===k); if(x) return x.t; } return k; };
 function attention(m){
@@ -83,7 +83,7 @@ function alumnaDetail(id){
   return `<div class="spread"><a class="btn sm" href="/panel/alumnas">← Alumnas</a><button type="button" class="btn sm primary" data-act="asStudent" data-arg="${id}">Ver su portal</button></div>
   <header><span class="eyebrow">${p.t} · desde el ${fdate(m.started_at)}</span><h1>${esc(m.name)}</h1><p>${esc(m.email)}${m.country?' · '+esc(m.country):''} · ${pctOf(m)} % del programa · última actividad ${ago(lastActive(m))}</p></header>
   <div class="grid2">
-    <div class="sheet pad"><h3 style="font-size:20px">Progreso por módulo</h3><div class="list">${COURSE.filter(M=>inPlan(m,stageOf(M.n).n)).map(M=>{ const d=M.lessons.filter((_,i)=>done.has(lessonKey(M.n,i))).length; return `<div class="li"><div class="t"><b style="font-weight:400">Módulo ${modNo(M.n)}. ${esc(M.t)}</b><div class="bar" style="margin-top:6px"><i style="width:${(M.lessons.length?Math.round(d/M.lessons.length*100):0)}%"></i></div></div><span class="hint num">${d}/${M.lessons.length}</span></div>`; }).join('')}</div></div>
+    <div class="sheet pad"><h3 style="font-size:20px">Progreso por módulo</h3><div class="list">${COURSE.filter(M=>inPlan(m,stageOf(M.n).n)&&forPlan(M,m.plan)).map(M=>{ const d=M.lessons.filter((_,i)=>done.has(lessonKey(M.n,i))).length; return `<div class="li"><div class="t"><b style="font-weight:400">Módulo ${modNo(M.n)}. ${esc(M.t)}</b><div class="bar" style="margin-top:6px"><i style="width:${(M.lessons.length?Math.round(d/M.lessons.length*100):0)}%"></i></div></div><span class="hint num">${d}/${M.lessons.length}</span></div>`; }).join('')}</div></div>
     <div style="display:flex;flex-direction:column;gap:18px">
       <form class="sheet pad" data-form="note" data-id="${id}"><h3 style="font-size:20px">Mensaje para su portal</h3><p class="hint">Lo ve en su Inicio, firmado por ti.</p><textarea id="note-${id}" name="body" required></textarea><button class="btn primary" type="submit" style="align-self:flex-start">Publicar</button></form>
       <form class="sheet pad" data-form="member" data-id="${id}"><h3 style="font-size:20px">Acceso</h3>
@@ -158,6 +158,7 @@ function pVentas(){
 FORM.asAlumna=f=>asAlumna(f.plan,true);
 function asAlumna(planKey,open){
   if(!S.realMe){ S.realMe=S.me; S.panelState={progress:S.progress,subs:S.subs,tuts:S.tuts,biz:S.biz,notes:S.notes}; }
+  S.coursePlan=planKey; setCourse(S.cAll.stages,S.cAll.mods);
   S.me={user_id:S.realMe.user_id,role:'alumna',name:S.realMe.name,email:S.realMe.email,plan:planKey,started_at:todayISO(),access_until:addDays(todayISO(),365),unlocked:open};
   S.progress={}; S.subs={}; S.tuts=[]; S.biz={}; S.notes=[{id:'preview',body:'Aquí verá la alumna los mensajes que le escribáis desde su ficha.',by:S.realMe.name,created_at:new Date().toISOString()}];
   ui('lesson',null); nav('/portal');
@@ -166,12 +167,13 @@ function asAlumna(planKey,open){
 ACT.asStudent=async id=>{ const m=S.members.find(x=>x.user_id===id); if(!m) return;
   if(!S.realMe){ S.realMe=S.me; S.panelState={progress:S.progress,subs:S.subs,tuts:S.tuts,biz:S.biz,notes:S.notes}; }
   const extra=await DB.studentExtra(id);
+  S.coursePlan=m.plan; setCourse(S.cAll.stages,S.cAll.mods);
   S.me=Object.assign({},m,{viewing:true}); S.progress=Object.fromEntries(S.allProgress.filter(p=>p.user_id===id).map(p=>[p.lesson,p.done_at]));
   S.subs=Object.fromEntries(S.allSubs.filter(x=>x.user_id===id).map(x=>[x.exercise,x])); S.tuts=S.allTuts.filter(t=>t.user_id===id); S.biz=extra.biz; S.notes=extra.notes;
   ui('lesson',null); nav('/portal'); };
 ACT.asPlan=k=>asAlumna(k,S.me.unlocked);
 ACT.asOpen=v=>asAlumna(S.me.plan,v==='1');
-ACT.exitAlumna=()=>{ const back=S.me.viewing?'/panel/alumnas/'+S.me.user_id:'/panel/alumnas'; S.me=S.realMe; S.realMe=null; Object.assign(S,S.panelState); ui('lesson',null); nav(back); };
+ACT.exitAlumna=()=>{ S.coursePlan=null; setCourse(S.cAll.stages,S.cAll.mods); const back=S.me.viewing?'/panel/alumnas/'+S.me.user_id:'/panel/alumnas'; S.me=S.realMe; S.realMe=null; Object.assign(S,S.panelState); ui('lesson',null); nav(back); };
 function previewBar(){ if(!S.realMe) return '';
   if(S.me.viewing) return `<div class="demo-note">Estás viendo el portal de <b>${esc(S.me.name)}</b> (${plan(S.me).t}) tal como lo ve ella. Nada de lo que hagas aquí se guarda. <button type="button" class="btn sm primary" data-act="exitAlumna">Volver a su ficha</button></div>`;
   return `<div class="demo-note">Estás viendo el portal como una alumna nueva de nivel <b>${plan(S.me).t}</b>. Nada de lo que hagas aquí se guarda.
