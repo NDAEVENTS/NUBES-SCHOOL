@@ -1,0 +1,25 @@
+// Walks the demo build through the main flows of the web, the student portal and the team panel.
+import { createRequire } from 'node:module';
+const { chromium } = createRequire(import.meta.url)('playwright');
+import { serve } from './serve.mjs';
+const srv = await serve(), B = 'http://localhost:8788', out = process.env.SHOTS || '/tmp';
+const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type() === 'error' && errs.push(m.text()));
+const step = async (name, fn) => { try { await fn(); console.log('ok  ', name); } catch (e) { console.log('FAIL', name, e.message.split('\n')[0]); errs.push(name); } };
+await step('web loads with syllabus', async () => { await p.goto(B + '/'); await p.waitForSelector('text=Cuatro etapas'); if (await p.locator('details.mod').count() !== 9) throw new Error('modules'); await p.screenshot({ path: out + '/w1.png' }); });
+await step('buy modal opens and closes', async () => { await p.click('[data-act=buy][data-arg=completo]'); await p.waitForSelector('#buyt'); await p.click('form[data-form=buy] [data-act=closeBuy]'); if (await p.locator('#buyt').count()) throw new Error('still open'); });
+await step('lead form', async () => { await p.fill('#lname', 'Paula'); await p.fill('#lmail', 'p@e.com'); await p.check('#lok'); await p.click('form[data-form=lead] button'); await p.waitForSelector('text=Aquí tienes tu guía'); });
+await step('legal page', async () => { await p.click('a[href="/legal/condiciones"]'); await p.waitForSelector('h1:has-text("Condiciones de venta")'); });
+await step('demo as alumna', async () => { await p.click('[data-act=demoAs][data-arg=alumna]'); await p.waitForSelector('text=Tu progreso'); await p.screenshot({ path: out + '/a1.png' }); });
+await step('lesson read and done', async () => { await p.click('.next button'); await p.waitForSelector('article.reader'); await p.screenshot({ path: out + '/a2.png', fullPage: false }); await p.click('[data-act=doneLesson]'); await p.waitForSelector('article.reader'); });
+await step('exercise saved', async () => { await p.click('a.sidelink[href="/portal/ejercicios"]'); await p.waitForSelector('h1:has-text("Ejercicios")'); const f = p.locator('form[data-form=ex]').last(); await f.locator('textarea').fill('Mi shooting en una masía'); await f.locator('button[value="1"]').click(); await p.waitForSelector('text=Entregado. Te avisaremos'); });
+await step('tutorias', async () => { await p.click('a.sidelink[href="/portal/tutorias"]'); await p.waitForSelector('text=Te quedan'); });
+await step('negocio calc', async () => { await p.click('a.sidelink[href="/portal/negocio"]'); await p.fill('#cb', '10'); const t = await p.textContent('#res'); if (!t.includes('3.580')) throw new Error(t); await p.fill('#vendors-name', 'Floristería Ejemplo'); await p.click('form[data-k=vendors] button'); await p.waitForSelector('td:has-text("Floristería Ejemplo")'); await p.screenshot({ path: out + '/a3.png', fullPage: true }); });
+await step('panel hoy and review', async () => { await p.click('[data-act=demoAs][data-arg=nubes]'); await p.waitForSelector('h1:has-text("Hoy")'); await p.screenshot({ path: out + '/n1.png' }); const f = p.locator('form[data-form=review]').first(); await f.locator('textarea').fill('Muy bien'); await f.locator('button').click(); await p.waitForSelector('text=Feedback enviado'); });
+await step('book tutorial', async () => { const f = p.locator('form[data-form=bookTut]').first(); await f.locator('input[type=datetime-local]').fill('2026-11-05T17:00'); await f.locator('button').click(); await p.waitForSelector('text=Tutoría confirmada'); });
+await step('alumnas and detail', async () => { await p.click('a.sidelink[href="/panel/alumnas"]'); await p.click('tr.click >> nth=0'); await p.waitForSelector('text=Progreso por módulo'); await p.screenshot({ path: out + '/n2.png', fullPage: true }); });
+await step('agenda add', async () => { await p.click('a.sidelink[href="/panel/agenda"]'); await p.fill('#etitle', 'Dudas de diciembre'); await p.fill('#ewhen', '2026-12-10T18:00'); await p.click('form[data-form=event] button'); await p.waitForSelector('text=Dudas de diciembre'); });
+await step('leads + ventas', async () => { await p.click('a.sidelink[href="/panel/leads"]'); await p.click('[data-act=payLink]'); await p.waitForSelector('#plink'); await p.click('a.sidelink[href="/panel/ventas"]'); await p.waitForSelector('h1:has-text("Ventas")'); });
+await step('phone width has no sideways scroll', async () => { await p.setViewportSize({ width: 390, height: 800 }); for (const u of ['/', '/panel/alumnas']) { await p.goto(B + u); await p.waitForTimeout(300); const w = await p.evaluate(() => document.documentElement.scrollWidth); if (w > 392) throw new Error(u + ' ' + w); } await p.screenshot({ path: out + '/m1.png' }); });
+console.log(errs.length ? 'ERRORS: ' + errs.join(' | ') : 'ALL OK');
+await b.close(); srv.close(); process.exit(errs.length ? 1 : 0);

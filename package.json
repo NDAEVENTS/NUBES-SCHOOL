@@ -1,0 +1,16 @@
+{
+  "name": "nubes-school",
+  "private": true,
+  "description": "Nubes de Algodón School · web de venta y portal de alumnas",
+  "scripts": {
+    "build": "node build.mjs",
+    "demo": "NUBES_DEMO=1 node build.mjs",
+    "test": "NUBES_DEMO=1 node build.mjs && node test/smoke.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.75.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}
