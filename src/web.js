@@ -44,7 +44,11 @@ const GUIDES=[
   {id:'90dias',t:'De la oficina a las bodas: *el plan de 90 días*',sub:'Para empezar tu negocio sin dejar tu trabajo todavía, con unas horas a la semana.',pdf:'/guia-90-dias.pdf'},
   {id:'errores',t:'Los 7 errores que hunden a una wedding planner *en su primer año*',sub:'Y cómo evitarlos desde el principio.',pdf:'/guia-wedding-planner.pdf'},
 ];
-function guideNow(){ const m=W().guide.mode, d=new Date(); return GUIDES.find(g=>g.id===m)||GUIDES[(d.getFullYear()*12+d.getMonth())%GUIDES.length]; }
+// A link can choose the guide (?guia=numeros) and say where the visit came from (?utm_source=instagram): the ManyChat replies on Instagram use both
+const Q=new URLSearchParams(location.search);
+const FROM=(()=>{ const f=(Q.get('utm_source')||'').toLowerCase().slice(0,40); try{ if(f) sessionStorage.setItem('from',f); return sessionStorage.getItem('from')||''; }catch{ return f; } })();
+const withFrom=x=>FROM?Object.assign({from:FROM},x):x;
+function guideNow(){ const m=GUIDES.some(g=>g.id===Q.get('guia'))?Q.get('guia'):W().guide.mode, d=new Date(); return GUIDES.find(g=>g.id===m)||GUIDES[(d.getFullYear()*12+d.getMonth())%GUIDES.length]; }
 const fill=t=>esc(t).replace('{modulos}',pub().mods.length).replace('{lecciones}',pub().mods.reduce((a,m)=>a+m.lessons.length,0));
 function brand(){ return `<a class="brand" href="/" style="text-decoration:none;color:inherit"><b>Nubes de Algodón</b><span>School</span></a>`; }
 function webPage(){
@@ -165,5 +169,5 @@ ACT.closeBuy=()=>{ ui('buy',null); render(); };
 FORM.buy=async f=>{ if(CFG.demo){ ui('buy',null); toast('En la versión real, aquí se abre la página de pago de Stripe.'); return; }
   S.busy=true; render(); const url=await DB.checkout(ui('buy'),f.email.trim(),!!f.installments); location.href=url; };
 // Call requests are stored as leads with source 'signature' (the only other source the database accepts) and the level in extra.plan
-FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',{plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why}); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
-FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',{guide:guideNow().id}); ui('leadDone',true); render(); };
+FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',withFrom({plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why})); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
+FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',withFrom({guide:guideNow().id})); ui('leadDone',true); render(); };

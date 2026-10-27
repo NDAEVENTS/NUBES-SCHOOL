@@ -36,6 +36,12 @@ Crea las tablas del curso y de los textos de la web, y mete el temario del dossi
 
 Si se cambia el dossier: `python3 tools/extract.py tools/temario.txt > src/course.js` y `node tools/curso-sql.mjs` regeneran el archivo (solo sirve para proyectos nuevos o para la demo).
 
+### 2.5 Instagram 👉
+
+**SQL Editor → New query** → pega todo [`supabase/instagram.sql`](supabase/instagram.sql) → **Run**. Abajo debe salir `filas_instagram = 0`.
+
+Crea la tabla donde apuntáis los números de Instagram en **Panel → Instagram**. Las guías y las llamadas que llegan desde Instagram se cuentan solas: los enlaces de ManyChat llevan `utm_source=instagram`.
+
 ## 3. Stripe 👉
 
 1. En [dashboard.stripe.com](https://dashboard.stripe.com), con la cuenta de la S.L. ya verificada:
