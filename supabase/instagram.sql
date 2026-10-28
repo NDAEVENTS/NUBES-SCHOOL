@@ -1,5 +1,5 @@
 -- Instagram de School: los números de cada semana y de cada publicación, que el equipo apunta en Panel → Instagram.
--- Solo lo ven y lo editan Ainoa y Pilar. Se puede volver a ejecutar sin miedo: nunca borra lo apuntado.
+-- Solo lo ven y lo editan Pilar y Ainoa. Se puede volver a ejecutar sin miedo: nunca borra lo apuntado.
 create table if not exists public.ig_stats(
   id uuid primary key default gen_random_uuid(),
   kind text not null check (kind in ('week','post')),   -- week: la semana que empieza ese lunes · post: una publicación
