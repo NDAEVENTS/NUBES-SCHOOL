@@ -3,16 +3,18 @@
 const WEB_SECTIONS=[
   ['hero','Portada',[['eyebrow','Antetítulo'],['title','Título (entre *asteriscos* va en cursiva)'],['lede','Subtítulo','area'],['cta1','Botón principal'],['cta2','Botón de la guía']]],
   ['facts','Cifras de la portada',null],
-  ['who','¿Es para ti?',[['eyebrow','Antetítulo'],['title','Título']]],
-  ['method','El método',[['eyebrow','Antetítulo'],['intro','Texto','area']]],
+  ['who','¿Te suena?',[['eyebrow','Antetítulo'],['title','Título'],['after','Frase final','area']]],
   ['about','Quiénes os enseñan',[['eyebrow','Antetítulo'],['title','Título'],['text','Texto (una línea en blanco separa párrafos)','area'],['quote','Frase destacada','area']]],
+  ['paso0','Paso 0',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['days','Los días (una línea por bloque; « · » separa días y tema)','lines'],['kitTitle','Título del kit'],['price','Precio'],['priceNote','Texto bajo el precio'],['soon','Texto del formulario','area'],['cta','Botón']]],
+  ['program','El programa',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area']]],
+  ['gallery','Fotos del presencial',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area']]],
   ['testimonials','Testimonios',[['eyebrow','Antetítulo'],['title','Título']]],
-  ['prices','Precios',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['online','Qué incluye Online (una línea por punto)','lines'],['completo','Qué incluye Completo (una línea por punto)','lines'],['signature','Qué incluye Signature (una línea por punto)','lines'],['forOnline','Para quién es Online','area'],['forCompleto','Para quién es Completo','area'],['forSignature','Para quién es Signature','area'],['edition','Próxima edición de Signature (debajo del precio)'],['etapa1','Texto de la Etapa 1','area'],['upgrade','Texto sobre subir de nivel','area']]],
+  ['prices','Precios',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['tOnline','Frase de Online'],['tCompleto','Frase de Completo'],['tSignature','Frase de Signature'],['online','Qué incluye Online (una línea por punto)','lines'],['completo','Qué incluye Completo (una línea por punto)','lines'],['signature','Qué incluye Signature (una línea por punto)','lines'],['forOnline','Para quién es Online','area'],['forCompleto','Para quién es Completo','area'],['forSignature','Para quién es Signature','area'],['edition','Próxima edición de Signature (debajo del precio)'],['paso0','Texto que lleva al Paso 0','area'],['upgrade','Texto sobre subir de nivel','area']]],
   ['guide','Guía gratuita',[['mode','Qué guía se ofrece en la web','guide']]],
   ['faq','Preguntas frecuentes',[['title','Título']]],
 ];
 // Repeated items inside a section: [list key, button text, fields]
-const WEB_LISTS={facts:['items','cifra',[['num','Cifra'],['text','Texto']]],who:['items','perfil',[['t','Título'],['d','Texto','area']]],
+const WEB_LISTS={paso0:['items','herramienta',[['t','Nombre'],['d','Texto','area']]],program:['items','etapa',[['t','Título'],['d','Texto','area']]],facts:['items','cifra',[['num','Cifra'],['text','Texto']]],who:['items','perfil',[['t','Título'],['d','Texto','area']]],
   testimonials:['items','testimonio',[['quote','Lo que dice','area'],['name','Nombre'],['detail','Detalle (p. ej. alumna 2026 · Madrid)']]],faq:['items','pregunta',[['q','Pregunta'],['a','Respuesta','area']]]};
 const guideOpts=val=>[['auto','Una distinta cada mes, por turnos'],...GUIDES.map(g=>[g.id,g.t.replace(/\*/g,'')])].map(([k,t])=>`<option value="${k}" ${k===(val||'auto')?'selected':''}>${esc(t)}</option>`).join('');
 // Downloads per guide, to see which one brings more people (older leads, before there were several guides, were the 7 errors)
