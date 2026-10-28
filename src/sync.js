@@ -136,6 +136,8 @@ const DB={
   async saveIg(row){ row.updated_at=new Date().toISOString(); row.updated_by=S.me.name; S.ig=S.ig.filter(r=>r.id!==row.id).concat(row); if(CFG.demo) return;
     ok(await sb.from('ig_stats').upsert(row)); S.igMissing=false; },
   async deleteIg(row){ S.ig=S.ig.filter(r=>r!==row); if(CFG.demo) return; ok(await sb.from('ig_stats').delete().eq('id',row.id)); },
+  async saveLead(l,ch){ Object.assign(l,ch); if(CFG.demo) return; ok(await sb.from('leads').update(ch).eq('id',l.id)); },
+  async deleteLead(l){ S.leads=S.leads.filter(x=>x!==l); if(CFG.demo) return; ok(await sb.from('leads').delete().eq('id',l.id)); },
   async deleteLibrary(item){ S.library=S.library.filter(x=>x!==item); if(CFG.demo) return; if(item.path) await sb.storage.from('course').remove([item.path]); ok(await sb.from('library').delete().eq('id',item.id)); },
 };
 
