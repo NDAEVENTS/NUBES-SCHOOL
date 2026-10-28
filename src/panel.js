@@ -136,15 +136,47 @@ FORM.lib=async (f,form)=>{ const file=form.querySelector('#lfile').files[0]; con
 ACT.delLib=async i=>{ await DB.deleteLibrary(S.library[+i]); render(); };
 // Call requests (Completo, Signature, students who want to move up) come in as leads with source 'signature' and the level in extra.plan
 const leadPlan=l=>PLANS[l.extra?.plan]?l.extra.plan:'signature';
+// Follow-up states for a lead, kept in extra.status with the notes in extra.notes
+const LEAD_ST=[['nueva','Nueva'],['contactada','Contactada'],['interesada','Interesada'],['llamada','Llamada hecha'],['alumna','Ya es alumna'],['descartada','Descartada']];
+const leadSt=l=>LEAD_ST.find(([k])=>k===l.extra?.status)?.[1]||'Nueva';
+const leadGuide=l=>(GUIDES.find(x=>x.id===(l.extra?.guide||'errores'))?.t||'').replace(/\*/g,'').split(':')[0];
 function pLeads(){
-  const sig=S.leads.filter(l=>l.source==='signature'), g=S.leads.filter(l=>l.source!=='signature');
-  return `<header><h1>Leads</h1><p>Personas que piden la llamada de 20 minutos para Completo o Signature, y personas que han descargado la guía gratuita.</p></header>
+  const sig=S.leads.filter(l=>l.source==='signature'), g=S.leads.filter(l=>l.source!=='signature'), ed=S.leads.find(l=>l.id===ui('leadEdit'));
+  const editBtn=l=>`<button type="button" class="btn sm" data-act="leadEdit" data-arg="${l.id}">Editar</button>`;
+  return `<header><div class="spread"><h1>Leads</h1>${S.leads.length?`<button type="button" class="btn" data-act="leadsCsv">Descargar en Excel</button>`:''}</div><p>Personas que piden la llamada de 20 minutos para Completo o Signature, y personas que han descargado la guía gratuita.</p></header>
+  ${ed?leadForm(ed):''}
   <div class="sheet pad"><h3 style="font-size:20px">Llamadas pedidas · ${sig.length}</h3><p class="hint">Escríbeles en 48 horas para agendar la videollamada. Si encaja, crea su enlace de pago y envíaselo: si ya compró un nivel inferior, el pago le descuenta lo que pagó.</p>${sig.length?`<div class="list">${sig.map(l=>{ const k=leadPlan(l), pm=S.members.find(m=>m.email===l.email);
-      return `<div class="li" style="align-items:flex-start"><div class="t"><b style="font-weight:400">${esc(l.name)} · <span style="user-select:all">${esc(l.email)}</span></b><small>${[esc(l.extra?.country||''),l.extra?.phone?`<span style="user-select:all">${esc(l.extra.phone)}</span>`:'',pm?`ya es alumna ${PLANS[pm.plan]?.t||''}`:'',ago(l.created_at)].filter(Boolean).join(' · ')}</small>${l.extra?.why?`<p class="hint" style="margin-top:4px">${esc(l.extra.why)}</p>`:''}</div><span class="pill prog">${PLANS[k].t}</span><button type="button" class="btn sm" data-act="payLink" data-arg="${k}|${esc(l.email)}">Crear enlace de pago</button></div>`; }).join('')}</div>`:`<p class="empty">Ninguna llamada pedida todavía.</p>`}
+      return `<div class="li" style="align-items:flex-start"><div class="t"><b style="font-weight:400">${esc(l.name)} · <span style="user-select:all">${esc(l.email)}</span></b><small>${[esc(l.extra?.country||''),l.extra?.phone?`<span style="user-select:all">${esc(l.extra.phone)}</span>`:'',pm?`ya es alumna ${PLANS[pm.plan]?.t||''}`:'',ago(l.created_at),leadSt(l)].filter(Boolean).join(' · ')}</small>${l.extra?.why?`<p class="hint" style="margin-top:4px">${esc(l.extra.why)}</p>`:''}${l.extra?.notes?`<p class="hint" style="margin-top:4px">Notas: ${esc(l.extra.notes)}</p>`:''}</div><span class="pill prog">${PLANS[k].t}</span><button type="button" class="btn sm" data-act="payLink" data-arg="${k}|${esc(l.email)}">Crear enlace de pago</button>${editBtn(l)}</div>`; }).join('')}</div>`:`<p class="empty">Ninguna llamada pedida todavía.</p>`}
     ${ui('payLink')?`<div class="field"><span>Enlace de pago para enviarle</span><input id="plink" readonly value="${esc(ui('payLink'))}"></div><button type="button" class="btn sm" data-act="copy" data-arg="plink" style="align-self:flex-start">Copiar enlace</button>`:''}</div>
   <div class="sheet pad"><div class="spread"><h3 style="font-size:20px">Guía gratuita · ${g.length}</h3>${g.length?`<span class="row"><button type="button" class="btn sm" data-act="copyEmails">Copiar todos los emails</button><button type="button" class="btn sm" data-act="copyNews">Copiar emails de la newsletter</button></span>`:''}</div>
-    ${g.length?`<div class="tblwrap"><table><thead><tr><th>Nombre</th><th>Email</th><th>Guía</th><th>Fecha</th><th>Newsletter</th><th>¿Alumna?</th></tr></thead><tbody>${g.map(l=>`<tr><td>${esc(l.name)}</td><td>${esc(l.email)}</td><td>${esc((GUIDES.find(x=>x.id===(l.extra?.guide||'errores'))?.t||'').replace(/\*/g,'').split(':')[0])}</td><td>${fdate(l.created_at,{day:'numeric',month:'short'})}</td><td>${wantsNews(l)?'Sí':'No'}</td><td>${S.members.some(m=>m.email===l.email)?'<span class="pill done">Sí</span>':''}</td></tr>`).join('')}</tbody></table></div>`:`<p class="empty">Todavía no hay descargas.</p>`}</div>`;
+    ${g.length?`<div class="tblwrap"><table><thead><tr><th>Nombre</th><th>Email</th><th>Guía</th><th>Fecha</th><th>Newsletter</th><th>Estado</th><th>¿Alumna?</th><th></th></tr></thead><tbody>${g.map(l=>`<tr><td>${esc(l.name)}</td><td>${esc(l.email)}</td><td>${esc(leadGuide(l))}</td><td>${fdate(l.created_at,{day:'numeric',month:'short'})}</td><td>${wantsNews(l)?'Sí':'No'}</td><td>${leadSt(l)}${l.extra?.notes?` <span title="${esc(l.extra.notes)}">·  notas</span>`:''}</td><td>${S.members.some(m=>m.email===l.email)?'<span class="pill done">Sí</span>':''}</td><td>${editBtn(l)}</td></tr>`).join('')}</tbody></table></div>`:`<p class="empty">Todavía no hay descargas.</p>`}</div>`;
 }
+function leadForm(l){
+  const x=l.extra||{};
+  return `<form class="sheet pad" data-form="leadEdit"><h3 style="font-size:20px">Editar a ${esc(l.name)}</h3><p class="hint">Llegó el ${fdate(l.created_at,{day:'numeric',month:'long'})}${x.from?` desde ${esc(x.from)}`:''} · ${l.source==='signature'?'pidió llamada ('+PLANS[leadPlan(l)].t+')':'descargó «'+esc(leadGuide(l))+'»'}</p>
+    <div class="formgrid"><div class="field"><span>Nombre</span><input id="le-name" name="name" required value="${esc(l.name||'')}"></div>
+      <div class="field"><span>Email</span><input id="le-email" name="email" type="email" required value="${esc(l.email||'')}"></div>
+      <div class="field"><span>Teléfono</span><input id="le-phone" name="phone" value="${esc(x.phone||'')}"></div>
+      <div class="field"><span>Estado</span><select id="le-status" name="status">${LEAD_ST.map(([k,t])=>`<option value="${k}"${(x.status||'nueva')===k?' selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="field"><span>Newsletter</span><select id="le-news" name="newsletter"><option value="si"${wantsNews(l)?' selected':''}>Sí, quiere recibirla</option><option value="no"${wantsNews(l)?'':' selected'}>No</option></select></div></div>
+    <div class="field"><span>Notas (qué hablasteis, próximos pasos)</span><textarea id="le-notes" name="notes" rows="3">${esc(x.notes||'')}</textarea></div>
+    <div class="row"><button class="btn primary" type="submit">Guardar</button><button type="button" class="btn" data-act="leadEdit" data-arg="">Cancelar</button>
+      ${ui('leadDel')===l.id?`<span class="hint">¿Seguro? Se borra para siempre.</span><button type="button" class="btn" data-act="leadDelYes" data-arg="${l.id}">Sí, borrar</button>`:`<button type="button" class="btn" data-act="leadDel" data-arg="${l.id}">Borrar lead</button>`}</div></form>`;
+}
+ACT.leadEdit=id=>{ ui('leadEdit',id||null); ui('leadDel',null); render(); if(id) scrollTo(0,0); };
+ACT.leadDel=id=>{ ui('leadDel',id); render(); };
+ACT.leadDelYes=async id=>{ await DB.deleteLead(S.leads.find(l=>l.id===id)); ui('leadEdit',null); ui('leadDel',null); render(); toast('Lead borrado'); };
+FORM.leadEdit=async f=>{ const l=S.leads.find(x=>x.id===ui('leadEdit')); if(!l) return;
+  const extra=Object.assign({},l.extra,{phone:f.phone.trim(),status:f.status,notes:f.notes.trim(),newsletter:f.newsletter==='si'});
+  await DB.saveLead(l,{name:f.name.trim(),email:f.email.trim().toLowerCase(),extra}); ui('leadEdit',null); render(); toast('Lead guardado'); };
+// Excel opens this CSV directly: semicolons and a byte-order mark so accents and columns come out right in Spanish Excel
+ACT.leadsCsv=()=>{
+  const cols=[['Fecha',l=>fdate(l.created_at,{day:'2-digit',month:'2-digit',year:'numeric'})],['Nombre',l=>l.name],['Email',l=>l.email],['Teléfono',l=>l.extra?.phone],
+    ['Tipo',l=>l.source==='signature'?'Llamada':'Guía'],['Guía o nivel',l=>l.source==='signature'?PLANS[leadPlan(l)].t:leadGuide(l)],['Origen',l=>l.extra?.from],['Newsletter',l=>wantsNews(l)?'Sí':'No'],
+    ['Estado',leadSt],['País',l=>l.extra?.country],['Por qué',l=>l.extra?.why],['Notas',l=>l.extra?.notes],['¿Alumna?',l=>S.members.some(m=>m.email===l.email)?'Sí':'No']];
+  const cell=v=>{ const t=String(v??''); return /[;"\n\r]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t; };
+  const csv='﻿'+[cols.map(c=>c[0]).join(';'),...S.leads.map(l=>cols.map(c=>cell(c[1](l))).join(';'))].join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download=`leads-nubes-school-${todayISO()}.csv`; document.body.appendChild(a); a.click(); a.remove(); };
 ACT.payLink=async a=>{ const i=a.indexOf('|'); ui('payLink',await DB.paymentLink(a.slice(0,i),a.slice(i+1))); render(); };
 ACT.copy=id=>{ const el=document.getElementById(id); navigator.clipboard?.writeText(el.value).then(()=>toast('Copiado'),()=>{ el.select(); }); };
 // The web's guide form already asks for consent to emails; the stand-alone /senales page asks with its own box (extra.newsletter)
