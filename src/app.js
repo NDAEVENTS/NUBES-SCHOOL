@@ -71,7 +71,7 @@ const S={route:location.pathname,cAll:{stages:[],mods:[]},coursePlan:null,bootin
   // alumna
   progress:{},subs:{},tuts:[],biz:{},notes:[],events:[],library:[],
   // equipo
-  members:[],allProgress:[],allSubs:[],allTuts:[],leads:[],purchases:[],
+  members:[],allProgress:[],allSubs:[],allTuts:[],leads:[],purchases:[],ig:[],
   // screen
   ui:{}};
 const ui=(k,v)=>v===undefined?S.ui[k]:(S.ui[k]=v);
@@ -118,4 +118,6 @@ async function start(){
   render();
   try{ await boot(); }catch(e){ console.error(e); S.err='No hemos podido abrir la escuela. Vuelve a intentarlo en un momento.'; }
   S.booting=false; render();
+  // A link to a section (/#guia) lands on it once the page is drawn; sign-in links also use the hash, with key=value
+  const h=location.hash.slice(1); if(h&&!h.includes('=')) document.getElementById(h)?.scrollIntoView();
 }

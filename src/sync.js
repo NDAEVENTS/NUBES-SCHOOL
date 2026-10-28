@@ -64,6 +64,8 @@ async function loadPanel(){
     sb.from('library').select('*').order('module'),
   ]).then(rs=>rs.map(ok));
   S.members=M; S.allProgress=P; S.allSubs=SU; S.allTuts=T; S.leads=LE; S.purchases=PU; S.events=E; S.library=L;
+  // Instagram numbers (supabase/instagram.sql): until that file is run the rest of the panel still opens
+  const IG=await sb.from('ig_stats').select('*').order('day',{ascending:false}); S.ig=IG.error?[]:IG.data; S.igMissing=!!IG.error;
 }
 
 // ---------- Account ----------
@@ -131,6 +133,9 @@ const DB={
     const path=`${Date.now()}-${file.name.replace(/[^\w.\-]+/g,'_')}`; ok(await sb.storage.from('web').upload(path,file,{contentType:file.type}));
     return sb.storage.from('web').getPublicUrl(path).data.publicUrl; },
   async removeCourseFile(path){ if(CFG.demo||!path) return; await sb.storage.from('course').remove([path]); },
+  async saveIg(row){ row.updated_at=new Date().toISOString(); row.updated_by=S.me.name; S.ig=S.ig.filter(r=>r.id!==row.id).concat(row); if(CFG.demo) return;
+    ok(await sb.from('ig_stats').upsert(row)); S.igMissing=false; },
+  async deleteIg(row){ S.ig=S.ig.filter(r=>r!==row); if(CFG.demo) return; ok(await sb.from('ig_stats').delete().eq('id',row.id)); },
   async deleteLibrary(item){ S.library=S.library.filter(x=>x!==item); if(CFG.demo) return; if(item.path) await sb.storage.from('course').remove([item.path]); ok(await sb.from('library').delete().eq('id',item.id)); },
 };
 
@@ -162,6 +167,11 @@ function demoSeed(){
   S.allSubs=Object.values(S.subs);
   S.allTuts=[...S.tuts,{id:'t4',user_id:'u-carmen',module:1,hours:1,status:'requested',note:'Mejor por las tardes (hora de México).',created_at:iso(-1)}];
   S.leads=[{id:'d1',name:'Paula',email:'paula@ejemplo.com',source:'guia',created_at:iso(-1)},{id:'d2',name:'Andrea',email:'andrea@ejemplo.com',source:'signature',extra:{country:'Argentina',why:'Organizo eventos corporativos y quiero pasarme a bodas.'},created_at:iso(-2)},{id:'d3',name:'Sofía',email:'sofia@ejemplo.com',source:'guia',created_at:iso(-4)}];
+  const mon=addDays(monday(todayISO()),-7);
+  S.ig=[{id:'ig1',kind:'week',day:addDays(mon,-7),data:{followers:1180,reach:2900,visits:310,clicks:22,kw:9}},{id:'ig2',kind:'week',day:mon,data:{followers:1236,reach:4100,visits:420,clicks:41,kw:17,notes:'El reel de números a cámara funcionó muy bien'}},
+    {id:'ig3',kind:'post',day:addDays(mon,0),data:{type:'Reel',topic:'Si eres la que organiza todos los cumpleaños',pillar:IG_PILLARS[0],kw:'SEÑALES',reach:2300,saves:64,shares:31,comments:18,dms:12}},
+    {id:'ig4',kind:'post',day:addDays(mon,2),data:{type:'Carrusel',topic:'7 señales de que esto es para ti',pillar:IG_PILLARS[0],kw:'SEÑALES',reach:1400,saves:88,shares:12,comments:9,dms:6}}];
+  S.leads.push(...[1,2,3].map(i=>({id:'di'+i,name:['Chari','Noelia','Laura'][i-1],email:`ig${i}@ejemplo.com`,source:'guia',extra:{guide:'senales',from:'instagram'},created_at:new Date(D(mon).getTime()+i*864e5).toISOString()})),{id:'di4',name:'Rocío',email:'rocio@ejemplo.com',source:'signature',extra:{plan:'completo',from:'instagram',country:'España',why:'Trabajo en un banco y quiero cambiar.'},created_at:new Date(D(mon).getTime()+4*864e5).toISOString()});
   S.purchases=[{id:'p1',email:'carmen@ejemplo.com',plan:'signature',amount:3500,created_at:iso(-3)},{id:'p2',email:'lucia@ejemplo.com',plan:'completo',amount:1990,created_at:iso(-9)}];
 }
 function demoAs(role){

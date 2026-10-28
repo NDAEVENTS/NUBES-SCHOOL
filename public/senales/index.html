@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- Página suelta de la guía SEÑALES para Instagram (ManyChat): funciona aunque el resto de la web aún no esté abierto -->
+<title>¿Puedo ser wedding planner? · Guía gratis · Nubes de Algodón School</title>
+<meta name="description" content="7 señales de que esto es para ti. La guía gratuita de Nubes de Algodón School, la escuela de formación de wedding planners.">
+<meta property="og:title" content="¿Puedo ser wedding planner? 7 señales de que esto es para ti">
+<meta property="og:description" content="Guía gratuita de Nubes de Algodón School · The Wedding Creators">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Jost:wght@300;400&display=swap">
+<style>
+:root{--paper:#F3F3F5;--sheet:#FFFFFF;--ink:#22232B;--muted:#6B6D78;--line:#DEDFE4;--rose:#8E5A5E;--rose-l:#D9A2A6;--rose-soft:#F2E8E8;--display:"Bodoni Moda",Georgia,serif;--body:"Jost","Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:300 16px/1.6 var(--body);min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;display:flex;flex-direction:column;align-items:center;gap:28px;padding:40px max(16px,env(safe-area-inset-left)) 48px max(16px,env(safe-area-inset-right))}
+.brand{font-family:var(--display);font-size:20px;letter-spacing:.02em}.brand small{font-family:var(--body);font-size:11px;letter-spacing:.3em;color:var(--rose);margin-left:8px}
+.card{width:100%;max-width:480px;background:var(--ink);color:var(--paper);border-radius:22px;padding:36px 30px;display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-l)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,8vw,42px);line-height:1.08;margin:0;text-wrap:balance}h1 em{color:var(--rose-l)}
+.rule{width:64px;height:2px;background:var(--rose-l)}
+.card p{margin:0;color:#C9CAD2}
+form,.done{width:100%;max-width:480px;background:var(--sheet);border-radius:18px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 6px 24px rgba(34,35,43,.06)}
+label{font-size:14px;display:flex;flex-direction:column;gap:6px}
+input[type=text],input[type=email]{font:inherit;font-size:16px;color:var(--ink);background:#FAFAFB;border:1px solid var(--line);border-radius:10px;padding:12px 13px;width:100%}
+.check{flex-direction:row;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--muted)}.check input{margin-top:4px;accent-color:var(--rose);width:18px;height:18px;flex:none}
+.check b{color:var(--ink);font-weight:400}
+a{color:var(--rose)}
+button,.btn{font:inherit;font-size:16px;letter-spacing:.04em;background:var(--rose);color:#fff;border:0;border-radius:999px;padding:14px 22px;cursor:pointer;text-align:center;text-decoration:none;display:block}
+button:disabled{opacity:.6}
+.err{color:#A0503F;font-size:14px;margin:0}
+.done h2{font-family:var(--display);font-weight:400;font-size:28px;margin:0}.done p{margin:0;color:var(--muted)}
+.news{background:var(--rose-soft);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--ink)}
+footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 28px}
+[hidden]{display:none!important}
+</style></head>
+<body>
+<main>
+  <div class="brand">Nubes de Algodón<small>SCHOOL</small></div>
+  <section class="card">
+    <div class="eyebrow">Guía gratis</div>
+    <h1>¿Puedo ser <em>wedding planner</em>?</h1>
+    <div class="rule"></div>
+    <p>7 señales de que esto es para ti. Para ti si te encantan las bodas, tu trabajo ya no te llena y te preguntas si podrías dedicarte a esto.</p>
+  </section>
+
+  <form id="f" novalidate>
+    <label>Tu nombre<input id="name" type="text" autocomplete="given-name" required maxlength="80"></label>
+    <label>Tu email<input id="email" type="email" autocomplete="email" required maxlength="200"></label>
+    <label class="check"><input id="news" type="checkbox"><span><b>Quiero recibir la newsletter de Nubes de Algodón School:</b> novedades, nuevos cursos, workshops y plazas antes que nadie. Puedes darte de baja cuando quieras.</span></label>
+    <label class="check"><input id="ok" type="checkbox" required><span>He leído y acepto la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
+    <p class="err" id="err" hidden></p>
+    <button id="go" type="submit">Quiero mi guía</button>
+  </form>
+
+  <section class="done" id="done" hidden>
+    <h2>¡Aquí la tienes! 🤍</h2>
+    <p>Gracias por dar el primer paso. Léela con calma y cuéntanos por Instagram en qué punto estás.</p>
+    <a class="btn" href="/guia-senales.pdf" target="_blank" rel="noopener">Descargar la guía (PDF)</a>
+    <div class="news" id="newsYes" hidden>Te has apuntado a nuestra newsletter: te escribiremos con las novedades de la escuela.</div>
+  </section>
+</main>
+<footer>Nubes de Algodón School · Escuela de formación de wedding planners · The Wedding Creators<br>hola@nubesdealgodonevents.com</footer>
+
+<script src="/config.js"></script><script src="/vendor.js"></script>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search), from=q.get('utm_source')||'directo';
+  var f=document.getElementById('f'), err=document.getElementById('err'), go=document.getElementById('go');
+  f.addEventListener('submit',async function(e){
+    e.preventDefault(); err.hidden=true;
+    var name=document.getElementById('name').value.trim(), email=document.getElementById('email').value.trim();
+    if(!name){err.textContent='Escribe tu nombre.';err.hidden=false;return;}
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent='Revisa tu email: parece que falta algo.';err.hidden=false;return;}
+    if(!document.getElementById('ok').checked){err.textContent='Para enviarte la guía necesitamos que aceptes la política de privacidad.';err.hidden=false;return;}
+    var news=document.getElementById('news').checked;
+    go.disabled=true; go.textContent='Un momento…';
+    try{
+      var c=window.NUBES_CONFIG||{};
+      if(c.url&&c.key&&window.supabase){
+        var r=await supabase.createClient(c.url,c.key).rpc('add_lead',{p_name:name,p_email:email,p_source:'guia',p_extra:{guide:'senales',from:from,page:'senales',newsletter:news}});
+        if(r.error) console.warn(r.error);
+      }
+    }catch(x){ console.warn(x); }
+    // La guía se entrega siempre, aunque falle el guardado
+    f.hidden=true; document.getElementById('done').hidden=false; document.getElementById('newsYes').hidden=!news;
+    window.scrollTo(0,0);
+  });
+})();
+</script>
+</body></html>

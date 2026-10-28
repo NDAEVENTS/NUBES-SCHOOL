@@ -5,7 +5,7 @@ import { build } from 'esbuild';
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, cpSync } from 'node:fs';
 
 // The course text lives in the database; only the demo carries it in the code
-const ORDER = ['course', 'app', 'sync', 'web', 'legal', 'portal', 'panel', 'curso', 'webedit'];
+const ORDER = ['course', 'app', 'sync', 'web', 'legal', 'portal', 'panel', 'instagram', 'curso', 'webedit'];
 const url = process.env.SUPABASE_URL || 'https://ygohsuldpcbfmljtfemw.supabase.co';
 const key = process.env.SUPABASE_ANON_KEY || 'sb_publishable_PgJMxp-Uzh7XB6L1rb7F0g_321haDNq';
 const demo = !!process.env.NUBES_DEMO;
