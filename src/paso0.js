@@ -3,7 +3,7 @@
 // a cover, one slide per section (long lists split evenly) and her task. Clara y Marc are the practice wedding of the week;
 // blocks 'tip' (Truco de Nubes) and 'case' (Caso práctico) show as boxes. The Online programme is only offered on day 7.
 // Her answers live in "Mi negocio" (business.data.p0); the tools and the WhatsApp group are library rows for the plan 'paso0'.
-const P0=[
+const P0_BASE=[
   {n:1,img:'/img/ws-071.jpg',day:0,days:'Día 1',t:'Una boda de principio a fin',b:[
     ['h','Bienvenida al Bootcamp'],['p','Qué ilusión tenerte aquí. Esta semana vas a trabajar como trabaja una wedding planner: con método, con herramientas profesionales y con una boda real sobre la mesa. Una lección al día, y nosotras a tu lado en el grupo de WhatsApp.'],
     ['p','Al terminar los siete días sabrás cómo se organiza una boda de principio a fin, cómo se reparte un presupuesto, cuánto cobrar, cómo elegir proveedores, cómo crear un concepto de diseño y cómo arrancar tu negocio.'],
@@ -117,6 +117,51 @@ const P0=[
     ['li','Invitados: listas, confirmaciones, alojamiento y el plano de mesas sin dramas.'],['li','Producción: el wedding book completo y cómo se coordina el día B, minuto a minuto.'],['li','Tu negocio: marca, contrato, dossier, tarifas por servicio y la parte legal.'],['li','Visibilidad: tu web, tu Instagram y tu primer shooting.'],['li','Clientas: de la primera reunión a la firma, y cómo cuidar a cada pareja.'],
     ['h','Tu diagnóstico'],['p','Responde estas seis preguntas pensando en cómo estás hoy, no en cómo te gustaría estar. Al terminar te contamos qué camino te encaja y cómo descontarte los 47 € del Bootcamp.']],tasks:[],diag:true},
 ];
+// ---------- Panel → Editar Bootcamp: the slides of each lesson ----------
+// A lesson is saved whole in site_content (web.bootcamp[n] = {t, img, b, tasks, tool}); a lesson never saved keeps the text above.
+let P0=P0_BASE;
+const p0Lesson=n=>{ const L=P0_BASE.find(x=>x.n===n), o=((S.web||{}).bootcamp||{})[n]; return o?Object.assign({},L,o):L; };
+function p0Apply(){ P0=P0_BASE.map(L=>p0Lesson(L.n)); }
+// Blocks ⇄ one form per slide: title, text, practice case, points, text after the points, Nubes tip
+function p0Secs(b){ const out=[]; let c=null;
+  b.forEach(([k,t])=>{ if(k==='h'||!c){ c={h:k==='h'?t:'',p:[],case:[],li:[],post:[],tip:[]}; out.push(c); if(k==='h') return; }
+    if(k==='li') c.li.push(t); else if(k==='tip'||k==='case') c[k].push(t); else (c.li.length?c.post:c.p).push(t); });
+  return out; }
+const p0Blocks=secs=>secs.flatMap(s=>[['h',s.h],...s.p.map(t=>['p',t]),...s.case.map(t=>['case',t]),...s.li.map(t=>['li',t]),...s.post.map(t=>['p',t]),...s.tip.map(t=>['tip',t])]);
+function pBootcamp(arg){
+  const n=P0_BASE.some(x=>x.n===+arg)?+arg:1, L=p0Lesson(n), secs=p0Secs(L.b), saved=!!((S.web||{}).bootcamp||{})[n];
+  const area=(name,label,val,rows)=>`<div class="field"><span>${label}</span><textarea id="${name}" name="${name}" rows="${rows||3}">${esc(val)}</textarea></div>`;
+  return `<header><h1>Editar Bootcamp</h1><p>Las lecciones del Wedding Planner Bootcamp, slide a slide. Cada lección se guarda por separado y las alumnas la ven así al momento.</p></header>
+  <div class="row">${P0_BASE.map(x=>`<a class="btn sm${x.n===n?' primary':''}" href="/panel/bootcamp/${x.n}">${x.diag?'Día 7 · Diagnóstico':`Lección ${x.n}`}</a>`).join('')}</div>
+  <form class="sheet pad" data-form="boot" data-n="${n}" id="boot-form">
+    <span class="eyebrow">${esc(L.days)}</span><h3 style="font-size:22px">Portada</h3>
+    <div class="field"><span>Título de la lección</span><input id="boot-t" name="t" value="${esc(L.t)}"></div>
+    ${webField('img','Foto de portada (horizontal)','photo',L.img)}
+    ${secs.map((s,i)=>`<div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:16px">
+      <div class="spread"><h3 style="font-size:20px">Slide ${i+2}</h3><label class="check"><input type="checkbox" name="s${i}.del"> Quitar esta slide</label></div>
+      <div class="field"><span>Título</span><input id="s${i}.h" name="s${i}.h" value="${esc(s.h)}"></div>
+      ${area(`s${i}.p`,'Texto (una línea en blanco separa los párrafos)',s.p.join('\n\n'),Math.min(8,2+s.p.length*2))}
+      ${area(`s${i}.case`,'Caso práctico de Clara y Marc (opcional, sale en un recuadro oscuro)',s.case.join('\n\n'),2)}
+      ${area(`s${i}.li`,'Puntos (uno por línea; si empieza por «Título: …» se ve como tarjeta con título)',s.li.join('\n'),Math.max(3,s.li.length+1))}
+      ${area(`s${i}.post`,'Texto después de los puntos (opcional)',s.post.join('\n\n'),2)}
+      ${area(`s${i}.tip`,'Truco de Nubes (opcional)',s.tip.join('\n\n'),2)}</div>`).join('')}
+    <button type="submit" class="btn sm" name="add" value="1" style="align-self:flex-start">+ Añadir una slide al final</button>
+    ${L.diag?'':`<div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:16px"><h3 style="font-size:20px">Tu tarea de hoy</h3>
+      ${area('tasks','Tareas (una por línea)',L.tasks.join('\n'),Math.max(3,L.tasks.length+1))}<div class="field"><span>Herramienta del día</span><input id="boot-tool" name="tool" value="${esc(L.tool||'')}"></div></div>`}
+    <div class="row"><button class="btn primary" type="submit">Guardar la lección</button>${saved?`<button class="btn sm" type="submit" name="reset" value="1">Volver al texto original</button>`:''}</div>
+    <p class="hint">Para verla como la alumna: Alumnas → «Ver el portal como una alumna nueva de nivel…» → Wedding Planner Bootcamp.</p>
+  </form>`;
+}
+FORM.boot=async (f,form)=>{ const n=+form.dataset.n, L=p0Lesson(n), all=Object.assign({},(S.web||{}).bootcamp||{});
+  if(f.reset) delete all[n];
+  else { const par=v=>String(v||'').split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean), lines=v=>String(v||'').split('\n').map(x=>x.trim()).filter(Boolean);
+    const secs=p0Secs(L.b).map((_,i)=>i).filter(i=>!f[`s${i}.del`]).map(i=>({h:(f[`s${i}.h`]||'').trim(),p:par(f[`s${i}.p`]),case:par(f[`s${i}.case`]),li:lines(f[`s${i}.li`]),post:par(f[`s${i}.post`]),tip:par(f[`s${i}.tip`])}));
+    if(f.add) secs.push({h:'Nueva slide',p:[],case:[],li:[],post:[],tip:[]});
+    const file=form.querySelector('input[name="img.file"]')?.files[0];
+    const o={t:(f.t||'').trim()||L.t,img:file?await DB.uploadWebImage(file):(f.img||L.img),b:p0Blocks(secs)};
+    if(!L.diag){ o.tasks=lines(f.tasks); o.tool=(f.tool||'').trim(); }
+    all[n]=o; }
+  await DB.saveWeb('bootcamp',all); render(); toast(f.reset?'Texto original recuperado':f.add?'Slide añadida al final: rellénala y guarda':'Guardado. Las alumnas ya lo ven así.'); };
 // The plan, phase by phase: each point gets her action and a date
 const P0PLAN=[['Fase 1 · Días 1 a 30 · Decide qué planner quieres ser',['Tu nicho: qué bodas, para qué parejas y en qué zona','Tus primeros 10 proveedores','Cita con una gestoría']],
   ['Fase 2 · Días 31 a 60 · Que se te vea',['Nombre e identidad sencilla','Instagram profesional y página de servicios','Tu primer mood board','Café con diez proveedores']],
@@ -139,6 +184,7 @@ const p0Lib=()=>S.library.filter(l=>(l.plans||[]).includes('paso0'));
 const p0Wa=()=>p0Lib().find(l=>/whatsapp/i.test(l.path||'')||/whatsapp/i.test(l.title||''));
 const P0MENU=[['','Bootcamp'],['negocio','Mi negocio'],['herramientas','Herramientas'],['cuenta','Mi cuenta']];
 function p0Portal(){
+  p0Apply();
   const pg=page(), L=ui('lesson');
   const body=L?p0Reader(P0.find(x=>x.n===L)):({'':p0Home,negocio:p0Negocio,herramientas:p0Tools,cuenta})[pg]?.()||p0Home();
   return shell(body,P0MENU,pg,0);

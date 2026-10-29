@@ -1,5 +1,5 @@
 // ---------- Team panel (Ainoa and Pilar) ----------
-const NMENU=[['','Hoy'],['alumnas','Alumnas'],['curso','Edición del curso'],['web','Editar landing'],['tutorias','Tutorías'],['agenda','Agenda'],['biblioteca','Biblioteca'],['leads','Leads'],['instagram','Instagram'],['ventas','Ventas']];
+const NMENU=[['','Hoy'],['alumnas','Alumnas'],['curso','Edición del curso'],['web','Editar landing'],['bootcamp','Editar Bootcamp'],['tutorias','Tutorías'],['agenda','Agenda'],['biblioteca','Biblioteca'],['leads','Leads'],['instagram','Instagram'],['ventas','Ventas']];
 const npage=()=>S.route.replace(/^\/panel\/?/,'').split('/');
 const students=()=>S.members.filter(m=>m.role==='alumna');
 const progOf=id=>S.allProgress.filter(p=>p.user_id===id);
@@ -17,7 +17,7 @@ function attention(m){
 function panel(){
   const [pg,arg,kind,k]=npage();
   const nRev=S.allSubs.filter(s=>s.status==='sent').length, nTut=S.allTuts.filter(t=>t.status==='requested').length;
-  const body=({'':hoy,alumnas:()=>arg?alumnaDetail(arg):alumnas(),curso:()=>pCurso(arg,kind,k),web:pWeb,tutorias:pTutorias,agenda:pAgenda,biblioteca:pBiblioteca,leads:pLeads,instagram:pInstagram,ventas:pVentas})[pg||'']?.()||hoy();
+  const body=({'':hoy,alumnas:()=>arg?alumnaDetail(arg):alumnas(),curso:()=>pCurso(arg,kind,k),web:pWeb,bootcamp:()=>pBootcamp(arg),tutorias:pTutorias,agenda:pAgenda,biblioteca:pBiblioteca,leads:pLeads,instagram:pInstagram,ventas:pVentas})[pg||'']?.()||hoy();
   return `<div class="app"><aside class="side">${brand()}
     ${NMENU.map(([k,t])=>`<a class="sidelink" href="/panel${k?'/'+k:''}" aria-current="${(pg||'')===k}">${t}${k===''&&nRev+nTut?`<span class="count">${nRev+nTut}</span>`:''}</a>`).join('')}
     <div class="me">${esc(S.me.name)} · equipo Nubes<br><button type="button" class="btn sm" data-act="signOut" style="margin-top:8px">Cerrar sesión</button></div></aside>
