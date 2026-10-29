@@ -1,10 +1,10 @@
 // ---------- Panel → Editar landing: the texts of the public page ----------
 // One form per section; saving a section stores it in site_content and visitors see it on their next visit.
 const WEB_SECTIONS=[
-  ['hero','Portada',[['eyebrow','Antetítulo'],['title','Título (entre *asteriscos* va en cursiva)'],['lede','Subtítulo','area'],['cta1','Botón principal'],['cta2','Botón de la guía']]],
+  ['hero','Portada',[['eyebrow','Antetítulo'],['title','Título (entre *asteriscos* va en cursiva)'],['lede','Subtítulo','area'],['cta1','Botón principal'],['cta2','Botón de la guía'],['photo','Foto de portada (horizontal)','photo'],['alt','Qué se ve en la foto (para Google y accesibilidad)']]],
   ['facts','Cifras de la portada',null],
   ['who','¿Te suena?',[['eyebrow','Antetítulo'],['title','Título'],['after','Frase final','area']]],
-  ['about','Quiénes os enseñan',[['eyebrow','Antetítulo'],['title','Título'],['text','Texto (una línea en blanco separa párrafos)','area'],['quote','Frase destacada','area']]],
+  ['about','Quiénes os enseñan',[['photo','Vuestra foto (vertical, 4:5)','photo'],['eyebrow','Antetítulo'],['title','Título'],['text','Texto (una línea en blanco separa párrafos)','area'],['quote','Frase destacada','area']]],
   ['paso0','Paso 0',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['days','Los días (una línea por bloque; « · » separa días y tema)','lines'],['kitTitle','Título del kit'],['price','Precio'],['priceNote','Texto bajo el precio'],['soon','Texto del formulario','area'],['cta','Botón']]],
   ['program','El programa',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area']]],
   ['gallery','Fotos del presencial',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area']]],
@@ -14,12 +14,12 @@ const WEB_SECTIONS=[
   ['faq','Preguntas frecuentes',[['title','Título']]],
 ];
 // Repeated items inside a section: [list key, button text, fields]
-const WEB_LISTS={paso0:['items','herramienta',[['t','Nombre'],['d','Texto','area']]],program:['items','etapa',[['t','Título'],['d','Texto','area']]],facts:['items','cifra',[['num','Cifra'],['text','Texto']]],who:['items','perfil',[['t','Título'],['d','Texto','area']]],
+const WEB_LISTS={gallery:['items','foto',[['src','Foto','photo'],['alt','Qué se ve en la foto (para Google y accesibilidad)']]],paso0:['items','herramienta',[['t','Nombre'],['d','Texto','area']]],program:['items','etapa',[['t','Título'],['d','Texto','area']]],facts:['items','cifra',[['num','Cifra'],['text','Texto']]],who:['items','perfil',[['t','Título'],['d','Texto','area']]],
   testimonials:['items','testimonio',[['quote','Lo que dice','area'],['name','Nombre'],['detail','Detalle (p. ej. alumna 2026 · Madrid)']]],faq:['items','pregunta',[['q','Pregunta'],['a','Respuesta','area']]]};
 const guideOpts=val=>[['auto','Una distinta cada mes, por turnos'],...GUIDES.map(g=>[g.id,g.t.replace(/\*/g,'')])].map(([k,t])=>`<option value="${k}" ${k===(val||'auto')?'selected':''}>${esc(t)}</option>`).join('');
 // Downloads per guide, to see which one brings more people (older leads, before there were several guides, were the 7 errors)
 const guideCount=id=>S.leads.filter(l=>l.source==='guia'&&(l.extra?.guide||'errores')===id).length;
-const webField=(id,label,kind,val)=>kind==='guide'?`<div class="field"><span>${label}</span><select id="${id}" name="${id}">${guideOpts(val)}</select></div>
+const webField=(id,label,kind,val)=>kind==='photo'?`<div class="row" style="align-items:center">${val?`<img src="${esc(val)}" alt="" style="width:96px;height:72px;object-fit:cover;border-radius:8px">`:''}<input type="hidden" name="${id}" value="${esc(val||'')}"><div class="field" style="flex:1"><span>${val?label+': cambiarla':label}</span><input id="${id}.file" name="${id}.file" type="file" accept="image/*"></div></div>`:kind==='guide'?`<div class="field"><span>${label}</span><select id="${id}" name="${id}">${guideOpts(val)}</select></div>
   <p class="hint">Ahora mismo se ofrece: <b>${esc(guideNow().t.replace(/\*/g,''))}</b>.</p>
   <div class="list">${GUIDES.map(g=>`<div class="li"><div class="t"><b style="font-weight:400">${esc(g.t.replace(/\*/g,''))}</b><small>${guideCount(g.id)} descarga${guideCount(g.id)===1?'':'s'}</small></div>${g.id===guideNow().id?'<span class="pill done">En la web</span>':''}<a class="btn sm" href="${g.pdf}" target="_blank" rel="noopener">Ver PDF</a></div>`).join('')}</div>`:`<div class="field"><span>${label}</span>${kind?`<textarea id="${id}" name="${id}" rows="${kind==='lines'?5:3}">${esc(kind==='lines'?(val||[]).join('\n'):val||'')}</textarea>`:`<input id="${id}" name="${id}" value="${esc(val||'')}">`}</div>`;
 function pWeb(){
@@ -29,7 +29,6 @@ function pWeb(){
   ${WEB_SECTIONS.map(([sec,title,fields])=>{ const L=WEB_LISTS[sec], items=L?(L[0]?w[sec][L[0]]:w[sec])||[]:null;
     return `<form class="sheet pad" data-form="web" data-sec="${sec}" id="web-${sec}"><h3 style="font-size:20px">${title}</h3>
       ${(fields||[]).map(([k,label,kind])=>webField(`${sec}.${k}`,label,kind,w[sec][k])).join('')}
-      ${sec==='about'?`<div class="row" style="align-items:center">${w.about.photo?`<img src="${esc(w.about.photo)}" alt="" style="width:72px;height:90px;object-fit:cover;border-radius:8px">`:''}<div class="field" style="flex:1"><span>${w.about.photo?'Cambiar la foto':'Vuestra foto (vertical, 4:5)'}</span><input id="about.file" name="about.file" type="file" accept="image/*"></div></div>`:''}
       ${L?`<div class="list">${items.map((it,i)=>`<div class="li" style="flex-direction:column;align-items:stretch;gap:8px"><div class="spread"><span class="label">${L[1]} ${i+1}</span><label class="check"><input type="checkbox" name="${sec}.del.${i}"> Quitar al guardar</label></div>
         ${L[2].map(([k,label,kind])=>webField(`${sec}.${i}.${k}`,label,kind,it[k])).join('')}</div>`).join('')||`<p class="empty">Todavía no hay ninguno${sec==='testimonials'?': la sección no se muestra en la web hasta que añadáis uno':''}.</p>`}</div>
       <button type="submit" class="btn sm" name="add" value="1" style="align-self:flex-start">+ Añadir ${L[1]}</button>`:''}
@@ -44,7 +43,11 @@ FORM.web=async (f,form)=>{ const sec=form.dataset.sec, S0=Object.assign({},W()[s
     if(L){ const cur=(L[0]?S0[L[0]]:S0)||[]; let items=cur.map((_,i)=>Object.fromEntries(L[2].map(([k])=>[k,(f[`${sec}.${i}.${k}`]??'').trim()]))).filter((_,i)=>!f[`${sec}.del.${i}`]);
       if(f.add) items.push(Object.fromEntries(L[2].map(([k])=>[k,''])));
       if(L[0]) data[L[0]]=items; else data=items; }
-    const file=form.querySelector('input[type=file]')?.files[0]; if(file) data.photo=await DB.uploadWebImage(file); else if(sec==='about') data.photo=S0.photo||'';
+    // Photos: a new file replaces the one saved, otherwise the current one stays
+    const up=async (id,cur)=>{ const file=form.querySelector(`input[name="${id}.file"]`)?.files[0]; return file?await DB.uploadWebImage(file):cur; };
+    for(const [k,,kind] of WEB_SECTIONS.find(x=>x[0]===sec)[2]||[]) if(kind==='photo') data[k]=await up(`${sec}.${k}`,data[k]);
+    if(L) for(const [k,,kind] of L[2]) if(kind==='photo'){ const list=L[0]?data[L[0]]:data, ids=((L[0]?S0[L[0]]:S0)||[]).map((_,i)=>i).filter(i=>!f[`${sec}.del.${i}`]);
+      for(let j=0;j<ids.length;j++) list[j][k]=await up(`${sec}.${ids[j]}.${k}`,list[j][k]); }
   }
   await DB.saveWeb(sec,data); render(); document.getElementById('web-'+sec)?.scrollIntoView();
   toast(f.reset?'Texto original recuperado':f.add?'Añadido: rellénalo y guarda':'Guardado. Ya se ve en la web.'); };

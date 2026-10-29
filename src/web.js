@@ -6,7 +6,7 @@ const CONTACT='hola@nubesdealgodonevents.com';
 // In titles, *word* is shown in italics. Prices are not here: they are charged by Stripe (see PLANS and the checkout function).
 const WEB_DEFAULT={
   hero:{eyebrow:'The Wedding Creators · escuela de wedding planners',title:'¿Y si tu próximo trabajo fuera *organizar bodas*?',
-    lede:'Aprende el oficio de wedding planner paso a paso, sin dejar tu trabajo todavía, con quienes organizan bodas de lujo cada semana en la Costa Brava.',cta1:'Empieza por el Paso 0',cta2:'Descarga la guía gratuita'},
+    lede:'Aprende el oficio de wedding planner paso a paso, sin dejar tu trabajo todavía, con quienes organizan bodas de lujo cada semana en la Costa Brava.',cta1:'Empieza por el Paso 0',cta2:'Descarga la guía gratuita',photo:'/img/ws-039.jpg',alt:'Pilar y Ainoa delante del cartel de The Wedding Creators'},
   facts:{items:[{num:'+100',text:'bodas organizadas para parejas de todo el mundo'},{num:'+10',text:'países de origen de nuestras parejas: Estados Unidos, Reino Unido, Irlanda, Holanda, Francia, Italia, Singapur y Dubái, entre otros'},{num:'+20',text:'alumnas formadas con The Wedding Creators'}]},
   who:{eyebrow:'¿Te suena?',title:'Si te reconoces aquí, *esto es para ti*',items:[{t:'Tu trabajo ya no te llena',d:'Tienes un sueldo fijo, pero sientes que podrías dedicarte a algo que de verdad te ilusione.'},{t:'Siempre acabas organizándolo todo',d:'Los cumpleaños, la despedida, la boda de tu hermana. Te encantan las bodas y guardas cada idea que ves.'},{t:'Pero no sabes por dónde empezar',d:'Te preguntas si se puede vivir de esto, si necesitas contactos o un título y de dónde sacarías el tiempo.'}],
     after:'Nosotras también empezamos así. Por eso hemos creado The Wedding Creators.'},
@@ -36,7 +36,8 @@ const WEB_DEFAULT={
     paso0:'¿Aún no lo tienes claro? Empieza por el Paso 0.',
     upgrade:'Si después quieres subir de nivel, solo pagas la diferencia.'},
   guide:{mode:'90dias'},
-  gallery:{eyebrow:'El fin de semana presencial',title:'Aprender *haciendo*, con proveedores reales',intro:'Así fue el fin de semana de workshops de la primera edición, en la Costa Brava: visitas a espacios, papelería, mesas y los proveedores con los que trabajamos cada semana. En Signature lo vives con nosotras.'},
+  gallery:{eyebrow:'El fin de semana presencial',title:'Aprender *haciendo*, con proveedores reales',intro:'Así fue el fin de semana de workshops de la primera edición, en la Costa Brava: visitas a espacios, papelería, mesas y los proveedores con los que trabajamos cada semana. En Signature lo vives con nosotras.',
+    items:[['ws-071.jpg','Visita a un espacio de bodas con su equipo'],['ws-079.jpg','Papelería de boda para elegir'],['ws-077.jpg','Alumnas en el taller de mesa dulce'],['ws-082.jpg','Cristalería y vajilla para diseñar la mesa'],['ws-050.jpg','Música en directo durante el workshop'],['ws-043.jpg','El cuaderno de The Wedding Creators']].map(([f,alt])=>({src:'/img/'+f,alt}))},
   faq:{title:'Antes de empezar',items:[
     {q:'¿Necesito experiencia previa?',a:'No. El programa empieza por la base de la profesión y te acompaña hasta montar tu empresa.'},
     {q:'¿Puedo hacerlo sin dejar mi trabajo?',a:'Sí, está pensado para eso. Las lecciones son cortas y puedes avanzar con unas horas a la semana.'},
@@ -63,8 +64,6 @@ const FROM=(()=>{ const f=(Q.get('utm_source')||'').toLowerCase().slice(0,40); t
 const withFrom=x=>FROM?Object.assign({from:FROM},x):x;
 function guideNow(){ const m=GUIDES.some(g=>g.id===Q.get('guia'))?Q.get('guia'):W().guide.mode, d=new Date(); return GUIDES.find(g=>g.id===m)||GUIDES[(d.getFullYear()*12+d.getMonth())%GUIDES.length]; }
 const fill=t=>esc(t).replace('{modulos}',pub().mods.length).replace('{lecciones}',pub().mods.reduce((a,m)=>a+m.lessons.length,0));
-// Photos of the first edition of the workshops (public/img)
-const GALLERY=[['ws-071.jpg','Visita a un espacio de bodas con su equipo'],['ws-079.jpg','Papelería de boda para elegir'],['ws-077.jpg','Alumnas en el taller de mesa dulce'],['ws-082.jpg','Cristalería y vajilla para diseñar la mesa'],['ws-050.jpg','Música en directo durante el workshop'],['ws-043.jpg','El cuaderno de The Wedding Creators']];
 function brand(){ return `<a class="brand" href="/" style="text-decoration:none;color:inherit"><b>Nubes de Algodón</b><span>School</span></a>`; }
 function webPage(){
   const w=W(), p0=w.paso0;
@@ -79,7 +78,7 @@ function webPage(){
       <p class="lede">${esc(w.hero.lede)}</p>
       <div class="row cta"><a class="btn primary" href="/#paso0">${esc(w.hero.cta1)}</a><a class="btn" href="/#guia">${esc(w.hero.cta2)}</a></div>
     </div>
-    <img class="heroimg" src="/img/ws-039.jpg" alt="Pilar y Ainoa delante del cartel de The Wedding Creators" fetchpriority="high">
+    ${w.hero.photo?`<img class="heroimg" src="${esc(w.hero.photo)}" alt="${esc(w.hero.alt||'')}" fetchpriority="high">`:''}
   </section>
   <div class="facts">${w.facts.items.map(f=>`<div><b class="num">${fill(f.num).replace(/\+/g,'<i class="plus">+</i>')}</b><span>${fill(f.text)}</span></div>`).join('')}</div>
 
@@ -133,7 +132,7 @@ function webPage(){
     <span class="eyebrow">${esc(w.gallery.eyebrow)}</span>
     <h2>${em(w.gallery.title)}</h2>
     <p class="intro">${esc(w.gallery.intro)}</p>
-    <div class="gallery">${GALLERY.map(([f,alt])=>`<img src="/img/${f}" alt="${esc(alt)}" loading="lazy">`).join('')}</div>
+    ${(w.gallery.items||[]).length?`<div class="gallery">${w.gallery.items.filter(g=>g.src).map(g=>`<img src="${esc(g.src)}" alt="${esc(g.alt||'')}" loading="lazy">`).join('')}</div>`:''}
   </section>
   ${w.testimonials.items.length?`<section class="sec">
     <span class="eyebrow">${esc(w.testimonials.eyebrow)}</span>
