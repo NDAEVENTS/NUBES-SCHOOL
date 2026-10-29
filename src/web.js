@@ -5,47 +5,48 @@ const CONTACT='hola@nubesdealgodonevents.com';
 // Texts of the web. The team edits them in Panel → Editar landing (table site_content); these are the starting texts.
 // In titles, *word* is shown in italics. Prices are not here: they are charged by Stripe (see PLANS and the checkout function).
 const WEB_DEFAULT={
-  hero:{eyebrow:'The Wedding Creators · escuela de wedding planners',title:'¿Y si tu próximo trabajo fuera *organizar bodas*?',
-    lede:'Aprende el oficio de wedding planner paso a paso, sin dejar tu trabajo todavía, con quienes organizan bodas de lujo cada semana en la Costa Brava.',cta1:'Empieza por el Paso 0',cta2:'Descarga la guía gratuita',photo:'/img/ws-039.jpg',alt:'Pilar y Ainoa delante del cartel de The Wedding Creators'},
+  hero:{eyebrow:'The Wedding Creators · escuela de wedding planners',title:'Tu sueño de *organizar bodas* empieza aquí',
+    lede:'Te enseñamos el oficio de wedding planner paso a paso, sin que tengas que dejar tu trabajo todavía. Con método, con mucho cariño y de la mano de quienes organizan bodas de lujo cada semana en la Costa Brava.',cta1:'Empieza por el Paso 0',cta2:'Descarga la guía gratuita',photo:'/img/ws-039.jpg',alt:'Pilar y Ainoa delante del cartel de The Wedding Creators'},
   facts:{items:[{num:'+100',text:'bodas organizadas para parejas de todo el mundo'},{num:'+10',text:'países de origen de nuestras parejas: Estados Unidos, Reino Unido, Irlanda, Holanda, Francia, Italia, Singapur y Dubái, entre otros'},{num:'+20',text:'alumnas formadas con The Wedding Creators'}]},
-  who:{eyebrow:'¿Te suena?',title:'Si te reconoces aquí, *esto es para ti*',items:[{t:'Tu trabajo ya no te llena',d:'Tienes un sueldo fijo, pero sientes que podrías dedicarte a algo que de verdad te ilusione.'},{t:'Siempre acabas organizándolo todo',d:'Los cumpleaños, la despedida, la boda de tu hermana. Te encantan las bodas y guardas cada idea que ves.'},{t:'Pero no sabes por dónde empezar',d:'Te preguntas si se puede vivir de esto, si necesitas contactos o un título y de dónde sacarías el tiempo.'}],
-    after:'Nosotras también empezamos así. Por eso hemos creado The Wedding Creators.'},
+  who:{eyebrow:'¿Te suena?',title:'Si te reconoces aquí, *no estás sola*',items:[{t:'Tu trabajo ya no te llena',d:'Tienes estabilidad, pero algo dentro de ti sabe que podrías dedicarte a algo que te haga ilusión cada mañana.'},{t:'Siempre acabas organizándolo todo',d:'Los cumpleaños, la despedida, la boda de tu hermana… Te encantan las bodas y guardas cada idea bonita que ves.'},{t:'Pero no sabes por dónde empezar',d:'Te preguntas si se puede vivir de esto, si necesitas contactos o un título y de dónde sacarías el tiempo. Es normal: todas nos lo hemos preguntado.'}],
+    after:'Nosotras también empezamos así, con miedo y con muchas ganas. Por eso hemos creado The Wedding Creators: para que tú no tengas que hacerlo sola.'},
   about:{eyebrow:'Quiénes os enseñan',title:'Pilar y Ainoa, de Nubes de Algodón Events',photo:'/img/nosotras-10-anos.jpg',
-    text:'Las dos teníamos un trabajo fijo y lo dejamos para dedicarnos a las bodas. Hoy, con más de diez años de experiencia, organizamos bodas de lujo en la Costa Brava, Barcelona y Sicilia para parejas que llegan de todo el mundo.\n\nEn The Wedding Creators te enseñamos lo que usamos cada semana: cómo presupuestar, cómo elegir proveedores, cómo cuidar a cada pareja y cómo montar tu propia empresa.',
-    quote:'Desde el primer día te prometemos que no soltaremos tu mano hasta que consigas tu objetivo.'},
+    text:'Las dos teníamos un trabajo fijo y un día decidimos ir a por nuestro sueño: dedicarnos a las bodas. Hoy, más de diez años después, organizamos bodas de lujo en la Costa Brava, Barcelona y Sicilia para parejas que llegan de todo el mundo.\n\nEn The Wedding Creators te enseñamos todo lo que hacemos cada semana, sin guardarnos nada: cómo presupuestar, cómo elegir proveedores, cómo cuidar a cada pareja y cómo montar tu propia empresa. Y te lo enseñamos como nos habría gustado que nos lo enseñaran a nosotras: con paciencia, con cariño y a tu lado.',
+    quote:'Desde el primer día te prometemos una cosa: no soltaremos tu mano hasta que consigas tu objetivo.'},
   paso0:{eyebrow:'Paso 0 · empieza aquí',title:'Siete días para saber si *esto es para ti*',
-    intro:'Antes de decidir nada, pruébalo. Cada día te llega una lección corta: cómo es la profesión por dentro, cuánto se gana de verdad y tu plan para los tres primeros meses. Al final sabrás qué camino te encaja.',
-    days:['Días 1 y 2 · La profesión por dentro','Días 3 y 4 · Tus números','Días 5 y 6 · Tu plan de 90 días','Día 7 · Tu diagnóstico y tu siguiente paso'],
-    kitTitle:'Y te llevas tus primeras herramientas de trabajo',
-    items:[{t:'Agenda semanal',d:'Para organizar tus semanas como una wedding planner.'},{t:'Base de datos de proveedores',d:'Con todos los gremios del sector, lista para rellenar.'},{t:'Plantilla de mood board',d:'Para convertir el gusto de una pareja en un concepto.'},{t:'Calculadora de honorarios',d:'Descúbrelo con tus números: tú también puedes ser una de ellas.'}],
-    price:'47 €',priceNote:'Si después sigues con el programa, te lo descontamos.',cta:'Empezar el Paso 0',
-    soon:'Acceso inmediato a tu portal, a las cuatro herramientas y a la Comunidad de WhatsApp con Pilar y Ainoa.'},
+    intro:'Es contenido real de The Wedding Creators, para que lo pruebes antes de decidir. Cada día te llega una lección práctica con su tarea: conocerás la profesión por dentro, calcularás tu precio con tus números y diseñarás tu plan para los tres primeros meses. Y no lo harás sola: te esperamos en nuestra Comunidad de WhatsApp.',
+    days:['Días 1 y 2 · Así es la profesión por dentro','Días 3 y 4 · Calcula tu precio','Días 5 y 6 · Diseña tu plan de 90 días','Día 7 · Tu diagnóstico y tu siguiente paso'],
+    kitTitle:'Y te llevas tus primeras herramientas de wedding planner',
+    items:[{t:'Agenda semanal',d:'Para organizar tus semanas como lo hacemos nosotras.'},{t:'Base de datos de proveedores',d:'Con todos los gremios del sector, para empezar a construir tu equipo de confianza.'},{t:'Plantilla de mood board',d:'Para convertir los sueños de una pareja en un concepto.'},{t:'Calculadora de honorarios',d:'Para descubrir, con tus números, lo que vale tu trabajo.'}],
+    price:'47 €',priceNote:'Y si después sigues con el programa, te lo descontamos.',cta:'Empezar el Paso 0',
+    soon:'Acceso inmediato a tu portal, a tus cuatro herramientas y a la Comunidad de WhatsApp, donde te esperamos Pilar y Ainoa.'},
   program:{eyebrow:'El programa',title:'The Wedding Creators, *en cuatro etapas*',
-    intro:'Primero aprendes el oficio y después montas tu negocio. Cada módulo es corto y termina en una herramienta que te quedas para trabajar: tu mood board, tu base de proveedores, tus tarifas o tu dossier.',
-    items:[{t:'El oficio',d:'Cómo se organiza una boda de principio a fin: presupuesto, proveedores, diseño, invitados y el gran día.'},{t:'Tu negocio',d:'Tu cliente ideal, tu marca, la parte legal y cuánto cobrar por tu trabajo.'},{t:'Visibilidad',d:'Tu web, tu Instagram, tu red de proveedores y tu primer shooting.'},{t:'Clientas y experiencia',d:'De la primera reunión a la firma, y cómo cuidar a cada pareja para que te recomiende.'}]},
-  testimonials:{eyebrow:'Lo que dicen nuestras alumnas',title:'Ellas ya lo han hecho',items:[]},
-  prices:{eyebrow:'Precios',title:'Elige *cómo quieres hacerlo*',intro:'Tres caminos distintos, según hasta dónde quieras llegar y cuánto quieras que te acompañemos. Puedes pagar con tarjeta, Apple Pay, Google Pay o PayPal, también a plazos.',
+    intro:'Primero aprendes el oficio y después montamos juntas tu negocio. Cada módulo es corto, se compagina con tu vida y termina con una herramienta que te quedas para siempre: tu mood board, tu base de proveedores, tus tarifas o tu dossier.',
+    items:[{t:'El oficio',d:'Cómo se organiza una boda de principio a fin: presupuesto, proveedores, diseño, invitados y el gran día.'},{t:'Tu negocio',d:'Tu clienta ideal, tu marca, la parte legal y cuánto cobrar por tu trabajo, sin miedo.'},{t:'Visibilidad',d:'Tu web, tu Instagram, tu red de proveedores y tu primer shooting, para que las parejas te encuentren.'},{t:'Clientas y experiencia',d:'De la primera reunión a la firma, y cómo cuidar a cada pareja para que te recomiende con los ojos cerrados.'}]},
+  testimonials:{eyebrow:'Lo que dicen nuestras alumnas',title:'Ellas ya lo han conseguido',items:[]},
+  prices:{eyebrow:'Precios',title:'Elige *cómo quieres recorrer este camino*',intro:'Tres caminos, según hasta dónde quieras llegar y cuánto quieras que te acompañemos. Elijas el que elijas, estaremos a tu lado. Todos los precios llevan el IVA incluido y puedes pagar con tarjeta, Apple Pay, Google Pay o PayPal, también a plazos.',
     tOnline:'Aprende el oficio a tu ritmo',tCompleto:'Lanza tu negocio acompañada',tSignature:'Lujo y bodas destino, con Nubes',
     online:['Las cuatro etapas del programa en tu portal','Plantillas y herramientas visuales para tu negocio','Una sesión grupal de dudas al mes, en directo','Certificado The Wedding Creators'],
     completo:['Todo lo de Online','12 h de tutorías individuales por videollamada','Feedback personal en cada entregable','Prácticas en una boda de Nubes','Tu propio shooting como proyecto final','Revisión de tus tarifas, tu contrato y tu web'],
     signature:['Todo lo de Completo','Módulos de lujo, bodas destino y bodas de otras culturas','Fin de semana presencial en la Costa Brava','Una boda desde cero con nuestro equipo','Solo 8 plazas por edición'],
-    forOnline:'Para ti si quieres aprender la profesión sin dejar tu trabajo todavía.',
-    forCompleto:'Para ti si ya has decidido dar el paso y quieres hacerlo con nosotras a tu lado.',
-    forSignature:'Para ti si sueñas con bodas de lujo y parejas internacionales.',
+    forOnline:'Para ti si quieres aprender la profesión a tu ritmo, sin dejar todavía tu trabajo.',
+    forCompleto:'Para ti si ya has decidido dar el paso y quieres darlo de nuestra mano.',
+    forSignature:'Para ti si sueñas con bodas de lujo y parejas que llegan de todo el mundo.',
     edition:'Próxima edición: febrero de 2027 · 8 plazas',
-    paso0:'¿Aún no lo tienes claro? Empieza por el Paso 0.',
-    upgrade:'Si después quieres subir de nivel, solo pagas la diferencia.'},
+    paso0:'¿Aún no lo tienes claro? Es normal. Empieza por el Paso 0.',
+    upgrade:'Y si después quieres subir de nivel, solo pagas la diferencia.'},
   guide:{mode:'90dias'},
-  gallery:{eyebrow:'El fin de semana presencial',title:'Aprender *haciendo*, con proveedores reales',intro:'Así fue el fin de semana de workshops de la primera edición, en la Costa Brava: visitas a espacios, papelería, mesas y los proveedores con los que trabajamos cada semana. En Signature lo vives con nosotras.',
+  gallery:{eyebrow:'El fin de semana presencial',title:'Aprender *haciendo*, con proveedores reales',intro:'Así fue el fin de semana de workshops de la primera edición, en la Costa Brava: visitas a espacios, papelería, mesas y los proveedores con los que trabajamos cada semana. Fueron días de aprender, de reír y de emocionarnos juntas. En Signature lo vives con nosotras.',
     items:[['ws-071.jpg','Visita a un espacio de bodas con su equipo'],['ws-079.jpg','Papelería de boda para elegir'],['ws-077.jpg','Alumnas en el taller de mesa dulce'],['ws-082.jpg','Cristalería y vajilla para diseñar la mesa'],['ws-050.jpg','Música en directo durante el workshop'],['ws-043.jpg','El cuaderno de The Wedding Creators']].map(([f,alt])=>({src:'/img/'+f,alt}))},
-  faq:{title:'Antes de empezar',items:[
-    {q:'¿Necesito experiencia previa?',a:'No. El programa empieza por la base de la profesión y te acompaña hasta montar tu empresa.'},
-    {q:'¿Puedo hacerlo sin dejar mi trabajo?',a:'Sí, está pensado para eso. Las lecciones son cortas y puedes avanzar con unas horas a la semana.'},
-    {q:'¿Qué es el Paso 0?',a:'Una semana para conocer la profesión por dentro, hacer tus números y tu plan de 90 días antes de decidir. Si después sigues con el programa, te descontamos lo que pagaste.'},
+  faq:{title:'Lo que nos preguntáis *antes de empezar*',items:[
+    {q:'¿Necesito experiencia previa?',a:'No, para nada. Empezamos por la base de la profesión y te acompañamos hasta que tengas tu empresa en marcha.'},
+    {q:'¿Puedo hacerlo sin dejar mi trabajo?',a:'Sí, está pensado justo para eso. Las lecciones son cortas y puedes avanzar con unas horas a la semana. Nosotras también empezamos así.'},
+    {q:'¿Qué es el Paso 0?',a:'Siete días de contenido real de The Wedding Creators para que lo pruebes antes de decidir: conoces la profesión por dentro, calculas tu precio y diseñas tu plan de 90 días, con nosotras en la Comunidad de WhatsApp. Si después sigues con el programa, te descontamos lo que pagaste.'},
     {q:'¿Qué diferencia hay entre Online, Completo y Signature?',a:'En Online aprendes el oficio a tu ritmo, con una sesión grupal de dudas al mes. En Completo lanzas tu negocio con nosotras: tutorías individuales, feedback en cada entregable, prácticas en una boda nuestra y tu propio shooting. Signature suma el lujo y las bodas destino, con un fin de semana presencial y solo 8 plazas por edición.'},
-    {q:'¿Sirve si vivo fuera de España?',a:'Sí. Es online y las tutorías son por videollamada. La parte legal explica España, y en las tutorías lo adaptamos a tu país.'},
+    {q:'¿Sirve si vivo fuera de España?',a:'Sí. Es online y las tutorías son por videollamada. La parte legal explica España, y en las tutorías lo adaptamos juntas a tu país.'},
     {q:'¿Cómo funcionan las tutorías?',a:'En Completo y Signature tienes 12 horas de tutorías individuales por videollamada, que reservas desde tu portal.'},
     {q:'¿Puedo pagar a plazos?',a:'Sí: Online en 3 cuotas mensuales de 197 € y Completo en 6 cuotas de 332 €. El acceso es completo desde el primer pago.'},
+    {q:'¿Los precios incluyen IVA?',a:'Sí. Todos los precios de la web llevan el IVA incluido: lo que ves es lo que pagas.'},
     {q:'¿Recibo factura?',a:'Sí, al pagar recibes la factura por email.'}]},
 };
 // Saved texts over the defaults: a section the team never touched keeps its starting text
@@ -112,7 +113,7 @@ function webPage(){
       <div class="p0side">
         <h3>${esc(p0.kitTitle)}</h3>
         <div class="kit">${(p0.items||[]).map((k,i)=>`<div class="tool t${i%4}"><span class="ico" aria-hidden="true">${['◷','☰','✿','€'][i%4]}</span><b>${esc(k.t)}</b><small>${esc(k.d)}</small></div>`).join('')}</div>
-        <div class="p0buy"><div><b class="price num">${esc(p0.price)}</b><small>${esc(p0.priceNote)}</small></div>
+        <div class="p0buy"><div><b class="price num">${esc(p0.price)}</b><small>IVA incluido. ${esc(p0.priceNote)}</small></div>
         <p class="hint">${esc(p0.soon)}</p>
         <button type="button" class="btn primary" data-act="buy" data-arg="paso0">${esc(p0.cta)}</button></div>
       </div>
@@ -173,7 +174,7 @@ function webPage(){
 // Online is bought straight away; Completo and Signature start with a 20-minute call
 const CALL=k=>k==='completo'||k==='signature';
 function planCard(k,sub,items,star,who,tag){ const p=PLANS[k];
-  return `<div class="sheet plan${star?' star':''}">${star?'<span class="pill prog tag">La más elegida</span>':''}<h3>${p.t}</h3>${tag?`<p class="ptag">${esc(tag)}</p>`:''}<div class="price num">${eur(p.price)}<br><small>${esc(sub)}</small></div>${who?`<p class="for">${esc(who)}</p>`:''}<ul>${items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><button type="button" class="btn${star?' primary':''}" data-act="buy" data-arg="${k}">${CALL(k)?'Hablemos 20 minutos':'Inscribirme'}</button></div>`; }
+  return `<div class="sheet plan${star?' star':''}">${star?'<span class="pill prog tag">La más elegida</span>':''}<h3>${p.t}</h3>${tag?`<p class="ptag">${esc(tag)}</p>`:''}<div class="price num">${eur(p.price)}<br><small>IVA incluido · ${esc(sub)}</small></div>${who?`<p class="for">${esc(who)}</p>`:''}<ul>${items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><button type="button" class="btn${star?' primary':''}" data-act="buy" data-arg="${k}">${CALL(k)?'Hablemos 20 minutos':'Inscribirme'}</button></div>`; }
 function faq(q,a){ return `<details><summary>${q}</summary><p>${a}</p></details>`; }
 const INST={online:[3,197],completo:[6,332]};
 function buyModal(){
@@ -188,11 +189,11 @@ function buyModal(){
       <div class="field"><span>País</span><input id="acountry" name="country" required></div>
       <div class="field"><span>¿Por qué quieres ser wedding planner y en qué punto estás?</span><textarea id="awhy" name="why" required></textarea></div>
       <label class="check"><input id="aok" type="checkbox" required> <span>He leído y acepto la <a href="/legal/privacidad">política de privacidad</a>.</span></label>`:
-    `<div class="spread"><span>Total</span><b class="num">${eur2(p.price)}</b></div>
+    `<div class="spread"><span>Total (IVA incluido)</span><b class="num">${eur2(p.price)}</b></div>
       <div class="field"><span>Tu email (será tu acceso al portal)</span><input id="bmail" name="email" type="email" required autocomplete="email"></div>
       <label class="check"><input id="bdes" type="checkbox" required> Quiero empezar ya: acepto que el acceso al contenido digital comienza al pagar y que, desde ese momento, pierdo el derecho de desistimiento de 14 días.</label>
       <label class="check"><input id="bcond" type="checkbox" required> Acepto las <a href="/legal/condiciones">condiciones de venta</a>.</label>
-      ${INST[k]?`<div class="field"><span>Forma de pago</span><select id="binst" name="installments"><option value="">Pago único de ${eur(p.price)}</option><option value="1">${INST[k][0]} cuotas mensuales de ${eur(INST[k][1])}</option></select></div>`:''}
+      ${INST[k]?`<div class="field"><span>Forma de pago</span><select id="binst" name="installments"><option value="">Pago único de ${eur(p.price)}, IVA incluido</option><option value="1">${INST[k][0]} cuotas mensuales de ${eur(INST[k][1])}</option></select></div>`:''}
       <p class="hint">${k==='online'?'Si compraste la Etapa 1 en los últimos 60 días, te descontamos lo que pagaste. ':''}Te llevamos a la página de pago seguro de Stripe: tarjeta, Apple Pay, Google Pay o PayPal.</p>`}
     <div class="row"><button type="submit" class="btn primary" ${S.busy?'disabled':''}>${sig?'Pedir la llamada':S.busy?'Abriendo el pago…':'Ir al pago'}</button><button type="button" class="btn" data-act="closeBuy">Cancelar</button></div>
   </form></div>`;
