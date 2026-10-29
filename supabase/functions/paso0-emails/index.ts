@@ -13,14 +13,15 @@ const MAILS: Mail[] = [
   "quote": "Los sueños no se cumplen solos. Se cumplen cuando alguien decide dar el primer paso. Y hoy lo has dado tú.",
   "intro": [
    "Qué ilusión tan grande tenerte aquí. De verdad. Sabemos lo que cuesta decir «quiero algo distinto para mi vida» y, sobre todo, atreverse a hacer algo para conseguirlo. Por eso queremos que sepas una cosa desde el primer minuto: a partir de hoy no estás sola. Estamos contigo.",
-   "Esta semana no vas a leer teoría: vas a aprender con contenido real de The Wedding Creators cómo trabaja de verdad una wedding planner. Una lección al día, cada una con su herramienta profesional.",
+   "Esta semana vas a trabajar como trabaja una wedding planner: con método, con herramientas profesionales y con una boda de práctica sobre la mesa, la de Clara y Marc, que te acompañará los siete días.",
    "Y hoy empezamos por el principio: cómo se organiza una boda de principio a fin."
   ],
-  "time": "unos 40 minutos",
+  "time": "alrededor de una hora",
   "tasks": [
    "Crea tu contraseña desde el email de invitación que te acabamos de enviar y entra en tu portal. Es tu espacio.",
-   "Abre la lección 1, «Una boda de principio a fin»: los 12 meses de una boda y lo que nadie te cuenta.",
+   "Abre la lección 1, «Una boda de principio a fin»: los servicios que puedes ofrecer, la primera reunión, los 12 meses de una boda y el timing del día.",
    "Entra en el grupo de WhatsApp del Bootcamp (tienes el enlace en tu portal) y preséntate: tu nombre, desde dónde escribes y a qué te dedicas hoy. Allí te esperan nuestras notas de voz de bienvenida y otras mujeres que, como tú, han decidido luchar por lo que quieren.",
+   "Haz el calendario y el timing de la boda de Clara y Marc.",
    "Descarga la agenda semanal y reserva en ella tus horas del Bootcamp, como una cita contigo misma que no se cancela."
   ],
   "sections": [
@@ -57,9 +58,10 @@ const MAILS: Mail[] = [
    "Buenos días. Ayer recorriste los 12 meses de una boda. Si después de verlo sigues sintiendo ese cosquilleo, es muy buena señal.",
    "Hoy toca la conversación que más respeto da al principio: el dinero. Cómo se reparte el presupuesto de una pareja y cuánto debes cobrar tú. Te prometemos que, cuando termines, lo verás mucho más claro."
   ],
-  "time": "unos 45 minutos",
+  "time": "alrededor de una hora",
   "tasks": [
    "Abre la lección 2, «Presupuesto y honorarios», ya disponible en tu portal.",
+   "Reparte el presupuesto de Clara y Marc según sus prioridades y calcula su precio por invitado.",
    "Descarga la calculadora de honorarios y rellena solo las casillas rosas: tus gastos fijos, lo que quieres ganar y cuántas bodas te ves organizando al año.",
    "Apunta en «Mi negocio» tu honorario mínimo y cuántas bodas necesitas al año."
   ],
@@ -76,11 +78,12 @@ const MAILS: Mail[] = [
    "Buenos días. La pareja te contrata a ti, pero el día de la boda trabajan diez equipos distintos. Si uno falla, la que falla eres tú.",
    "Por eso hoy te enseñamos cómo elegimos, cuidamos y organizamos a nuestros proveedores. Es una de las partes que más nos gusta de este trabajo."
   ],
-  "time": "unos 40 minutos",
+  "time": "alrededor de una hora",
   "tasks": [
-   "Abre la lección 3, «Proveedores: tu equipo de confianza».",
+   "Abre la lección 3, «Proveedores: tu equipo de confianza»: dónde encontrarlos, qué preguntar a cada uno y qué revisar en un contrato.",
    "Descarga la base de datos de proveedores y apunta los cinco primeros de tu zona, de gremios distintos.",
-   "Elige uno y cuéntanos en el grupo qué tres preguntas le harías."
+   "Elige un espacio que encaje con Clara y Marc y prepara las preguntas que le harías.",
+   "Cuéntanos en el grupo qué espacio has elegido y por qué."
   ],
   "sections": [],
   "outro": [
@@ -99,7 +102,7 @@ const MAILS: Mail[] = [
   "tasks": [
    "Abre la lección 4, «Diseño: del Pinterest a un concepto».",
    "Descarga la plantilla de mood board.",
-   "Elige una pareja imaginaria (o tu propia boda soñada) y monta su mood board siguiendo los cinco pasos.",
+   "Monta el mood board de Clara y Marc con su concepto, su paleta y sus materiales, y elige sus tres momentos clave.",
    "Si te apetece, compártelo en el grupo. Nos encantará verlo."
   ],
   "sections": [],
@@ -112,14 +115,14 @@ const MAILS: Mail[] = [
   "subject": "Tus próximos 90 días empiezan hoy",
   "quote": "No hace falta verlo todo claro para empezar. Basta con dar el siguiente paso, y luego el siguiente.",
   "intro": [
-   "Buenos días. Ya has probado el oficio: el calendario de una boda, el presupuesto, los proveedores y el diseño. Ahora toca pensar en ti y en tu negocio.",
+   "Buenos días. Ya has trabajado como una wedding planner: el calendario, el presupuesto, los proveedores y el diseño de la boda de Clara y Marc. Ahora toca pensar en ti y en tu negocio.",
    "Queremos que te quedes con esto: no hace falta que dejes tu trabajo mañana. Con cinco a siete horas a la semana puedes tener la base de tu negocio en 90 días. Poco a poco, pero sin parar."
   ],
   "time": "unos 45 minutos",
   "tasks": [
-   "Abre la lección 5, «Tu negocio en 90 días», y lee las tres fases.",
-   "Empieza tu plan en «Mi negocio» por la fase 1 (días 1 a 30): tu nicho, tus primeros proveedores y la cita con una gestoría.",
-   "Pon una acción concreta y una fecha en cada punto."
+   "Abre la lección 5, «Tu negocio en 90 días»: tu nicho, la parte legal, tu marca, tu portfolio y tu primera reunión.",
+   "Escribe tu nicho en una frase: qué bodas, para qué parejas y en qué zona.",
+   "Empieza tu plan en «Mi negocio» por la fase 1 (días 1 a 30), con una acción concreta y una fecha en cada punto."
   ],
   "sections": [],
   "outro": [
@@ -132,7 +135,7 @@ const MAILS: Mail[] = [
   "quote": "Un sueño con fecha deja de ser un sueño y se convierte en un plan. Y un plan, paso a paso, se cumple.",
   "intro": [
    "Buenos días. Hoy terminas tu plan y te lo llevas contigo.",
-   "Piensa que hace solo seis días esto era una idea. Hoy ya sabes cómo se organiza una boda, cuánto vale tu trabajo, cómo eliges a tus proveedores y cómo creas un concepto. Y tienes un plan con fechas. Eso es mérito tuyo."
+   "Piensa que hace solo seis días esto era una idea. Hoy ya has planificado una boda de principio a fin, sabes cuánto vale tu trabajo y tienes un plan con fechas. Eso es mérito tuyo."
   ],
   "time": "unos 45 minutos",
   "tasks": [
@@ -143,7 +146,7 @@ const MAILS: Mail[] = [
   ],
   "sections": [],
   "outro": [
-   "¿Te has fijado en la última slide de cada lección? Es un adelanto de todo lo que te espera en el programa: lo que has visto esta semana es solo el principio.",
+   "Tómate hoy el tiempo que necesites: este plan es tuyo y es el primer paso de tu negocio.",
    "Mañana se abre tu diagnóstico. Estamos deseando contarte qué camino te encaja."
   ]
  },
@@ -152,11 +155,11 @@ const MAILS: Mail[] = [
   "quote": "Hace siete días era un deseo. Hoy es un plan. Lo que viene después lo construiremos juntas.",
   "intro": [
    "Buenos días. Has llegado al último día del Bootcamp y queremos empezar dándote las gracias, y diciéndote lo orgullosas que estamos de ti.",
-   "En una semana has aprendido cómo trabaja de verdad una wedding planner y tienes tu plan de 90 días con fechas. Eso ya es mucho más de lo que hace la mayoría. Tú no te has quedado en el «algún día»."
+   "En una semana has planificado la boda de Clara y Marc de principio a fin y tienes tu plan de 90 días con fechas. Eso ya es mucho más de lo que hace la mayoría. Tú no te has quedado en el «algún día»."
   ],
   "time": "unos 10 minutos",
   "tasks": [
-   "Abre la última lección y responde las seis preguntas del diagnóstico. Piensa en cómo estás hoy, no en cómo te gustaría estar.",
+   "Abre la última lección: repasa todo lo que has aprendido y responde las seis preguntas del diagnóstico. Piensa en cómo estás hoy, no en cómo te gustaría estar.",
    "Lee tu resultado: te diremos qué camino te encaja, Online, Completo o Signature, y por qué.",
    "Si te encaja Completo o Signature, te escribimos en 48 horas para buscar una llamada de 20 minutos con nosotras."
   ],
