@@ -155,7 +155,7 @@ function agenda(){
 function biblioteca(){
   const items=S.library.filter(l=>(l.plans||[]).includes(S.me.plan)&&stageOpen(S.me,stageOf(l.module||1).n));
   return `<header><h1>Biblioteca</h1><p>Las plantillas del programa, listas para adaptarlas a tu empresa. Aparecen a medida que se abren las etapas.</p></header>
-  <div class="sheet pad">${items.length?`<div class="list">${items.map(l=>`<div class="li"><div class="t"><b style="font-weight:400">${esc(l.title)}</b><small>${esc(l.detail||'')}${l.detail?' · ':''}Módulo ${modNo(l.module)}</small></div><button type="button" class="btn sm" data-act="openFile" data-arg="course|${esc(l.path||'')}">Descargar</button></div>`).join('')}</div>`:`<p class="empty">Pronto subiremos aquí las plantillas.</p>`}</div>`;
+  <div class="sheet pad">${items.length?`<div class="list">${items.map(l=>`<div class="li"><div class="t"><b style="font-weight:400">${esc(l.title)}</b><small>${esc(l.detail||'')}${l.detail?' · ':''}${l.module?'Módulo '+modNo(l.module):'Tu curso'}</small></div><button type="button" class="btn sm" data-act="openFile" data-arg="course|${esc(l.path||'')}">Descargar</button></div>`).join('')}</div>`:`<p class="empty">Pronto subiremos aquí las plantillas.</p>`}</div>`;
 }
 
 // ---------- My business ----------
