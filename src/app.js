@@ -28,7 +28,7 @@ const STAGE_SEED=[
 // What each level includes. Prices are shown on the web; the amount charged lives in the checkout function.
 // stages: Etapa 1 only opens the first stage; the rest open every stage the team publishes
 const PLANS={
-  paso0:{t:'Paso 0',price:47,stages:0,hours:0,feedback:false,qa:false},
+  paso0:{t:'Wedding Planner Bootcamp',price:47,stages:0,hours:0,feedback:false,qa:false},
   etapa1:{t:'Etapa 1',price:197,stages:1,hours:0,feedback:false,qa:false},
   online:{t:'Online',price:590,stages:99,hours:0,feedback:false,qa:true},
   completo:{t:'Completo',price:1990,stages:99,hours:12,feedback:true,qa:true},

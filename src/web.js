@@ -6,19 +6,19 @@ const CONTACT='hola@nubesdealgodonevents.com';
 // In titles, *word* is shown in italics. Prices are not here: they are charged by Stripe (see PLANS and the checkout function).
 const WEB_DEFAULT={
   hero:{eyebrow:'The Wedding Creators · escuela de wedding planners',title:'Tu sueño de *organizar bodas* empieza aquí',
-    lede:'Te enseñamos el oficio de wedding planner paso a paso, sin que tengas que dejar tu trabajo todavía. Con método, con mucho cariño y de la mano de quienes organizan bodas de lujo cada semana en la Costa Brava.',cta1:'Empieza por el Paso 0',cta2:'Descarga la guía gratuita',photo:'/img/ws-039.jpg',alt:'Pilar y Ainoa delante del cartel de The Wedding Creators'},
+    lede:'Te enseñamos el oficio de wedding planner paso a paso, sin que tengas que dejar tu trabajo todavía. Con método, con mucho cariño y de la mano de quienes organizan bodas de lujo cada semana en la Costa Brava.',cta1:'Empieza por el Bootcamp',cta2:'Descarga la guía gratuita',photo:'/img/ws-039.jpg',alt:'Pilar y Ainoa delante del cartel de The Wedding Creators'},
   facts:{items:[{num:'+100',text:'bodas organizadas para parejas de todo el mundo'},{num:'+10',text:'países de origen de nuestras parejas: Estados Unidos, Reino Unido, Irlanda, Holanda, Francia, Italia, Singapur y Dubái, entre otros'},{num:'+20',text:'alumnas formadas con The Wedding Creators'}]},
   who:{eyebrow:'¿Te suena?',title:'Si te reconoces aquí, *no estás sola*',items:[{t:'Tu trabajo ya no te llena',d:'Tienes estabilidad, pero algo dentro de ti sabe que podrías dedicarte a algo que te haga ilusión cada mañana.'},{t:'Siempre acabas organizándolo todo',d:'Los cumpleaños, la despedida, la boda de tu hermana… Te encantan las bodas y guardas cada idea bonita que ves.'},{t:'Pero no sabes por dónde empezar',d:'Te preguntas si se puede vivir de esto, si necesitas contactos o un título y de dónde sacarías el tiempo. Es normal: todas nos lo hemos preguntado.'}],
     after:'Nosotras también empezamos así, con miedo y con muchas ganas. Por eso hemos creado The Wedding Creators: para que tú no tengas que hacerlo sola.'},
   about:{eyebrow:'Quiénes os enseñan',title:'Pilar y Ainoa, de Nubes de Algodón Events',photo:'/img/nosotras-10-anos.jpg',
     text:'Las dos teníamos un trabajo fijo y un día decidimos ir a por nuestro sueño: dedicarnos a las bodas. Hoy, más de diez años después, organizamos bodas de lujo en la Costa Brava, Barcelona y Sicilia para parejas que llegan de todo el mundo.\n\nEn The Wedding Creators te enseñamos todo lo que hacemos cada semana, sin guardarnos nada: cómo presupuestar, cómo elegir proveedores, cómo cuidar a cada pareja y cómo montar tu propia empresa. Y te lo enseñamos como nos habría gustado que nos lo enseñaran a nosotras: con paciencia, con cariño y a tu lado.',
     quote:'Desde el primer día te prometemos una cosa: no soltaremos tu mano hasta que consigas tu objetivo.'},
-  paso0:{eyebrow:'Paso 0 · empieza aquí',title:'Siete días para saber si *esto es para ti*',
+  paso0:{eyebrow:'El método Nubes en 7 días',title:'Wedding Planner *Bootcamp*',
     intro:'Es contenido real de The Wedding Creators, para que lo pruebes antes de decidir. Cada día te llega una lección práctica con su tarea: conocerás la profesión por dentro, calcularás tu precio con tus números y diseñarás tu plan para los tres primeros meses. Y no lo harás sola: te esperamos en nuestra Comunidad de WhatsApp.',
     days:['Días 1 y 2 · Así es la profesión por dentro','Días 3 y 4 · Calcula tu precio','Días 5 y 6 · Diseña tu plan de 90 días','Día 7 · Tu diagnóstico y tu siguiente paso'],
     kitTitle:'Y te llevas tus primeras herramientas de wedding planner',
     items:[{t:'Agenda semanal',d:'Para organizar tus semanas como lo hacemos nosotras.'},{t:'Base de datos de proveedores',d:'Con todos los gremios del sector, para empezar a construir tu equipo de confianza.'},{t:'Plantilla de mood board',d:'Para convertir los sueños de una pareja en un concepto.'},{t:'Calculadora de honorarios',d:'Para descubrir, con tus números, lo que vale tu trabajo.'}],
-    price:'47 €',priceNote:'Y si después sigues con el programa, te lo descontamos.',cta:'Empezar el Paso 0',
+    price:'47 €',priceNote:'Y si después sigues con el programa, te lo descontamos.',cta:'Empezar el Bootcamp',
     soon:'Acceso inmediato a tu portal, a tus cuatro herramientas y a la Comunidad de WhatsApp, donde te esperamos Pilar y Ainoa.'},
   program:{eyebrow:'El programa',title:'The Wedding Creators, *en cuatro etapas*',
     intro:'Primero aprendes el oficio y después montamos juntas tu negocio. Cada módulo es corto, se compagina con tu vida y termina con una herramienta que te quedas para siempre: tu mood board, tu base de proveedores, tus tarifas o tu dossier.',
@@ -33,7 +33,7 @@ const WEB_DEFAULT={
     forCompleto:'Para ti si ya has decidido dar el paso y quieres darlo de nuestra mano.',
     forSignature:'Para ti si sueñas con bodas de lujo y parejas que llegan de todo el mundo.',
     edition:'Próxima edición: febrero de 2027 · 8 plazas',
-    paso0:'¿Aún no lo tienes claro? Es normal. Empieza por el Paso 0.',
+    paso0:'¿Aún no lo tienes claro? Es normal. Empieza por el Bootcamp.',
     upgrade:'Y si después quieres subir de nivel, solo pagas la diferencia.'},
   guide:{mode:'90dias'},
   gallery:{eyebrow:'El fin de semana presencial',title:'Aprender *haciendo*, con proveedores reales',intro:'Así fue el fin de semana de workshops de la primera edición, en la Costa Brava: visitas a espacios, papelería, mesas y los proveedores con los que trabajamos cada semana. Fueron días de aprender, de reír y de emocionarnos juntas. En Signature lo vives con nosotras.',
@@ -41,7 +41,7 @@ const WEB_DEFAULT={
   faq:{title:'Lo que nos preguntáis *antes de empezar*',items:[
     {q:'¿Necesito experiencia previa?',a:'No, para nada. Empezamos por la base de la profesión y te acompañamos hasta que tengas tu empresa en marcha.'},
     {q:'¿Puedo hacerlo sin dejar mi trabajo?',a:'Sí, está pensado justo para eso. Las lecciones son cortas y puedes avanzar con unas horas a la semana. Nosotras también empezamos así.'},
-    {q:'¿Qué es el Paso 0?',a:'Siete días de contenido real de The Wedding Creators para que lo pruebes antes de decidir: conoces la profesión por dentro, calculas tu precio y diseñas tu plan de 90 días, con nosotras en la Comunidad de WhatsApp. Si después sigues con el programa, te descontamos lo que pagaste.'},
+    {q:'¿Qué es el Wedding Planner Bootcamp?',a:'Siete días de contenido real de The Wedding Creators para que lo pruebes antes de decidir: conoces la profesión por dentro, calculas tu precio y diseñas tu plan de 90 días, con nosotras en la Comunidad de WhatsApp. Si después sigues con el programa, te descontamos lo que pagaste.'},
     {q:'¿Qué diferencia hay entre Online, Completo y Signature?',a:'En Online aprendes el oficio a tu ritmo, con una sesión grupal de dudas al mes. En Completo lanzas tu negocio con nosotras: tutorías individuales, feedback en cada entregable, prácticas en una boda nuestra y tu propio shooting. Signature suma el lujo y las bodas destino, con un fin de semana presencial y solo 8 plazas por edición.'},
     {q:'¿Sirve si vivo fuera de España?',a:'Sí. Es online y las tutorías son por videollamada. La parte legal explica España, y en las tutorías lo adaptamos juntas a tu país.'},
     {q:'¿Cómo funcionan las tutorías?',a:'En Completo y Signature tienes 12 horas de tutorías individuales por videollamada, que reservas desde tu portal.'},
@@ -70,7 +70,7 @@ function webPage(){
   const w=W(), p0=w.paso0;
   return `<div class="wrap">
   <div class="nav">${brand()}
-    <nav><a href="/#paso0">Paso 0</a><a href="/#programa">El programa</a><a href="/#nosotras">Quiénes somos</a><a href="/#precios">Precios</a><a href="/#faq">Preguntas</a><a class="btn sm" href="/portal">Acceso alumnas</a></nav></div>
+    <nav><a href="/#paso0">Bootcamp</a><a href="/#programa">El programa</a><a href="/#nosotras">Quiénes somos</a><a href="/#precios">Precios</a><a href="/#faq">Preguntas</a><a class="btn sm" href="/portal">Acceso alumnas</a></nav></div>
 
   <section class="hero">
     <div>
@@ -148,7 +148,7 @@ function webPage(){
       ${planCard('completo','o 6 cuotas de 332 €',w.prices.completo,true,w.prices.forCompleto,w.prices.tCompleto)}
       ${planCard('signature',w.prices.edition,w.prices.signature,false,w.prices.forSignature,w.prices.tSignature)}
     </div>
-    ${w.prices.paso0?`<p class="hint">${esc(w.prices.paso0)} <a class="btn sm" href="/#paso0">Ver el Paso 0</a></p>`:''}
+    ${w.prices.paso0?`<p class="hint">${esc(w.prices.paso0)} <a class="btn sm" href="/#paso0">Ver el Bootcamp</a></p>`:''}
     ${w.prices.upgrade?`<p class="hint">${esc(w.prices.upgrade)}</p>`:''}
   </section>
 
