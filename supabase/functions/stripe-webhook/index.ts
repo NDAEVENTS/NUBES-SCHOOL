@@ -8,12 +8,13 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 // What each level costs. The web shows the same figures (src/app.js, PLANS); change both together.
 // Instalments: number of monthly payments and the amount of each one (in euros, VAT included).
 export const PLANS: Record<string, { name: string; price: number; installments?: { n: number; each: number } }> = {
+  paso0: { name: 'The Wedding Creators · Paso 0', price: 47 },
   etapa1: { name: 'The Wedding Creators · Etapa 1', price: 197 },
   online: { name: 'The Wedding Creators · Online', price: 590, installments: { n: 3, each: 197 } },
   completo: { name: 'The Wedding Creators · Completo', price: 1990, installments: { n: 6, each: 332 } },
   signature: { name: 'The Wedding Creators · Signature', price: 3500, installments: { n: 6, each: 584 } },
 };
-export const RANK: Record<string, number> = { etapa1: 1, online: 2, completo: 3, signature: 4 };
+export const RANK: Record<string, number> = { paso0: 0, etapa1: 1, online: 2, completo: 3, signature: 4 };
 export const cors = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -80,9 +81,13 @@ Deno.serve(async (req) => {
   const year = addMonths(new Date(), 12).toISOString().slice(0, 10);
   const { data: existing } = await admin.from('members').select('*').eq('email', email).maybeSingle();
   if (existing) {
-    // Already a student: move her up a level (never down) and give her a full year from today
+    // Already a student: move her up a level (never down) and give her a full year from today.
+    // Buying something below her level (the Paso 0 when she already has the programme) changes nothing.
+    if ((RANK[plan] ?? 0) < (RANK[existing.plan] ?? 0)) return new Response('already has more');
     const patch: Record<string, unknown> = { access_until: year };
-    if ((RANK[plan] || 0) > (RANK[existing.plan] || 0)) patch.plan = plan;
+    if ((RANK[plan] ?? 0) > (RANK[existing.plan] ?? 0)) patch.plan = plan;
+    // From the Paso 0 to the programme: the stages open counting from today
+    if (existing.plan === 'paso0' && plan !== 'paso0') patch.started_at = today;
     await admin.from('members').update(patch).eq('user_id', existing.user_id);
     return new Response('upgraded');
   }

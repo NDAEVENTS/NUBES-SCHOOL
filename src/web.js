@@ -18,8 +18,8 @@ const WEB_DEFAULT={
     days:['Días 1 y 2 · La profesión por dentro','Días 3 y 4 · Tus números','Días 5 y 6 · Tu plan de 90 días','Día 7 · Tu diagnóstico y tu siguiente paso'],
     kitTitle:'Y te llevas tus primeras herramientas de trabajo',
     items:[{t:'Agenda semanal',d:'Para organizar tus semanas como una wedding planner.'},{t:'Base de datos de proveedores',d:'Con todos los gremios del sector, lista para rellenar.'},{t:'Plantilla de mood board',d:'Para convertir el gusto de una pareja en un concepto.'},{t:'Calculadora de honorarios',d:'Descúbrelo con tus números: tú también puedes ser una de ellas.'}],
-    price:'47 €',priceNote:'Si después sigues con el programa, te lo descontamos.',cta:'Avísame cuando abra',
-    soon:'Abrimos las primeras plazas muy pronto. Déjanos tu email y serás de las primeras en saberlo.'},
+    price:'47 €',priceNote:'Si después sigues con el programa, te lo descontamos.',cta:'Empezar el Paso 0',
+    soon:'Acceso inmediato a tu portal, a las cuatro herramientas y a la Comunidad de WhatsApp con Pilar y Ainoa.'},
   program:{eyebrow:'El programa',title:'The Wedding Creators, *en cuatro etapas*',
     intro:'Primero aprendes el oficio y después montas tu negocio. Cada módulo es corto y termina en una herramienta que te quedas para trabajar: tu mood board, tu base de proveedores, tus tarifas o tu dossier.',
     items:[{t:'El oficio',d:'Cómo se organiza una boda de principio a fin: presupuesto, proveedores, diseño, invitados y el gran día.'},{t:'Tu negocio',d:'Tu cliente ideal, tu marca, la parte legal y cuánto cobrar por tu trabajo.'},{t:'Visibilidad',d:'Tu web, tu Instagram, tu red de proveedores y tu primer shooting.'},{t:'Clientas y experiencia',d:'De la primera reunión a la firma, y cómo cuidar a cada pareja para que te recomiende.'}]},
@@ -113,10 +113,8 @@ function webPage(){
         <h3>${esc(p0.kitTitle)}</h3>
         <div class="kit">${(p0.items||[]).map((k,i)=>`<div class="tool t${i%4}"><span class="ico" aria-hidden="true">${['◷','☰','✿','€'][i%4]}</span><b>${esc(k.t)}</b><small>${esc(k.d)}</small></div>`).join('')}</div>
         <div class="p0buy"><div><b class="price num">${esc(p0.price)}</b><small>${esc(p0.priceNote)}</small></div>
-        ${ui('p0Done')?`<p class="ok">¡Apuntada! Te avisamos en cuanto abra.</p>`:`<form data-form="paso0" class="p0form"><p class="hint">${esc(p0.soon)}</p>
-          <div class="row"><input id="p0name" name="name" required placeholder="Tu nombre" aria-label="Tu nombre" autocomplete="given-name"><input id="p0mail" name="email" type="email" required placeholder="Tu email" aria-label="Tu email" autocomplete="email"></div>
-          <label class="check"><input id="p0ok" type="checkbox" required> <span>He leído y acepto la <a href="/legal/privacidad">política de privacidad</a> y quiero recibir emails de Nubes de Algodón School.</span></label>
-          <button class="btn primary" type="submit">${esc(p0.cta)}</button></form>`}</div>
+        <p class="hint">${esc(p0.soon)}</p>
+        <button type="button" class="btn primary" data-act="buy" data-arg="paso0">${esc(p0.cta)}</button></div>
       </div>
     </div>
   </section>
@@ -212,5 +210,4 @@ FORM.buy=async f=>{ if(CFG.demo){ ui('buy',null); toast('En la versión real, aq
   S.busy=true; render(); const url=await DB.checkout(ui('buy'),f.email.trim(),!!f.installments); location.href=url; };
 // Call requests are stored as leads with source 'signature' (the only other source the database accepts) and the level in extra.plan
 FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',withFrom({plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why})); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
-FORM.paso0=async f=>{ await DB.addLead(f.name,f.email,'guia',withFrom({guide:'paso0'})); ui('p0Done',true); render(); };
 FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',withFrom({guide:guideNow().id})); ui('leadDone',true); render(); };

@@ -28,6 +28,7 @@ const STAGE_SEED=[
 // What each level includes. Prices are shown on the web; the amount charged lives in the checkout function.
 // stages: Etapa 1 only opens the first stage; the rest open every stage the team publishes
 const PLANS={
+  paso0:{t:'Paso 0',price:47,stages:0,hours:0,feedback:false,qa:false},
   etapa1:{t:'Etapa 1',price:197,stages:1,hours:0,feedback:false,qa:false},
   online:{t:'Online',price:590,stages:99,hours:0,feedback:false,qa:true},
   completo:{t:'Completo',price:1990,stages:99,hours:12,feedback:true,qa:true},
@@ -60,7 +61,9 @@ const STG=n=>STAGES.find(s=>s.n===n);
 // A hidden module still belongs to a stage (library items, old tutorials)
 const stageOf=m=>STAGES.find(s=>s.mods.includes(+m))||STAGES.find(s=>s.n===S.cAll?.mods.find(x=>x.n===+m)?.stage)||{n:99,t:'',opens:9999,mods:[]};
 const plan=mem=>PLANS[mem?.plan]||PLANS.online;
-const inPlan=(mem,n)=>plan(mem).stages===1?n===(STAGES[0]?.n??1):true;
+const inPlan=(mem,n)=>{ const k=plan(mem).stages; return k===0?false:k===1?n===(STAGES[0]?.n??1):true; };
+// The levels that follow the course (the Paso 0 has its own seven days, see paso0.js)
+const COURSE_PLANS=()=>Object.entries(PLANS).filter(([,p])=>p.stages);
 // A stage is open when the level includes it and its day has come (the team can open everything for one student)
 const stageOpensOn=(mem,n)=>addDays(mem.started_at||todayISO(),STG(n)?.opens??7*(n-1));
 const stageOpen=(mem,n)=>inPlan(mem,n)&&!!STG(n)&&(mem.unlocked||daysSince(mem.started_at||todayISO())>=STG(n).opens);

@@ -23,6 +23,7 @@ const PMENU=[['','Inicio'],['formacion','Mi formación'],['ejercicios','Ejercici
 const page=()=>S.route.replace(/^\/portal\/?/,'').split('/')[0];
 function portal(){
   const me=S.me, p=plan(me), pg=page();
+  if(me.plan==='paso0'&&!(me.access_until&&me.access_until<todayISO())) return p0Portal();
   if(me.access_until&&me.access_until<todayISO()) return shell(`<header><h1>Tu acceso ha terminado</h1><p>Tu año de acceso terminó el ${fdate(me.access_until)}. Si quieres ampliarlo, escríbenos a <span style="user-select:all">${CONTACT}</span>.</p></header>`);
   const menu=PMENU.filter(([k])=>!(k==='tutorias'&&!p.hours));
   const pend=allEx().filter(x=>stageOpen(me,stageOf(x.m).n)&&!S.subs[x.key]).length;
@@ -123,7 +124,7 @@ FORM.ex=async (f,form)=>{ const ex=form.dataset.ex, send=f.send==='1';
   const files=[...(S.subs[ex]?.files||[])]; for(const file of form.querySelector('input[type=file]').files) files.push(await DB.uploadFile('entregas',file));
   await DB.saveSubmission(ex,f.text,files,send&&plan(S.me).feedback); history.replaceState({},'','/portal/ejercicios'); render();
   toast(send&&plan(S.me).feedback?'Entregado. Te avisaremos cuando tengas el feedback.':'Guardado'); };
-ACT.openFile=async a=>{ const [bucket,path]=a.split('|'); const url=await DB.fileUrl(bucket,path); if(url) window.open(url,'_blank','noopener'); else toast('En la demo no hay archivos reales.'); };
+ACT.openFile=async a=>{ const [bucket,path]=a.split('|'); if(/^https?:/.test(path)) return window.open(path,'_blank','noopener'); const url=await DB.fileUrl(bucket,path); if(url) window.open(url,'_blank','noopener'); else toast('En la demo no hay archivos reales.'); };
 
 // ---------- Tutorials ----------
 function tutorias(){

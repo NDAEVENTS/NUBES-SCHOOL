@@ -117,7 +117,7 @@ function pAgenda(){
   <form class="sheet pad" data-form="event"><h3 style="font-size:20px">Añadir a la agenda</h3>
     <div class="formgrid"><div class="field"><span>Tipo</span><select id="ekind" name="kind">${Object.entries(K).map(([k,t])=>`<option value="${k}">${t}</option>`).join('')}</select></div><div class="field"><span>Título</span><input id="etitle" name="title" required placeholder="Sesión de dudas de diciembre"></div>
     <div class="field"><span>Día y hora (hora de Madrid)</span><input id="ewhen" name="when" type="datetime-local" required></div><div class="field"><span>Enlace o lugar</span><input id="elink" name="link" placeholder="https://meet.google.com/… o la dirección"></div></div>
-    <div class="row">${Object.entries(PLANS).map(([k,p])=>`<label class="check"><input type="checkbox" name="p_${k}" ${k!=='etapa1'?'checked':''}> ${p.t}</label>`).join('')}</div>
+    <div class="row">${Object.entries(PLANS).map(([k,p])=>`<label class="check"><input type="checkbox" name="p_${k}" ${k!=='etapa1'&&k!=='paso0'?'checked':''}> ${p.t}</label>`).join('')}</div>
     <button class="btn primary" type="submit" style="align-self:flex-start">Añadir</button></form>`;
 }
 FORM.event=async (f,form)=>{ const link=/^https?:/.test(f.link)?f.link:''; const ev={id:crypto.randomUUID(),kind:f.kind,title:f.title,starts_at:madrid(f.when),link,place:link?'':f.link,plans:Object.keys(PLANS).filter(k=>f['p_'+k])};
@@ -125,14 +125,17 @@ FORM.event=async (f,form)=>{ const link=/^https?:/.test(f.link)?f.link:''; const
 ACT.delEvent=async i=>{ await DB.deleteEvent(S.events[+i]); render(); };
 function pBiblioteca(){
   return `<header><h1>Biblioteca</h1><p>Las plantillas que descargan las alumnas. Cada una aparece cuando se abre la etapa de su módulo.</p></header>
-  <div class="sheet pad">${S.library.length?`<div class="list">${S.library.map((l,i)=>`<div class="li"><div class="t"><b style="font-weight:400">${esc(l.title)}</b><small>Módulo ${modNo(l.module)}${l.detail?' · '+esc(l.detail):''}${l.path?'':' · falta subir el archivo'}</small></div>${l.path?`<button type="button" class="btn sm" data-act="openFile" data-arg="course|${esc(l.path)}">Ver</button>`:''}<button type="button" class="btn sm" data-act="delLib" data-arg="${i}">Quitar</button></div>`).join('')}</div>`:`<p class="empty">Todavía no hay plantillas.</p>`}</div>
+  <div class="sheet pad">${S.library.length?`<div class="list">${S.library.map((l,i)=>`<div class="li"><div class="t"><b style="font-weight:400">${esc(l.title)}</b><small>${(l.plans||[]).includes('paso0')?'Paso 0':'Módulo '+modNo(l.module)}${l.detail?' · '+esc(l.detail):''}${l.path?'':' · falta subir el archivo'}</small></div>${l.path?`<button type="button" class="btn sm" data-act="openFile" data-arg="course|${esc(l.path)}">${/^https?:/.test(l.path)?'Abrir':'Ver'}</button>`:''}<button type="button" class="btn sm" data-act="delLib" data-arg="${i}">Quitar</button></div>`).join('')}</div>`:`<p class="empty">Todavía no hay plantillas.</p>`}</div>
   <form class="sheet pad" data-form="lib"><h3 style="font-size:20px">Subir plantilla</h3>
     <div class="formgrid"><div class="field"><span>Título</span><input id="ltitle" name="title" required></div><div class="field"><span>Detalle (opcional)</span><input id="ldetail" name="detail" placeholder="Word, hoja de cálculo…"></div>
-    <div class="field"><span>Módulo</span><select id="lmod" name="module">${S.cAll.mods.map(m=>`<option value="${m.n}">Módulo ${modNo(m.n)} · ${esc(m.title)}</option>`).join('')}</select></div><div class="field"><span>Archivo</span><input id="lfile" name="file" type="file" required></div></div>
+    <div class="field"><span>Módulo</span><select id="lmod" name="module"><option value="p0">Paso 0 (solo alumnas del Paso 0)</option>${S.cAll.mods.map(m=>`<option value="${m.n}">Módulo ${modNo(m.n)} · ${esc(m.title)}</option>`).join('')}</select></div><div class="field"><span>Archivo</span><input id="lfile" name="file" type="file"></div><div class="field"><span>O un enlace (p. ej. la Comunidad de WhatsApp)</span><input id="llink" name="link" type="url" placeholder="https://chat.whatsapp.com/…"></div></div>
     <button class="btn primary" type="submit" style="align-self:flex-start">Subir</button></form>`;
 }
-FORM.lib=async (f,form)=>{ const file=form.querySelector('#lfile').files[0]; const mod=+f.module;
-  await DB.addLibrary({id:crypto.randomUUID(),title:f.title,detail:f.detail,module:mod,plans:Object.keys(PLANS).filter(k=>inPlan({plan:k},stageOf(mod).n))},file); render(); toast('Plantilla subida'); };
+FORM.lib=async (f,form)=>{ const file=form.querySelector('#lfile').files[0], link=(f.link||'').trim(), p0=f.module==='p0', mod=p0?0:+f.module;
+  if(!file&&!link) return toast('Elige un archivo o pega un enlace');
+  const item={id:crypto.randomUUID(),title:f.title,detail:f.detail,module:mod,plans:p0?['paso0']:Object.keys(PLANS).filter(k=>inPlan({plan:k},stageOf(mod).n))};
+  if(!file) item.path=link;
+  await DB.addLibrary(item,file); render(); toast(file?'Plantilla subida':'Enlace guardado'); };
 ACT.delLib=async i=>{ await DB.deleteLibrary(S.library[+i]); render(); };
 // Call requests (Completo, Signature, students who want to move up) come in as leads with source 'signature' and the level in extra.plan
 const leadPlan=l=>PLANS[l.extra?.plan]?l.extra.plan:'signature';

@@ -28,7 +28,7 @@ const FORMAT_HINT='Escribe como en un email: deja una línea en blanco para empe
 function pCurso(arg,kind,k){
   if(arg&&cMod(arg)){ if(kind==='l') return pLesson(cMod(arg),k); if(kind==='e') return pExercise(cMod(arg),k); return pModule(cMod(arg)); }
   const t=cTab(), st=cTabStages(t), P=PLANS[t], extra=S.cAll.mods.filter(m=>(m.plans||[]).length).length;
-  const tabs=`<div class="tabs ctabs">${[['','Aplica a todos'],...Object.entries(PLANS).map(([x,p])=>[x,p.t])].map(([x,l])=>`<button type="button" data-act="cplan" data-arg="${x}" aria-pressed="${t===x}"${x?'':' class="all"'}>${l}</button>`).join('')}</div>`;
+  const tabs=`<div class="tabs ctabs">${[['','Aplica a todos'],...COURSE_PLANS().map(([x,p])=>[x,p.t])].map(([x,l])=>`<button type="button" data-act="cplan" data-arg="${x}" aria-pressed="${t===x}"${x?'':' class="all"'}>${l}</button>`).join('')}</div>`;
   const intro=t?`<div class="sheet pad"><p>Así ve el curso una alumna de <b>${P.t}</b>: los módulos comunes a todos los niveles más los que son solo para ${P.t}.${P.stages===1?' Este nivel solo incluye la primera etapa.':''} Los módulos comunes se editan igual desde aquí o desde “Aplica a todos”; los que añadas en esta pestaña serán solo para ${P.t}.</p></div>`
     :`<div class="sheet pad"><p>Lo que pongáis aquí lo ven <b>todos los niveles</b>: las etapas y los módulos comunes. Para lo que solo ve un nivel, entrad en su pestaña.${extra?` Ahora mismo hay ${extra} módulo${extra>1?'s':''} exclusivo${extra>1?'s':''} de algún nivel.`:''}</p></div>`;
   return `<header><h1>Edición del curso</h1><p>Así se organiza The Wedding Creators en el portal de las alumnas. Cada nivel ve lo común más lo suyo. Entrad en cada módulo para escribir sus lecciones, añadir vídeos y archivos, y preparar sus ejercicios. Lo que guardáis lo ven al momento.</p></header>
@@ -75,7 +75,7 @@ function pModule(m){
       <div class="field"><span>Etapa</span><select id="ms" name="stage">${S.cAll.stages.map(s=>`<option value="${s.n}" ${s.n===m.stage?'selected':''}>Etapa ${s.n} · ${esc(s.title)}</option>`).join('')}</select></div>
       <div class="field"><span>Horas de tutoría (Completo y Signature)</span><input id="mh" name="hours" type="number" min="0" max="12" step="0.5" value="${+m.hours||0}"></div></div>
     <div class="field"><span>Texto de la tutoría (lo ven al terminar el módulo)</span><textarea id="mtu" name="tutoria" rows="3">${esc(m.tutoria||'')}</textarea></div>
-    <fieldset class="field" style="border:0;padding:0;margin:0"><span>Para quién es</span><div class="row">${Object.entries(PLANS).map(([k,p])=>`<label class="check"><input id="mpl-${k}" name="pl_${k}" type="checkbox" ${forPlan(m,k)?'checked':''}> ${p.t}</label>`).join('')}</div></fieldset>
+    <fieldset class="field" style="border:0;padding:0;margin:0"><span>Para quién es</span><div class="row">${COURSE_PLANS().map(([k,p])=>`<label class="check"><input id="mpl-${k}" name="pl_${k}" type="checkbox" ${forPlan(m,k)?'checked':''}> ${p.t}</label>`).join('')}</div></fieldset>
     <p class="hint">Con todos marcados es un módulo común y aparece en “Aplica a todos”. Si solo marcas algunos, únicamente lo verán esas alumnas.${m.stage!==S.cAll.stages[0]?.n?' Etapa 1 solo incluye la primera etapa, así que aunque la marques no verá este módulo.':''}</p>
     <label class="check"><input id="mp" name="published" type="checkbox" ${m.published===false?'':'checked'}> Visible para las alumnas</label>
     <button class="btn primary" type="submit" style="align-self:flex-start">Guardar módulo</button></form>
@@ -93,10 +93,10 @@ function itemList(m,kind){
         <div class="row"><button type="button" class="btn sm" data-act="itemMove" data-arg="${m.n}|${kind}|${i}|-1" ${i?'':'disabled'} aria-label="Subir">↑</button><button type="button" class="btn sm" data-act="itemMove" data-arg="${m.n}|${kind}|${i}|1" ${i<items.length-1?'':'disabled'} aria-label="Bajar">↓</button><a class="btn sm" href="/panel/curso/${m.n}/${kind}/${x.k}">Editar</a></div></div>`; }).join('')||`<p class="empty">Todavía no hay ${L?'lecciones':'ejercicios'}.</p>`}</div></div>`;
 }
 FORM.mod=async (f,form)=>{ const m=cMod(form.dataset.n), stage=+f.stage;
-  const ps=Object.keys(PLANS).filter(k=>form.querySelector(`[name=pl_${k}]`)?.checked);
+  const ps=COURSE_PLANS().map(([k])=>k).filter(k=>form.querySelector(`[name=pl_${k}]`)?.checked);
   if(!ps.length) return toast('Marca al menos un nivel que vea este módulo.');
   if(stage!==m.stage){ m.position=cStageMods(stage).length; }
-  Object.assign(m,{title:f.title.trim(),stage,hours:Math.max(0,+f.hours||0),tutoria:f.tutoria.trim(),published:!!f.published,plans:ps.length===Object.keys(PLANS).length?[]:ps});
+  Object.assign(m,{title:f.title.trim(),stage,hours:Math.max(0,+f.hours||0),tutoria:f.tutoria.trim(),published:!!f.published,plans:ps.length===COURSE_PLANS().length?[]:ps});
   await DB.saveModule(m); render(); toast('Módulo guardado'); };
 ACT.delMod=async n=>{ const m=cMod(n); if((m.lessons||[]).length||(m.exercises||[]).length) return; await DB.deleteModule(m); nav('/panel/curso'); toast('Módulo eliminado'); };
 ACT.addItem=async a=>{ const [n,kind]=a.split('|'), m=cMod(n), L=kind==='l';

@@ -232,6 +232,11 @@ td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
   .kit{grid-template-columns:minmax(0,1fr)}
   .p0form .row{flex-wrap:wrap}
 }
+.li.locked{opacity:.6}
+.li .tick{flex:none}
+.tut ol{margin:6px 0 10px;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+@media print{body.print-plan .side,body.print-plan .main>:not(#p0-plan),body.print-plan .noprint,body.print-plan .demo-note,body.print-plan .toast{display:none!important}
+  body.print-plan .app{display:block}body.print-plan #p0-plan{border:0;box-shadow:none}body.print-plan input{border:0;border-bottom:1px solid #ccc;border-radius:0;background:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 <style>

@@ -138,7 +138,7 @@ const DB={
   async deleteIg(row){ S.ig=S.ig.filter(r=>r!==row); if(CFG.demo) return; ok(await sb.from('ig_stats').delete().eq('id',row.id)); },
   async saveLead(l,ch){ Object.assign(l,ch); if(CFG.demo) return; ok(await sb.from('leads').update(ch).eq('id',l.id)); },
   async deleteLead(l){ S.leads=S.leads.filter(x=>x!==l); if(CFG.demo) return; ok(await sb.from('leads').delete().eq('id',l.id)); },
-  async deleteLibrary(item){ S.library=S.library.filter(x=>x!==item); if(CFG.demo) return; if(item.path) await sb.storage.from('course').remove([item.path]); ok(await sb.from('library').delete().eq('id',item.id)); },
+  async deleteLibrary(item){ S.library=S.library.filter(x=>x!==item); if(CFG.demo) return; if(item.path&&!/^https?:/.test(item.path)) await sb.storage.from('course').remove([item.path]); ok(await sb.from('library').delete().eq('id',item.id)); },
 };
 
 // ---------- Demo data ----------
@@ -150,7 +150,8 @@ function demoSeed(){
     nubes:{user_id:'u-ainoa',role:'nubes',name:'Ainoa',email:'ainoa@ejemplo.com'},
   };
   S.events=[{id:'e1',kind:'qa',title:'Sesión de dudas de noviembre',starts_at:iso(10),link:'https://meet.google.com/',plans:['online','completo','signature']},{id:'e2',kind:'workshop',title:'Fin de semana de workshops · Costa Brava',starts_at:iso(48),link:'',plans:['signature']}];
-  S.library=[['Contrato de servicios','Validado por abogado',2],['Cesión de derechos de imagen','',2],['Plantilla DAFO','',2],['Base de datos de proveedores','Hoja de cálculo',2],['Dossier de servicios de ejemplo','',4],['Wedding book de ejemplo','',5],['Calculadora de honorarios','Hoja de cálculo',6],['Control de pagos','Hoja de cálculo',6],['Plantilla de planificación','Vacía y ejemplo real',7]].map(([t,d,m],i)=>({id:'l'+i,title:t,detail:d,module:m,path:'',plans:['etapa1','online','completo','signature'].slice(m<=2?0:1)}));
+  S.library=[['Contrato de servicios','Validado por abogado',2],['Cesión de derechos de imagen','',2],['Plantilla DAFO','',2],['Base de datos de proveedores','Hoja de cálculo',2],['Dossier de servicios de ejemplo','',4],['Wedding book de ejemplo','',5],['Calculadora de honorarios','Hoja de cálculo',6],['Control de pagos','Hoja de cálculo',6],['Plantilla de planificación','Vacía y ejemplo real',7]].map(([t,d,m],i)=>({id:'l'+i,title:t,detail:d,module:m,path:'',plans:['etapa1','online','completo','signature'].slice(m<=2?0:1)}))
+    .concat([['Agenda semanal','PDF para imprimir'],['Base de datos de proveedores','Hoja de cálculo'],['Plantilla de mood board','PDF y PowerPoint'],['Calculadora de honorarios','Hoja de cálculo']].map(([t,d],i)=>({id:'p'+i,title:t,detail:d,module:0,path:'',plans:['paso0']})),[{id:'pw',title:'Comunidad de WhatsApp',detail:'',module:0,path:'https://chat.whatsapp.com/ejemplo',plans:['paso0']}]);
   S.progress={}; [[1,6],[2,10],[3,2]].forEach(([m,n])=>{ for(let i=0;i<n;i++) S.progress[lessonKey(m,i)]=iso(-9+m*2); });
   S.subs={
     '2-e0':{id:'s1',user_id:'u-lucia',exercise:'2-e0',text:'Valeria y Marc, 34 y 36 años, arquitectos de Barcelona. Boda civil en una masía del Empordà, 120 invitados, estilo mediterráneo y elegante…',files:[],status:'rev',feedback:'Muy bien definida la pareja. Afina el rango de presupuesto: con este estilo, piensa en bodas de 35.000 € en adelante.',feedback_by:'Ainoa',feedback_at:iso(-3),updated_at:iso(-5)},

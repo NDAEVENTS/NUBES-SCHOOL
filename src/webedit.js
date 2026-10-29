@@ -5,7 +5,7 @@ const WEB_SECTIONS=[
   ['facts','Cifras de la portada',null],
   ['who','¿Te suena?',[['eyebrow','Antetítulo'],['title','Título'],['after','Frase final','area']]],
   ['about','Quiénes os enseñan',[['photo','Vuestra foto (vertical, 4:5)','photo'],['eyebrow','Antetítulo'],['title','Título'],['text','Texto (una línea en blanco separa párrafos)','area'],['quote','Frase destacada','area']]],
-  ['paso0','Paso 0',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['days','Los días (una línea por bloque; « · » separa días y tema)','lines'],['kitTitle','Título del kit'],['price','Precio'],['priceNote','Texto bajo el precio'],['soon','Texto del formulario','area'],['cta','Botón']]],
+  ['paso0','Paso 0',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area'],['days','Los días (una línea por bloque; « · » separa días y tema)','lines'],['kitTitle','Título del kit'],['price','Precio'],['priceNote','Texto bajo el precio'],['soon','Texto junto al botón','area'],['cta','Botón']]],
   ['program','El programa',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area']]],
   ['gallery','Fotos del presencial',[['eyebrow','Antetítulo'],['title','Título'],['intro','Texto','area']]],
   ['testimonials','Testimonios',[['eyebrow','Antetítulo'],['title','Título']]],
