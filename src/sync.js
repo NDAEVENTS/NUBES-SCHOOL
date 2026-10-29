@@ -93,7 +93,8 @@ const DB={
     S.tuts.push(row); if(CFG.demo||S.realMe) return; ok(await sb.from('tutorials').insert(row)); },
   async saveBusiness(){ if(CFG.demo||S.realMe) return; ok(await sb.from('business').upsert({user_id:S.user.id,data:S.biz,updated_at:new Date().toISOString()})); },
 
-  async studentExtra(id){ if(CFG.demo) return {biz:id==='u-lucia'?S.panelState.biz:{},notes:id==='u-lucia'?S.panelState.notes:[]};
+  // Laura (Paso 0, day 3): what she has written so far
+  async studentExtra(id){ if(CFG.demo) return {biz:id==='u-lucia'?S.panelState.biz:id==='u-laura'?LAURA_BIZ:{},notes:id==='u-lucia'?S.panelState.notes:[]};
     const [B,N]=await Promise.all([sb.from('business').select('data').eq('user_id',id).maybeSingle(),sb.from('notes').select('*').eq('user_id',id).order('created_at',{ascending:false})]).then(rs=>rs.map(ok));
     return {biz:B?.data||{},notes:N}; },
   // ---------- Web ----------
@@ -162,11 +163,12 @@ function demoSeed(){
   S.biz={ideal:'Pareja de 30–40 años, boda de lujo en el Empordà, 120 invitados.',name:'Atelier Olivo Bodas',domain:'atelierolivo.com',services:'',calc:{m:400,a:1000,s:2500,b:17},vendors:[{cat:'Catering',name:'Mas Ejemplo Catering',st:'Contactado'},{cat:'Fotografía',name:'Estudio Ejemplo',st:'Reunión hecha'}],couples:[]};
   S.notes=[{id:'n1',body:'¡Qué bien quedó tu cliente ideal, Lucía! Revisa los comentarios del DAFO cuando puedas y lo vemos en la tutoría.',by:'Ainoa',created_at:iso(-2)}];
   S.members=[S.demo.alumna,
+    {user_id:'u-laura',role:'alumna',name:'Laura Pérez',email:'ainoa+laura@nubesdealgodonevents.com',plan:'paso0',started_at:addDays(todayISO(),-2),access_until:addDays(todayISO(),363),country:'España',last_seen:iso(0),created_at:iso(-2)},
     {user_id:'u-carmen',role:'alumna',name:'Carmen Ruiz',email:'carmen@ejemplo.com',plan:'signature',started_at:addDays(todayISO(),-3),access_until:addDays(todayISO(),362),country:'México',last_seen:iso(-1),created_at:iso(-3)},
     {user_id:'u-vale',role:'alumna',name:'Valentina Gómez',email:'valentina@ejemplo.com',plan:'online',started_at:addDays(todayISO(),-17),access_until:addDays(todayISO(),348),country:'Colombia',last_seen:iso(0),created_at:iso(-17)},
     {user_id:'u-marta',role:'alumna',name:'Marta Soler',email:'marta@ejemplo.com',plan:'completo',started_at:addDays(todayISO(),-30),access_until:addDays(todayISO(),335),country:'España',last_seen:iso(-12),created_at:iso(-30)},
     S.demo.nubes];
-  S.allProgress=[...Object.entries(S.progress).map(([lesson,done_at])=>({user_id:'u-lucia',lesson,done_at})),...allLessons().slice(0,40).map(l=>({user_id:'u-vale',lesson:l,done_at:iso(-2)})),...allLessons().slice(0,50).map(l=>({user_id:'u-marta',lesson:l,done_at:iso(-12)})),...allLessons().slice(0,3).map(l=>({user_id:'u-carmen',lesson:l,done_at:iso(-1)}))];
+  S.allProgress=[...Object.entries(S.progress).map(([lesson,done_at])=>({user_id:'u-lucia',lesson,done_at})),...allLessons().slice(0,40).map(l=>({user_id:'u-vale',lesson:l,done_at:iso(-2)})),...allLessons().slice(0,50).map(l=>({user_id:'u-marta',lesson:l,done_at:iso(-12)})),...allLessons().slice(0,3).map(l=>({user_id:'u-carmen',lesson:l,done_at:iso(-1)})),{user_id:'u-laura',lesson:'p0-1',done_at:iso(-1)}];
   S.allSubs=Object.values(S.subs);
   S.allTuts=[...S.tuts,{id:'t4',user_id:'u-carmen',module:1,hours:1,status:'requested',note:'Mejor por las tardes (hora de México).',created_at:iso(-1)}];
   S.leads=[{id:'d1',name:'Paula',email:'paula@ejemplo.com',source:'guia',created_at:iso(-1)},{id:'d2',name:'Andrea',email:'andrea@ejemplo.com',source:'signature',extra:{country:'Argentina',why:'Organizo eventos corporativos y quiero pasarme a bodas.'},created_at:iso(-2)},{id:'d3',name:'Sofía',email:'sofia@ejemplo.com',source:'guia',created_at:iso(-4)}];
@@ -183,3 +185,5 @@ function demoAs(role){
   if(role==='alumna'){ S.subs=Object.fromEntries(S.allSubs.filter(s=>s.user_id==='u-lucia').map(s=>[s.exercise,s])); S.tuts=S.allTuts.filter(t=>t.user_id==='u-lucia'); }
 }
 ACT.demoAs=role=>{ demoAs(role); nav(role==='nubes'?'/panel':'/portal'); };
+
+const LAURA_BIZ={p0:{why:'Llevo diez años en una oficina y siempre acabo organizando las celebraciones de mi familia. Quiero que esto sea mi trabajo.',bodas:'Bodas íntimas en masías del Empordà, con mucho detalle.',senales:'6'}};
