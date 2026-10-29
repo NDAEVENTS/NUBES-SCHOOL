@@ -20,7 +20,7 @@ const html = (name: string, day: number, body: string, site: string) => `<div st
   <h1 style="font-weight:400;font-size:26px;margin:0 0 18px">${esc(MAILS[day - 1][0])}</h1>
   <p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6">Hola ${esc(name)},</p>
   <p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6">${esc(body)}</p>
-  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:26px 0 10px"><tr><td bgcolor="#F2E8E8" style="background-color:#F2E8E8;border:1px solid #8E5A5E;border-radius:999px;padding:13px 24px"><a href="${site}/portal" style="color:#8E5A5E;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold;display:inline-block"><font color="#8E5A5E">Entrar en mi portal</font></a></td></tr></table>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:26px 0 10px"><tr><td bgcolor="#8E5A5E" style="background-color:#8E5A5E;border-radius:999px;padding:13px 24px"><a href="${site}/portal" style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold;display:inline-block"><font color="#FFFFFF">Entrar en mi portal</font></a></td></tr></table>
   <p style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B6D78;line-height:1.6;margin:0 0 18px">Si no ves el botón, pulsa aquí: <a href="${site}/portal" style="color:#8E5A5E;text-decoration:underline">Entrar en mi portal</a></p>
   <p style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B6D78">Pilar y Ainoa</p>
 </div>`;
