@@ -94,7 +94,7 @@ La web vive gratis en Cloudflare Pages y se ve en `school.nubesdealgodonevents.c
 3. **Edge Functions → Deploy a new function → Via Editor**: nombre `paso0-emails`, contenido [`supabase/functions/paso0-emails/index.ts`](supabase/functions/paso0-emails/index.ts). En sus **Settings**, desactiva **Verify JWT**.
 4. **Resend → API Keys → Create** (permiso *Sending access*). Cópiala y pégala en **Supabase → Edge Functions → Secrets** como `RESEND_API_KEY`.
 5. **Integrations → Cron → Create job**: nombre `paso0-emails`, horario `0 * * * *` (cada hora), tipo **Supabase Edge Function**, método **POST**, función `paso0-emails`. Si te pide activar la extensión, acepta.
-6. **WhatsApp**: dentro de la Comunidad "The Wedding Creators · Nubes de Algodón School", crea el grupo "The Wedding Creators · Bootcamp" (foto: `school/whatsapp/twc-bootcamp.jpg`). Copia su enlace de invitación.
+6. **WhatsApp**: dentro de la Comunidad "The Wedding Creators · Nubes de Algodón School", el grupo del curso de 47 € se llama "TWC · Bootcamp" (foto: `school/whatsapp/twc-bootcamp.jpg`). Copia su enlace de invitación.
 7. **Panel → Biblioteca → Subir plantilla**, con nivel **Bootcamp**: las 4 herramientas (agenda, base de proveedores, mood board y calculadora) y, como enlace, el grupo de WhatsApp (título "Grupo de WhatsApp").
 
 ---
