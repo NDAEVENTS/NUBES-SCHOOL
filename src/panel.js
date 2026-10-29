@@ -144,7 +144,7 @@ const leadPlan=l=>PLANS[l.extra?.plan]?l.extra.plan:'signature';
 // Follow-up states for a lead, kept in extra.status with the notes in extra.notes
 const LEAD_ST=[['nueva','Nueva'],['contactada','Contactada'],['interesada','Interesada'],['llamada','Llamada hecha'],['alumna','Ya es alumna'],['descartada','Descartada']];
 const leadSt=l=>LEAD_ST.find(([k])=>k===l.extra?.status)?.[1]||'Nueva';
-const leadGuide=l=>l.extra?.guide==='paso0'?'Paso 0 (lista de espera)':(GUIDES.find(x=>x.id===(l.extra?.guide||'errores'))?.t||'').replace(/\*/g,'').split(':')[0];
+const leadGuide=l=>l.extra?.guide==='paso0'?'Bootcamp (lista de espera)':(GUIDES.find(x=>x.id===(l.extra?.guide||'errores'))?.t||'').replace(/\*/g,'').split(':')[0];
 function pLeads(){
   const sig=S.leads.filter(l=>l.source==='signature'), g=S.leads.filter(l=>l.source!=='signature'), ed=S.leads.find(l=>l.id===ui('leadEdit'));
   const editBtn=l=>`<button type="button" class="btn sm" data-act="leadEdit" data-arg="${l.id}">Editar</button>`;
