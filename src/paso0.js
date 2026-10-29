@@ -15,7 +15,7 @@ const P0=[
     ['h','Cómo se cobra en esta profesión'],['li','Tarifa fija por servicio: la más clara para la pareja y la que usamos en Nubes.'],['li','Porcentaje del presupuesto: si lo usas, ponle siempre un mínimo.'],['li','Coordinación del día: menos horas y menos riesgo; la puerta de entrada de muchas planners.'],
     ['h','Tu precio sale de tus números, no de los de la competencia'],['p','Abre la calculadora de honorarios y rellena solo las casillas rosas: tus gastos fijos, lo que quieres ganar y cuántas bodas te ves organizando al año. La calculadora te dice tu honorario mínimo por boda: por debajo de esa cifra, cada boda te cuesta dinero.'],
     ['p','Después mira la pestaña “Escenarios”: verás cómo cambia tu precio si haces 6, 10 o 15 bodas. Más bodas no siempre es mejor: cada una son muchas horas.'],
-    ['h','Cómo te pagan: nuestro método 30 / 30 / 40'],['p','Un 30 % al reservar la fecha, otro 30 % unos meses antes y el 40 % final una semana antes de la boda. Así tienes ingresos repartidos todo el año y la boda está pagada antes de empezar.']],
+    ['h','Cómo te pagan: nuestro método 30 / 20 / 20 / 30'],['p','Un 30 % de paga y señal al reservar la fecha, dos pagos intermedios del 20 % y el 30 % final un mes antes de la boda. Así tienes ingresos repartidos todo el año y la boda está pagada antes de empezar.']],
     tasks:['Rellena la calculadora con tus números reales.','Apunta en “Mi negocio” tu honorario mínimo y cuántas bodas necesitas al año.','Comparte en la Comunidad lo que más te ha sorprendido (sin cifras, si no quieres).'],
     tool:'La calculadora de honorarios.',more:['Cuánto gana una wedding planner en España','/guia-numeros.pdf'],sec:'nums'},
   {n:3,day:4,days:'Días 5 y 6',t:'Tu plan de 90 días',b:[
