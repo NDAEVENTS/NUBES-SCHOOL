@@ -91,8 +91,8 @@ function webPage(){
   </section>
 
   <section class="sec" id="nosotras">
-    <div class="about">
-      ${w.about.photo?`<img class="portrait" src="${esc(w.about.photo)}" alt="${esc(w.about.title)}">`:`<div class="portrait">Foto de Pilar y Ainoa</div>`}
+    <div class="about${w.about.photo?'':' nophoto'}">
+      ${w.about.photo?`<img class="portrait" src="${esc(w.about.photo)}" alt="${esc(w.about.title)}">`:''}
       <div style="display:flex;flex-direction:column;gap:16px">
         <span class="eyebrow">${esc(w.about.eyebrow)}</span>
         <h2>${em(w.about.title)}</h2>
@@ -127,12 +127,12 @@ function webPage(){
     <div class="stages">${w.program.items.map((s,i)=>`<div class="stage"><span class="wk">Etapa ${i+1}</span><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
   </section>
 
-  <section class="sec">
+  ${(w.gallery.items||[]).some(g=>g.src)?`<section class="sec">
     <span class="eyebrow">${esc(w.gallery.eyebrow)}</span>
     <h2>${em(w.gallery.title)}</h2>
     <p class="intro">${esc(w.gallery.intro)}</p>
-    ${(w.gallery.items||[]).length?`<div class="gallery">${w.gallery.items.filter(g=>g.src).map(g=>`<img src="${esc(g.src)}" alt="${esc(g.alt||'')}" loading="lazy">`).join('')}</div>`:''}
-  </section>
+    <div class="gallery">${w.gallery.items.filter(g=>g.src).map(g=>`<img src="${esc(g.src)}" alt="${esc(g.alt||'')}" loading="lazy">`).join('')}</div>
+  </section>`:''}
   ${w.testimonials.items.length?`<section class="sec">
     <span class="eyebrow">${esc(w.testimonials.eyebrow)}</span>
     <h2>${em(w.testimonials.title)}</h2>
