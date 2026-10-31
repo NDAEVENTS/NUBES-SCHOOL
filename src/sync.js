@@ -107,6 +107,8 @@ const DB={
     ok(await sb.from('submissions').update({status:'rev',feedback,feedback_by:S.me.name,feedback_at:sub.feedback_at}).eq('id',sub.id)); },
   async saveTutorial(t){ if(CFG.demo){ if(!S.allTuts.includes(t)) S.allTuts.push(t); return; } ok(await sb.from('tutorials').upsert(t)); },
   async addNote(user_id,body){ const n={id:crypto.randomUUID(),user_id,body,by:S.me.name,created_at:new Date().toISOString()}; if(!CFG.demo) ok(await sb.from('notes').insert(n)); return n; },
+  // Deletes her sign-in and, by cascade, everything of hers except payments and leads (supabase/borrar-alumna.sql)
+  async deleteMember(m){ S.members=S.members.filter(x=>x!==m); if(CFG.demo) return; ok(await sb.rpc('delete_alumna',{p_user:m.user_id})); },
   async updateMember(m,patch){ Object.assign(m,patch); if(CFG.demo) return; ok(await sb.from('members').update(patch).eq('user_id',m.user_id)); },
   async invite(body){ if(CFG.demo){ S.members.unshift({user_id:uid('u'),role:'alumna',name:body.name,email:body.email,plan:body.plan,started_at:todayISO(),access_until:addDays(todayISO(),365),created_at:new Date().toISOString()}); return; }
     const r=await sb.functions.invoke('invite',{body:Object.assign({redirect:CFG.site+'/acceso'},body)}); if(r.error||!r.data?.ok) throw Object.assign(new Error('invite'),{friendly:r.data?.error==='exists'?'Ese email ya tiene acceso.':'No se ha podido enviar la invitación.'}); await loadPanel(); },

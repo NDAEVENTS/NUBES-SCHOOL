@@ -99,6 +99,14 @@ La web vive gratis en Cloudflare Pages y se ve en `school.nubesdealgodonevents.c
 
 ---
 
+## 8. Eliminar alumnas desde el panel 👉
+
+Una sola vez: **SQL Editor → New query** → pega todo [`supabase/borrar-alumna.sql`](supabase/borrar-alumna.sql) → **Run**. Abajo debe salir `delete_alumna lista`.
+
+Desde ese momento: **Panel → Alumnas → la alumna → Eliminar alumna → Sí, eliminar**. Deja de poder entrar y se borran su progreso, ejercicios, tutorías, mensajes y “Mi negocio”. Sus pagos (Panel → Ventas) y su lead se quedan. Si solo quieres cerrarle el acceso, cambia «Acceso hasta». Las cuentas del equipo (Pilar y Ainoa) no se pueden eliminar desde aquí.
+
+---
+
 ## Antes de abrir las ventas
 
 - [ ] La gestoría revisa los textos legales (`/legal/...`) y rellenamos razón social, CIF, domicilio y registro.

@@ -90,6 +90,8 @@ function alumnaDetail(id){
         <div class="formgrid"><div class="field"><span>Nivel</span><select id="mplan" name="plan">${Object.entries(PLANS).map(([k,x])=>`<option value="${k}" ${k===m.plan?'selected':''}>${x.t}</option>`).join('')}</select></div><div class="field"><span>Acceso hasta</span><input id="muntil" name="access_until" type="date" value="${m.access_until||''}"></div></div>
         <label class="check"><input id="munl" name="unlocked" type="checkbox" ${m.unlocked?'checked':''}> Abrir todas las etapas ya (sin esperar a cada semana)</label>
         <button class="btn" type="submit" style="align-self:flex-start">Guardar</button></form>
+      <div class="sheet pad"><h3 style="font-size:20px">Eliminar alumna</h3><p class="hint">Deja de poder entrar y se borran su progreso, ejercicios, tutorías, mensajes y “Mi negocio”. Sus pagos y su lead se quedan, para la contabilidad. Si solo quieres cerrarle el acceso, cambia «Acceso hasta».</p>
+        ${ui('memDel')===id?`<div class="row"><span class="hint">¿Seguro? Se borra para siempre y no se puede deshacer.</span><button type="button" class="btn" data-act="memDelYes" data-arg="${id}">Sí, eliminar a ${esc(m.name)}</button><button type="button" class="btn" data-act="memDel" data-arg="">Cancelar</button></div>`:`<button type="button" class="btn" data-act="memDel" data-arg="${id}" style="align-self:flex-start">Eliminar alumna</button>`}</div>
       ${p.hours?`<div class="sheet pad"><h3 style="font-size:20px">Tutorías: ${used} de ${p.hours} h usadas</h3>${tuts.length?`<div class="list">${tuts.map(t=>`<div class="li"><div class="t"><b style="font-weight:400">Módulo ${modNo(t.module)} · ${t.hours} h</b><small>${t.starts_at?fdt(t.starts_at):'Sin fecha'}${t.summary?' · '+esc(t.summary):''}</small></div><span class="pill ${t.status==='done'?'done':t.status==='booked'?'prog':'wait'}">${{done:'Hecha',booked:'Reservada',requested:'Pedida',cancelled:'Cancelada'}[t.status]}</span>${t.status==='booked'?`<button type="button" class="btn sm" data-act="modal" data-arg="tutdone:${t.id}">Marcar hecha</button>`:''}</div>`).join('')}</div>`:`<p class="empty">Todavía no ha pedido ninguna.</p>`}</div>`:''}
     </div>
   </div>
@@ -102,6 +104,8 @@ function tutDoneModal(tid){ const t=S.allTuts.find(x=>x.id===tid);
     <div class="row"><button class="btn primary" type="submit">Guardar como hecha</button><button type="button" class="btn" data-act="modal" data-arg="">Cancelar</button></div></form></div>`; }
 FORM.tutDone=async (f,form)=>{ const t=S.allTuts.find(x=>x.id===form.dataset.id); Object.assign(t,{status:'done',summary:f.summary}); await DB.saveTutorial(t); ui('modal',null); render(); toast('Tutoría guardada'); };
 FORM.note=async (f,form)=>{ await DB.addNote(form.dataset.id,f.body); form.reset(); toast('Publicado en su portal'); };
+ACT.memDel=id=>{ ui('memDel',id||null); render(); };
+ACT.memDelYes=async id=>{ const m=S.members.find(x=>x.user_id===id); if(!m||m.role!=='alumna') return; await DB.deleteMember(m); ui('memDel',null); nav('/panel/alumnas'); toast(m.name+' eliminada'); };
 FORM.member=async (f,form)=>{ const m=S.members.find(x=>x.user_id===form.dataset.id); await DB.updateMember(m,{plan:f.plan,access_until:f.access_until||null,unlocked:!!f.unlocked}); render(); toast('Acceso actualizado'); };
 
 function pTutorias(){
