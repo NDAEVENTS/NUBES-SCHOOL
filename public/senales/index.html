@@ -27,6 +27,7 @@ a{color:var(--rose)}
 button,.btn{font:inherit;font-size:16px;letter-spacing:.04em;background:var(--rose);color:#fff;border:0;border-radius:999px;padding:14px 22px;cursor:pointer;text-align:center;text-decoration:none;display:block}
 button:disabled{opacity:.6}
 .err{color:#A0503F;font-size:14px;margin:0}
+.fine{font-size:12px;line-height:1.5;color:var(--muted);margin:0}
 .done h2{font-family:var(--display);font-weight:400;font-size:28px;margin:0}.done p{margin:0;color:var(--muted)}
 .news{background:var(--rose-soft);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--ink)}
 footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 28px}
@@ -46,9 +47,10 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 28px}
     <label>Tu nombre<input id="name" type="text" autocomplete="given-name" required maxlength="80"></label>
     <label>Tu email<input id="email" type="email" autocomplete="email" required maxlength="200"></label>
     <label class="check"><input id="news" type="checkbox"><span><b>Quiero recibir la newsletter de Nubes de Algodón School:</b> novedades, nuevos cursos, workshops y plazas antes que nadie. Puedes darte de baja cuando quieras.</span></label>
-    <label class="check"><input id="ok" type="checkbox" required><span>He leído y acepto la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
+    <label class="check"><input id="ok" type="checkbox" required><span>He leído la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a> y quiero recibir la guía gratuita.</span></label>
     <p class="err" id="err" hidden></p>
     <button id="go" type="submit">Quiero mi guía</button>
+    <p class="fine">Responsable: Nubes de Algodón Events, S.L. Finalidad: enviarte la guía y, si lo marcas, nuestra newsletter. Derechos: acceso, rectificación, supresión y otros, en ainoa@nubesdealgodonevents.com. Más información en la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</p>
   </form>
 
   <section class="done" id="done" hidden>
@@ -58,7 +60,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 28px}
     <div class="news" id="newsYes" hidden>Te has apuntado a nuestra newsletter: te escribiremos con las novedades de la escuela.</div>
   </section>
 </main>
-<footer>Nubes de Algodón School · Escuela de formación de wedding planners · The Wedding Creators<br>hola@nubesdealgodonevents.com</footer>
+<footer>Nubes de Algodón School · Escuela de formación de wedding planners · The Wedding Creators<br>hola@nubesdealgodonevents.com<br>NUBES DE ALGODON EVENTS, S.L. · NIF B05634399 · C/ Rosa Parks 3, 7.º 4.ª, 08840 Viladecans (Barcelona) · Registro Mercantil de Barcelona, hoja B-663870, inscripción 1.ª · EUID ES08005.000755330 · ainoa@nubesdealgodonevents.com</footer>
 
 <script src="/config.js"></script><script src="/vendor.js"></script>
 <script>
@@ -76,7 +78,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 28px}
     try{
       var c=window.NUBES_CONFIG||{};
       if(c.url&&c.key&&window.supabase){
-        var r=await supabase.createClient(c.url,c.key).rpc('add_lead',{p_name:name,p_email:email,p_source:'guia',p_extra:{guide:'senales',from:from,page:'senales',newsletter:news}});
+        var r=await supabase.createClient(c.url,c.key).rpc('add_lead',{p_name:name,p_email:email,p_source:'guia',p_extra:{guide:'senales',from:from,page:'senales',newsletter:news,consent_at:new Date().toISOString()}});
         if(r.error) console.warn(r.error);
       }
     }catch(x){ console.warn(x); }

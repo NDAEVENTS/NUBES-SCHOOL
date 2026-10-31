@@ -173,19 +173,21 @@ ACT.leadDel=id=>{ ui('leadDel',id); render(); };
 ACT.leadDelYes=async id=>{ await DB.deleteLead(S.leads.find(l=>l.id===id)); ui('leadEdit',null); ui('leadDel',null); render(); toast('Lead borrado'); };
 FORM.leadEdit=async f=>{ const l=S.leads.find(x=>x.id===ui('leadEdit')); if(!l) return;
   const extra=Object.assign({},l.extra,{phone:f.phone.trim(),status:f.status,notes:f.notes.trim(),newsletter:f.newsletter==='si'});
+  if(extra.newsletter!==(l.extra?.newsletter===true)) extra.news_changed_at=new Date().toISOString();
   await DB.saveLead(l,{name:f.name.trim(),email:f.email.trim().toLowerCase(),extra}); ui('leadEdit',null); render(); toast('Lead guardado'); };
 // Excel opens this CSV directly: semicolons and a byte-order mark so accents and columns come out right in Spanish Excel
 ACT.leadsCsv=()=>{
   const cols=[['Fecha',l=>fdate(l.created_at,{day:'2-digit',month:'2-digit',year:'numeric'})],['Nombre',l=>l.name],['Email',l=>l.email],['Teléfono',l=>l.extra?.phone],
-    ['Tipo',l=>l.source==='signature'?'Llamada':'Guía'],['Guía o nivel',l=>l.source==='signature'?PLANS[leadPlan(l)].t:leadGuide(l)],['Origen',l=>l.extra?.from],['Newsletter',l=>wantsNews(l)?'Sí':'No'],
+    ['Tipo',l=>l.source==='signature'?'Llamada':'Guía'],['Guía o nivel',l=>l.source==='signature'?PLANS[leadPlan(l)].t:leadGuide(l)],['Origen',l=>l.extra?.from],['Newsletter',l=>wantsNews(l)?'Sí':'No'],['Alta (fecha y hora)',consentAt],
     ['Estado',leadSt],['País',l=>l.extra?.country],['Por qué',l=>l.extra?.why],['Notas',l=>l.extra?.notes],['¿Alumna?',l=>S.members.some(m=>m.email===l.email)?'Sí':'No']];
   const cell=v=>{ const t=String(v??''); return /[;"\n\r]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t; };
   const csv='﻿'+[cols.map(c=>c[0]).join(';'),...S.leads.map(l=>cols.map(c=>cell(c[1](l))).join(';'))].join('\r\n');
   const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download=`leads-nubes-school-${todayISO()}.csv`; document.body.appendChild(a); a.click(); a.remove(); };
 ACT.payLink=async a=>{ const i=a.indexOf('|'); ui('payLink',await DB.paymentLink(a.slice(0,i),a.slice(i+1))); render(); };
 ACT.copy=id=>{ const el=document.getElementById(id); navigator.clipboard?.writeText(el.value).then(()=>toast('Copiado'),()=>{ el.select(); }); };
-// The web's guide form already asks for consent to emails; the stand-alone /senales page asks with its own box (extra.newsletter)
-const wantsNews=l=>l.extra?.newsletter!==false;
+// Only an explicit tick counts (extra.newsletter). Leads from before 31/10/2026, when the landing had a single mixed box, stay out of the newsletter (Legal)
+const wantsNews=l=>l.extra?.newsletter===true;
+const consentAt=l=>{ const t=l.extra?.consent_at||l.created_at; return t?new Date(t).toLocaleString('es-ES',{timeZone:'Europe/Madrid',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):''; };
 ACT.copyNews=()=>{ const t=S.leads.filter(l=>l.source!=='signature'&&wantsNews(l)).map(l=>l.email).join(', '); navigator.clipboard?.writeText(t).then(()=>toast('Emails de la newsletter copiados'),()=>toast('No se ha podido copiar')); };
 ACT.copyEmails=()=>{ const t=S.leads.filter(l=>l.source!=='signature').map(l=>l.email).join(', '); navigator.clipboard?.writeText(t).then(()=>toast('Emails copiados'),()=>toast('No se ha podido copiar')); };
 function pVentas(){

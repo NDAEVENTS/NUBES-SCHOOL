@@ -1,15 +1,15 @@
 // ---------- Legal pages ----------
 // Drafts to be checked by the gestoría before launch. Highlighted spans are the company details still to fill in.
-const CO={name:'Nubes de Algodón Events, S.L.',cif:'B05634399',addr:'Calle Rosa Parks, 3, 7.º 4.ª, 08850 Viladecans (Barcelona)',reg:'Registro Mercantil de Barcelona, hoja B-663870, folio 1, tomo/I.R.U.S. 1000479308060, inscripción 1.ª'};
+const CO={name:'NUBES DE ALGODON EVENTS, S.L.',nif:'B05634399',addr:'C/ Rosa Parks 3, 7.º 4.ª, 08840 Viladecans (Barcelona)',reg:'Registro Mercantil de Barcelona, hoja B-663870, inscripción 1.ª',euid:'ES08005.000755330',mail:'ainoa@nubesdealgodonevents.com'};
 const LEGAL={
   'aviso-legal':['Aviso legal',`
 <p>En cumplimiento de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que este sitio web, school.nubesdealgodonevents.com, pertenece a:</p>
-<ul><li>Titular: ${CO.name}, que opera con la marca Nubes de Algodón School</li><li>CIF: ${CO.cif}</li><li>Domicilio: ${CO.addr}</li><li>Registro: ${CO.reg}</li><li>Email: ${CONTACT}</li></ul>
+<ul><li>Titular: ${CO.name}, que opera con la marca Nubes de Algodón School</li><li>NIF: ${CO.nif}</li><li>Domicilio: ${CO.addr}</li><li>Registro: ${CO.reg}</li><li>EUID: ${CO.euid}</li><li>Email: ${CO.mail}</li></ul>
 <h2>Uso del sitio</h2><p>Al navegar por esta web aceptas usarla de forma lícita. Los contenidos del programa The Wedding Creators (textos, plantillas, vídeos y materiales) son propiedad del titular y están protegidos por la normativa de propiedad intelectual. No se pueden copiar, distribuir ni revender sin autorización por escrito.</p>
 <h2>Responsabilidad</h2><p>Trabajamos para que la información de esta web sea correcta y esté actualizada, pero no garantizamos la ausencia de errores puntuales. La información legal y fiscal del programa es orientativa y no sustituye el asesoramiento de una gestoría o abogado.</p>
 <h2>Legislación aplicable</h2><p>Este aviso legal se rige por la legislación española.</p>`],
   'privacidad':['Política de privacidad',`
-<h2>Quién trata tus datos</h2><p>${CO.name} (CIF ${CO.cif}), ${CO.addr}. Contacto: ${CONTACT}.</p>
+<h2>Quién trata tus datos</h2><p>${CO.name} (NIF ${CO.nif}), ${CO.addr}. Contacto: ${CO.mail}.</p>
 <h2>Qué datos tratamos y para qué</h2>
 <ul><li><b>Guía gratuita y newsletter:</b> nombre y email, para enviarte la guía y emails sobre la escuela. Base legal: tu consentimiento. Puedes darte de baja en cualquier momento.</li>
 <li><b>Solicitud de plaza Signature:</b> nombre, email, país y lo que nos cuentas, para valorar tu solicitud y contactarte. Base legal: tu consentimiento y la aplicación de medidas precontractuales.</li>
@@ -17,12 +17,12 @@ const LEGAL={
 <li><b>Pagos y facturación:</b> los gestiona Stripe; nosotras no vemos ni guardamos los datos de tu tarjeta. Guardamos los datos de facturación por obligación legal.</li></ul>
 <h2>Cuánto tiempo</h2><p>Mientras dure tu acceso al programa y, después, durante los plazos que exige la ley (por ejemplo, 6 años para la documentación contable). Los datos de la guía gratuita, hasta que te des de baja.</p>
 <h2>Con quién los compartimos</h2><p>Solo con los proveedores que necesitamos para dar el servicio, con contrato de encargado del tratamiento: Supabase (base de datos y acceso, servidores en la Unión Europea), Cloudflare (alojamiento web), Stripe (pagos) y el proveedor de envío de emails. No vendemos tus datos.</p>
-<h2>Tus derechos</h2><p>Puedes pedir acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a ${CONTACT}. Si crees que no hemos atendido bien tu petición, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>`],
+<h2>Tus derechos</h2><p>Puedes pedir acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a ${CO.mail}. Si crees que no hemos atendido bien tu petición, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>`],
   'cookies':['Política de cookies',`
 <p>Esta web solo usa el almacenamiento técnico necesario para que funcione: mantener tu sesión iniciada en el portal de alumnas y recordar el paso en el que estás. No usamos cookies de publicidad ni de analítica de terceros, por eso no te pedimos consentimiento.</p>
 <p>Si en el futuro añadimos herramientas de analítica o publicidad, actualizaremos esta política y te pediremos permiso antes de activarlas.</p>`],
   'condiciones':['Condiciones de venta',`
-<p>Estas condiciones regulan la compra del programa online The Wedding Creators en school.nubesdealgodonevents.com, ofrecido por ${CO.name} (CIF ${CO.cif}).</p>
+<p>Estas condiciones regulan la compra del programa online The Wedding Creators en school.nubesdealgodonevents.com, ofrecido por ${CO.name} (NIF ${CO.nif}).</p>
 <h2>1. Qué compras</h2><p>Acceso personal e intransferible al programa durante 12 meses desde la compra, con el contenido del nivel elegido:</p>
 <ul><li><b>Etapa 1 (197 €):</b> módulos 1 y 2 con sus plantillas y ejercicios. Si en los 60 días siguientes compras Online o Completo, te descontamos los 197 €.</li>
 <li><b>Online (590 €):</b> las 4 etapas, plantillas, ejercicios guiados, una sesión grupal de dudas al mes y certificado.</li>
