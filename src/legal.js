@@ -1,6 +1,6 @@
 // ---------- Legal pages ----------
 // Drafts to be checked by the gestoría before launch. Highlighted spans are the company details still to fill in.
-const CO={name:'Nubes de Algodón Events, S.L.',cif:'B05634399',addr:'<span class="ph">[Domicilio social]</span>',reg:'<span class="ph">[Datos del Registro Mercantil]</span>'};
+const CO={name:'Nubes de Algodón Events, S.L.',cif:'B05634399',addr:'Calle Rosa Parks, 3, 7.º 4.ª, 08850 Viladecans (Barcelona)',reg:'<span class="ph">[Datos del Registro Mercantil]</span>'};
 const LEGAL={
   'aviso-legal':['Aviso legal',`
 <p>En cumplimiento de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que este sitio web, school.nubesdealgodonevents.com, pertenece a:</p>
