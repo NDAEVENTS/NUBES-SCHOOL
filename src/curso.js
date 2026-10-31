@@ -43,7 +43,7 @@ function pCurso(arg,kind,k){
         <div class="field"><span>Se abre a los … días de empezar (0 = el primer día)</span><input id="so-${s.n}" name="opens" type="number" min="0" max="365" value="${+s.opens||0}" required></div>
         <div class="row"><button class="btn sm" type="submit">Guardar etapa</button>${cStageMods(s.n).length?'':`<button type="button" class="btn sm" data-act="delStage" data-arg="${s.n}">Quitar etapa</button>`}</div>
       </form>
-      <p class="hint">Para cada alumna, esta etapa ${opensTxt(s.opens)}.${s.n===S.cAll.stages[0].n?' Es la única que incluye el nivel Etapa 1.':''}</p>`}
+      <p class="hint">Para cada alumna, esta etapa ${opensTxt(s.opens)}.</p>`}
       <div class="list">${ms.map((m,i)=>{ const dr=(m.lessons||[]).filter(l=>l.draft).length, ps=m.plans||[];
         return `<div class="li"><div class="t"><a href="/panel/curso/${m.n}"><b style="font-weight:400">Módulo ${cNo(m.n)}. ${esc(m.title)}</b></a>
           <small>${(m.lessons||[]).length} lecciones · ${(m.exercises||[]).length} ejercicios · tutoría ${+m.hours||0} h${dr?` · ${dr} en borrador`:''}</small></div>
@@ -76,7 +76,7 @@ function pModule(m){
       <div class="field"><span>Horas de tutoría (Completo y Signature)</span><input id="mh" name="hours" type="number" min="0" max="12" step="0.5" value="${+m.hours||0}"></div></div>
     <div class="field"><span>Texto de la tutoría (lo ven al terminar el módulo)</span><textarea id="mtu" name="tutoria" rows="3">${esc(m.tutoria||'')}</textarea></div>
     <fieldset class="field" style="border:0;padding:0;margin:0"><span>Para quién es</span><div class="row">${COURSE_PLANS().map(([k,p])=>`<label class="check"><input id="mpl-${k}" name="pl_${k}" type="checkbox" ${forPlan(m,k)?'checked':''}> ${p.t}</label>`).join('')}</div></fieldset>
-    <p class="hint">Con todos marcados es un módulo común y aparece en “Aplica a todos”. Si solo marcas algunos, únicamente lo verán esas alumnas.${m.stage!==S.cAll.stages[0]?.n?' Etapa 1 solo incluye la primera etapa, así que aunque la marques no verá este módulo.':''}</p>
+    <p class="hint">Con todos marcados es un módulo común y aparece en “Aplica a todos”. Si solo marcas algunos, únicamente lo verán esas alumnas.</p>
     <label class="check"><input id="mp" name="published" type="checkbox" ${m.published===false?'':'checked'}> Visible para las alumnas</label>
     <button class="btn primary" type="submit" style="align-self:flex-start">Guardar módulo</button></form>
   ${itemList(m,'l')}${itemList(m,'e')}

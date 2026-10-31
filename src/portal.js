@@ -55,10 +55,9 @@ function home(){
     <div class="sheet pad"><span class="label">Del equipo Nubes</span>${S.notes.length?S.notes.slice(0,2).map(n=>`<div class="fb"><p>${esc(n.body)}</p><small>${esc(n.by)} · ${ago(n.created_at)}</small></div>`).join(''):`<p class="hint">Aquí verás nuestros mensajes y comentarios sobre tu proyecto.</p>`}</div>
   </div>`;
 }
-// Moving up: Etapa 1 students who finish their stage are offered Online; Online students who finish Etapa 2, Completo
+// Moving up: Online students who finish Etapa 2 are offered Completo
 const stageDone=(n)=>{ const st=STG(n); return !!st&&st.mods.every(m=>MOD(m).lessons.every(l=>S.progress[l.k])); };
 function upgradeCard(me){
-  if(me.plan==='etapa1'&&STAGES[0]&&stageDone(STAGES[0].n)) return `<div class="sheet pad up"><span class="label">Tu siguiente nivel</span><h3 style="font-size:22px">¿Seguimos? Continúa con el programa Online</h3><p class="hint">Ya has terminado la Etapa 1. Si te pasas a Online en los 60 días siguientes a tu compra, te descontamos los 197 € que pagaste.</p><a class="btn primary sm" style="align-self:flex-start" href="/#precios">Ver el programa Online</a></div>`;
   if(me.plan==='online'&&STAGES[1]&&stageDone(STAGES[1].n)) return `<div class="sheet pad up"><span class="label">Tu siguiente nivel</span><h3 style="font-size:22px">¿Quieres que revisemos tu negocio contigo?</h3><p class="hint">Ya has terminado la Etapa 2. Con Completo tienes 12 h de tutorías y feedback personal en cada ejercicio, y solo pagas la diferencia. Hablamos 20 minutos y lo vemos juntas.</p>${ui('upAsked')?`<p class="ok">¡Hecho! Te escribimos en 48 horas para agendar la llamada.</p>`:`<button type="button" class="btn primary sm" style="align-self:flex-start" data-act="askUpgrade">Quiero hablarlo</button>`}</div>`;
   return '';
 }
@@ -199,7 +198,7 @@ function cuenta(){
   <div class="sheet pad"><div class="list">
     <div class="li"><div class="t"><small>Nombre</small><b style="font-weight:400">${esc(me.name)}</b></div></div>
     <div class="li"><div class="t"><small>Email</small><b style="font-weight:400">${esc(me.email)}</b></div></div>
-    <div class="li"><div class="t"><small>Programa</small><b style="font-weight:400">The Wedding Creators · ${p.t}</b></div>${me.plan==='etapa1'||me.plan==='online'?`<a class="btn sm" href="/#precios">Ampliar</a>`:''}</div>
+    <div class="li"><div class="t"><small>Programa</small><b style="font-weight:400">The Wedding Creators · ${p.t}</b></div>${me.plan==='online'?`<a class="btn sm" href="/#precios">Ampliar</a>`:''}</div>
     <div class="li"><div class="t"><small>Acceso</small><b style="font-weight:400">Del ${fdate(me.started_at)} al ${fdate(me.access_until)}</b></div></div>
   </div></div>
   <form class="sheet pad" data-form="auth_set"><h3 style="font-size:20px">Cambiar contraseña</h3><div class="field"><span>Nueva contraseña (mínimo 8 caracteres)</span><input id="npass" name="password" type="password" minlength="8" required autocomplete="new-password"></div><button class="btn" type="submit" style="align-self:flex-start">Guardar contraseña</button></form>

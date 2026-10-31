@@ -24,7 +24,7 @@ const LEGAL={
   'condiciones':['Condiciones de venta',`
 <p>Estas condiciones regulan la compra del programa online The Wedding Creators en school.nubesdealgodonevents.com, ofrecido por ${CO.name} (NIF ${CO.nif}).</p>
 <h2>1. Qué compras</h2><p>Acceso personal e intransferible al programa durante 12 meses desde la compra, con el contenido del nivel elegido:</p>
-<ul><li><b>Etapa 1 (197 €):</b> módulos 1 y 2 con sus plantillas y ejercicios. Si en los 60 días siguientes compras Online o Completo, te descontamos los 197 €.</li>
+<ul>
 <li><b>Online (590 €):</b> las 4 etapas, plantillas, ejercicios guiados, una sesión grupal de dudas al mes y certificado.</li>
 <li><b>Completo (1.990 €):</b> lo anterior más 12 horas de tutorías individuales por videollamada y feedback personal en los ejercicios.</li>
 <li><b>Signature (3.500 €):</b> lo anterior más el fin de semana de workshops y mentorías presencial, la asistencia a un shooting y el módulo de bodas destino. El alojamiento y los desplazamientos al workshop no están incluidos salvo que se indique lo contrario.</li></ul>
