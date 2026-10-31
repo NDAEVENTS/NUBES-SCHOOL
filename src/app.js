@@ -26,10 +26,9 @@ const STAGE_SEED=[
   {n:4,title:'Planifica, comunícate y brilla',opens:21,mods:[7,8,9]},
 ];
 // What each level includes. Prices are shown on the web; the amount charged lives in the checkout function.
-// stages: Etapa 1 only opens the first stage; the rest open every stage the team publishes
+// stages: the Bootcamp has its own 7-day portal (0); the programme levels open every stage the team publishes
 const PLANS={
   paso0:{t:'Wedding Planner Bootcamp',price:47,stages:0,hours:0,feedback:false,qa:false},
-  etapa1:{t:'Etapa 1',price:197,stages:1,hours:0,feedback:false,qa:false},
   online:{t:'Online',price:590,stages:99,hours:0,feedback:false,qa:true},
   completo:{t:'Completo',price:1990,stages:99,hours:12,feedback:true,qa:true},
   signature:{t:'Signature',price:3500,stages:99,hours:12,feedback:true,qa:true,workshop:true},

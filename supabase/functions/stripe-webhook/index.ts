@@ -9,12 +9,11 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 // Instalments: number of monthly payments and the amount of each one (in euros, VAT included).
 export const PLANS: Record<string, { name: string; price: number; installments?: { n: number; each: number } }> = {
   paso0: { name: 'The Wedding Creators · Wedding Planner Bootcamp', price: 47 },
-  etapa1: { name: 'The Wedding Creators · Etapa 1', price: 197 },
   online: { name: 'The Wedding Creators · Online', price: 590, installments: { n: 3, each: 197 } },
   completo: { name: 'The Wedding Creators · Completo', price: 1990, installments: { n: 6, each: 332 } },
   signature: { name: 'The Wedding Creators · Signature', price: 3500, installments: { n: 6, each: 584 } },
 };
-export const RANK: Record<string, number> = { paso0: 0, etapa1: 1, online: 2, completo: 3, signature: 4 };
+export const RANK: Record<string, number> = { paso0: 0, online: 2, completo: 3, signature: 4 };
 export const cors = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
