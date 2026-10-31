@@ -158,8 +158,10 @@ function webPage(){
       ${ui('leadDone')?`<div style="display:flex;flex-direction:column;gap:10px"><p class="ok">¡Gracias! Aquí tienes tu guía.</p><a class="btn primary" href="${guideNow().pdf}" target="_blank" rel="noopener">Descargar la guía (PDF)</a></div>`:
       `<form data-form="lead"><div class="field"><span>Tu nombre</span><input id="lname" name="name" required autocomplete="given-name"></div>
         <div class="field"><span>Tu email</span><input id="lmail" name="email" type="email" required autocomplete="email"></div>
-        <label class="check"><input id="lok" name="ok" type="checkbox" required> <span>He leído y acepto la <a href="/legal/privacidad">política de privacidad</a> y quiero recibir la guía y emails de Nubes de Algodón School.</span></label>
-        <button class="btn primary" type="submit">Quiero la guía</button></form>`}
+        <label class="check"><input id="lnews" name="news" type="checkbox"> <span><b style="color:var(--ink);font-weight:400">Quiero recibir la newsletter de Nubes de Algodón School:</b> novedades, nuevos cursos, workshops y plazas antes que nadie. Puedes darte de baja cuando quieras.</span></label>
+        <label class="check"><input id="lok" name="ok" type="checkbox" required> <span>He leído la <a href="/legal/privacidad">política de privacidad</a> y quiero recibir la guía gratuita.</span></label>
+        <button class="btn primary" type="submit">Quiero la guía</button>
+        <p class="hint">Responsable: Nubes de Algodón Events, S.L. Finalidad: enviarte la guía y, si lo marcas, nuestra newsletter. Derechos: acceso, rectificación, supresión y otros, en ainoa@nubesdealgodonevents.com. Más información en la <a href="/legal/privacidad">política de privacidad</a>.</p></form>`}
     </div>
   </section>
 
@@ -168,7 +170,7 @@ function webPage(){
     <h2>${em(w.faq.title)}</h2>
     <div>${w.faq.items.map(f=>faq(esc(f.q),esc(f.a))).join('')}</div>
   </section>
-  <footer class="pub"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
+  <footer class="pub"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   </div>${ui('buy')?buyModal():''}`;
 }
 // Online is bought straight away; Completo and Signature start with a 20-minute call
@@ -211,4 +213,4 @@ FORM.buy=async f=>{ if(CFG.demo){ ui('buy',null); toast('En la versión real, aq
   S.busy=true; render(); const url=await DB.checkout(ui('buy'),f.email.trim(),!!f.installments); location.href=url; };
 // Call requests are stored as leads with source 'signature' (the only other source the database accepts) and the level in extra.plan
 FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',withFrom({plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why})); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
-FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',withFrom({guide:guideNow().id})); ui('leadDone',true); render(); };
+FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',withFrom({guide:guideNow().id,newsletter:f.news==='on',consent_at:new Date().toISOString()})); ui('leadDone',true); render(); };
