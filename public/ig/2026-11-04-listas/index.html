@@ -1,0 +1,72 @@
+<title>Piezas Instagram School</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column of groups, each a grid of pieces at their true proportions */
+:root{--bg:#F3F3F5;--fg:#22232B;--muted:#6E655B;--line:#DCCFBE;--card:#FBF8F3;--accent:#8E5A5E;
+  --display:"Bodoni Moda",Georgia,serif;--body:"Jost",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);font-weight:300;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:8px 0 0;max-width:65ch}
+h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 4px;padding-top:20px;border-top:1px solid var(--line)}
+.note{margin:0 0 14px;color:var(--muted);font-size:13px}
+code{font-size:12px;background:var(--card);border:1px solid var(--line);padding:1px 6px;border-radius:4px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+img{width:100%;max-width:100%;height:auto;display:block;border:1px solid var(--line)}
+figcaption{display:flex;flex-direction:column;font-size:12px;color:var(--muted);word-break:break-word}
+a{color:#4F6A82;text-decoration:underline}
+.file{letter-spacing:.04em}.photo-note{color:var(--fg);opacity:.8}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital@0;1&family=Jost:wght@300;400&display=swap">
+<main>
+  <header><h1>Instagram School · miércoles 04/11 · Te presentamos a Clara y Marc, tu boda de práctica</h1>
+  <p class="lead">Para guardar una imagen en el móvil, mantén el dedo encima. En el ordenador:</p>
+  <p class="lead"><a href="piezas-2026-11-04.zip">⬇ Descargar todas las imágenes (ZIP)</a></p>
+  <p class="lead"><b>Reel montado:</b> <a href="reel-te-presentamos-a-clara-y-marc.mp4">⬇ Descargar el vídeo (MP4, 23 s)</a>. En Canva: Crear un diseño → Reel de Instagram → Subir archivos → el MP4 → arrastrarlo al lienzo; poned la foto de cada hueco encima de su tramo y descargad como MP4. Las pantallas del reel de abajo son solo la guía de qué foto va en cada hueco.</p>
+  <p class="lead"><a href="stories-canva.pptx">⬇ Archivo para Canva: stories</a></p>
+  <p class="lead">En Canva: Crear un diseño → Importar archivo → el .pptx, y todo sigue siendo editable. Donde pone «Aquí va una foto», poned vosotras la foto.</p></header>
+  
+<section>
+  <h2>Stories</h2>
+  <p class="note">Archivo para Canva: <code>stories-canva.pptx</code></p>
+  <div class="grid stories">
+    <figure id="story-1-0830"><img src="story-1-0830.png" alt="Hoy os presentamos a alguien" loading="lazy">
+      <figcaption><span class="file">story-1-0830.png</span><span class="photo-note">Foto: una libreta abierta y una taza de café sobre la mesa del estudio, luz de mañana, plano cenital</span></figcaption></figure>
+    <figure id="story-2-1100-quiz"><img src="story-2-1100-quiz.png" alt="¿Cuánto del presupuesto se va en espacio y catering?" loading="lazy">
+      <figcaption><span class="file">story-2-1100-quiz.png</span><span class="photo-note">Foto: detalle de una mesa montada con vajilla y copas, sin personas, plano cerrado</span></figcaption></figure>
+    <figure id="story-3-1300-bootcamp"><img src="story-3-1300-bootcamp.png" alt="Wedding Planner Bootcamp" loading="lazy">
+      <figcaption><span class="file">story-3-1300-bootcamp.png</span></figcaption></figure>
+    <figure id="story-4-1600-programa"><img src="story-4-1600-programa.png" alt="Así es el programa" loading="lazy">
+      <figcaption><span class="file">story-4-1600-programa.png</span></figcaption></figure>
+    <figure id="story-5-1800-senales"><img src="story-5-1800-senales.png" alt="7 señales" loading="lazy">
+      <figcaption><span class="file">story-5-1800-senales.png</span><span class="photo-note">Foto: papelería de boda (minutas o tarjetas de mesa) sobre lino claro, plano cenital</span></figcaption></figure>
+    <figure id="story-6-2100-curso"><img src="story-6-2100-curso.png" alt="Clara y Marc te esperan" loading="lazy">
+      <figcaption><span class="file">story-6-2100-curso.png</span><span class="photo-note">Foto: Pilar o Ainoa de espaldas o de perfil trabajando con el portátil en el estudio, luz cálida</span></figcaption></figure>
+    <figure id="reel-01-portada"><img src="reel-01-portada.png" alt="Te presentamos a Clara y Marc" loading="lazy">
+      <figcaption><span class="file">reel-01-portada.png</span><span class="photo-note">Foto: dos copas o dos sillas juntas en una mesa vestida, sin personas, luz de tarde</span></figcaption></figure>
+    <figure id="reel-02"><img src="reel-02.png" alt="En la Costa Brava" loading="lazy">
+      <figcaption><span class="file">reel-02.png</span><span class="photo-note">Foto: el Mediterráneo desde la costa, sin personas ni lugares reconocibles</span></figcaption></figure>
+    <figure id="reel-03"><img src="reel-03.png" alt="38.000 € IVA incluido" loading="lazy">
+      <figcaption><span class="file">reel-03.png</span><span class="photo-note">Foto: una libreta con números y una calculadora o un portátil sobre la mesa, plano cerrado</span></figcaption></figure>
+    <figure id="reel-04"><img src="reel-04.png" alt="Su calendario y el timing del día" loading="lazy">
+      <figcaption><span class="file">reel-04.png</span><span class="photo-note">Foto: una agenda o un calendario abierto con anotaciones a mano</span></figcaption></figure>
+    <figure id="reel-05"><img src="reel-05.png" alt="Su presupuesto y tu honorario" loading="lazy">
+      <figcaption><span class="file">reel-05.png</span><span class="photo-note">Foto: manos escribiendo en un cuaderno junto a un café, sin cara</span></figcaption></figure>
+    <figure id="reel-06"><img src="reel-06.png" alt="Las preguntas a sus proveedores" loading="lazy">
+      <figcaption><span class="file">reel-06.png</span><span class="photo-note">Foto: un teléfono y una libreta con una lista de preguntas, sobre la mesa del estudio</span></figcaption></figure>
+    <figure id="reel-07"><img src="reel-07.png" alt="Del Pinterest a un concepto" loading="lazy">
+      <figcaption><span class="file">reel-07.png</span><span class="photo-note">Foto: un mood board con muestras de tela, flores secas y papelería, plano cenital</span></figcaption></figure>
+    <figure id="reel-08"><img src="reel-08.png" alt="Tu plan de 90 días y tu diagnóstico" loading="lazy">
+      <figcaption><span class="file">reel-08.png</span><span class="photo-note">Foto: un portátil abierto y una libreta en una mesa con luz de ventana, sin caras</span></figcaption></figure>
+    <figure id="reel-09"><img src="reel-09.png" alt="7 días · 47 €" loading="lazy">
+      <figcaption><span class="file">reel-09.png</span></figcaption></figure>
+    <figure id="reel-10-final"><img src="reel-10-final.png" alt="¿Planificamos juntas su boda?" loading="lazy">
+      <figcaption><span class="file">reel-10-final.png</span><span class="photo-note">Foto: Pilar y Ainoa juntas en el estudio o en el workshop, sonriendo</span></figcaption></figure>
+  </div>
+</section>
+</main>
