@@ -200,7 +200,7 @@ function bootcampPage(){
   const days=(p0.days||[]).map(d=>{ const [a,b]=String(d).split(' · '); return b?{a,b}:{a:'',b:a}; });
   return `<div class="bc2">
   <header class="bchero">
-    <div class="bcsplit"><img src="${esc(ph)}" alt="${esc(w.hero.alt||'Pilar y Ainoa montando una mesa de boda')}" fetchpriority="high"><img src="/img/bc-ceremonia.jpg" alt="Pilar y Ainoa en una ceremonia frente al mar" fetchpriority="high"></div>
+    <div class="bcsplit"><div class="bcs1"><img src="${esc(ph)}" alt="${esc(w.hero.alt||'Pilar y Ainoa montando una mesa de boda')}" fetchpriority="high"></div><div class="bcs2"><img src="/img/bc-ceremonia.jpg" alt="Pilar y Ainoa en una ceremonia frente al mar" fetchpriority="high"></div></div>
     <div class="bcveil"></div>
     <div class="bcnav">${brand()}</div>
     <div class="bcin">
