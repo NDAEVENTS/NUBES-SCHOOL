@@ -199,10 +199,10 @@ function bootcampPage(){
   document.title='Wedding Planner Bootcamp · Nubes de Algodón School';
   const days=(p0.days||[]).map(d=>{ const [a,b]=String(d).split(' · '); return b?{a,b}:{a:'',b:a}; });
   return `<div class="bc2">
-  <header class="bchero" style="background-image:url('${esc(ph)}')">
+  <header class="bchero">
+    <div class="bcsplit"><img src="${esc(ph)}" alt="${esc(w.hero.alt||'Pilar y Ainoa montando una mesa de boda')}" fetchpriority="high"><img src="/img/bc-ceremonia.jpg" alt="Pilar y Ainoa en una ceremonia frente al mar" fetchpriority="high"></div>
     <div class="bcveil"></div>
     <div class="bcnav">${brand()}</div>
-    <img class="bcmimg" src="${esc(ph)}" alt="${esc(w.hero.alt||'Pilar y Ainoa')}" fetchpriority="high">
     <div class="bcin">
       <span class="bcpill">${esc(BC.pill)}</span>
       <h1>${em(BC.title)}</h1>
