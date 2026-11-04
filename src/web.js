@@ -177,8 +177,14 @@ function webPage(){
 // One page, one product: where the Meta ads and the Bootcamp links land. No other prices, so nobody leaves to compare.
 // It reuses the Bootcamp texts, the "¿Te suena?" block and the cover photo that the team edits in Panel → Editar landing.
 const BC={
-  eyebrow:'Wedding Planner Bootcamp · 7 días',title:'¿Y si organizar bodas fuera *tu oficio*?',
-  lede:'En 7 días planificas de principio a fin tu primera boda de práctica, con lecciones reales de The Wedding Creators. Una al día, a tu ritmo y sin dejar tu trabajo. Y con nosotras, Pilar y Ainoa, en un grupo privado de WhatsApp.',
+  pill:'Bootcamp · 7 días',title:'¿Y si organizar bodas fuera *tu oficio*?',script:'Te enseñamos cómo, en 7 días.',
+  trust:['Acceso inmediato','Grupo privado de WhatsApp con nosotras','Sin dejar tu trabajo'],
+  after:'Nosotras también empezamos así, con miedo y con muchas ganas. Por eso hemos creado el Bootcamp: para que des el primer paso de nuestra mano.',
+  days:'Cada día, una lección corta con su herramienta profesional. Al final de la semana habrás planificado una boda de práctica de principio a fin y sabrás cuál es tu siguiente paso.',
+  includes:['5 lecciones reales de nuestro curso The Wedding Creators','Una boda de práctica para planificar de principio a fin','4 herramientas profesionales que te quedas para siempre','Grupo privado de WhatsApp con Pilar y Ainoa','Tu diagnóstico personal el día 7'],
+  credit:'Si en los 60 días siguientes te inscribes en The Wedding Creators, te descontamos los 47 €.',
+  photos:[['ws-043.jpg','El cuaderno de The Wedding Creators'],['ws-100.jpg','Montaje de una mesa de boda'],['ws-079.jpg','Papelería de boda'],['ws-102.jpg','Pilar y Ainoa preparando una mesa']],
+  lede:'Planifica de principio a fin tu primera boda de práctica, con lecciones reales de The Wedding Creators. Una al día, a tu ritmo y con nosotras, Pilar y Ainoa, a tu lado.',
   about:'Las dos teníamos un trabajo fijo y un día decidimos dedicarnos a las bodas. Hoy, más de diez años después, organizamos bodas para parejas que llegan de todo el mundo. En el Bootcamp te enseñamos cómo trabajamos de verdad, sin guardarnos nada, para que descubras con calma y con método si este oficio es para ti.',
   faq:[
     {q:'¿Necesito experiencia previa?',a:'No. El Bootcamp empieza desde cero y te guiamos día a día.'},
@@ -188,47 +194,69 @@ const BC={
     {q:'¿Los 47 € incluyen IVA?',a:'Sí: lo que ves es lo que pagas. Puedes pagar con tarjeta, Apple Pay, Google Pay o PayPal.'},
     {q:'¿Recibo factura?',a:'Sí, al pagar recibes la factura por email.'}]};
 function bootcampPage(){
-  const w=W(), p0=w.paso0, buy=(c='')=>`<button type="button" class="btn primary${c}" data-act="buy" data-arg="paso0">${esc(p0.cta)}</button>`;
-  const price=`<div><b class="price num">${esc(p0.price)}</b><small>IVA incluido</small></div>`;
+  const w=W(), p0=w.paso0, ph=w.hero.photo||'/img/nosotras-10-anos.jpg';
+  const buy=(c='')=>`<button type="button" class="btn bcbtn${c}" data-act="buy" data-arg="paso0">${esc(p0.cta)} <span aria-hidden="true">→</span></button>`;
   document.title='Wedding Planner Bootcamp · Nubes de Algodón School';
-  return `<div class="wrap bc">
-  <div class="nav">${brand()}</div>
-  <section class="hero">
-    <div>
-      <span class="eyebrow">${esc(BC.eyebrow)}</span>
+  const days=(p0.days||[]).map(d=>{ const [a,b]=String(d).split(' · '); return b?{a,b}:{a:'',b:a}; });
+  return `<div class="bc2">
+  <header class="bchero" style="background-image:url('${esc(ph)}')">
+    <div class="bcveil"></div>
+    <div class="bcnav">${brand()}</div>
+    <img class="bcmimg" src="${esc(ph)}" alt="${esc(w.hero.alt||'Pilar y Ainoa')}" fetchpriority="high">
+    <div class="bcin">
+      <span class="bcpill">${esc(BC.pill)}</span>
       <h1>${em(BC.title)}</h1>
-      <p class="lede">${esc(BC.lede)}</p>
-      <div class="p0buy bchero">${price}${buy()}<p class="hint">${esc(p0.soon)}</p></div>
+      <p class="bcscript">${esc(BC.script)}</p>
+      <p class="bclede">${esc(BC.lede)}</p>
+      <div class="bcact">${buy()}<span class="bcprice"><b>${esc(p0.price)}</b> IVA incluido</span></div>
+      <ul class="bctrust">${BC.trust.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
     </div>
-    ${w.hero.photo?`<img class="heroimg" src="${esc(w.hero.photo)}" alt="${esc(w.hero.alt||'')}" fetchpriority="high">`:''}
-  </section>
+  </header>
 
-  <section class="sec">
-    <span class="eyebrow">${esc(w.who.eyebrow)}</span>
-    <h2>${em(w.who.title)}</h2>
-    <div class="who">${w.who.items.map(i=>`<div><b>${esc(i.t)}</b><span>${esc(i.d)}</span></div>`).join('')}</div>
-  </section>
-
-  <section class="sec" id="paso0">
-    <div class="paso0">
-      <div class="p0copy">
-        <span class="eyebrow">${esc(p0.eyebrow)}</span>
-        <h2>Así son <em>tus 7 días</em></h2>
-        <p class="intro">${esc(p0.intro)}</p>
-        <ol class="days">${(p0.days||[]).map(d=>{ const [a,b]=String(d).split(' · '); return `<li>${b?`<small>${esc(a)}</small><b>${esc(b)}</b>`:`<b>${esc(a)}</b>`}</li>`; }).join('')}</ol>
-      </div>
-      <div class="p0side">
-        <h3>${esc(p0.kitTitle)}</h3>
-        <div class="kit">${(p0.items||[]).map((k,i)=>`<div class="tool t${i%4}"><span class="ico" aria-hidden="true">${['◷','☰','✿','€'][i%4]}</span><b>${esc(k.t)}</b><small>${esc(k.d)}</small></div>`).join('')}</div>
-        <div class="p0buy">${price}<p class="hint">${esc(p0.soon)}</p>${buy()}</div>
-      </div>
+  <section class="bcsec bcwho">
+    <div class="bcw">
+      <span class="eyebrow">${esc(w.who.eyebrow)}</span>
+      <h2>${em(w.who.title)}</h2>
+      <div class="bccards">${w.who.items.map((i,n)=>`<div class="bccard"><span class="bcico" aria-hidden="true">${['☾','✿','?'][n%3]}</span><b>${esc(i.t)}</b><span>${esc(i.d)}</span></div>`).join('')}</div>
+      <p class="bcafter">${esc(BC.after)}</p>
     </div>
   </section>
 
-  <section class="sec">
-    <div class="about">
-      <img class="portrait" src="/img/nosotras-10-anos.jpg" alt="Pilar y Ainoa, de Nubes de Algodón">
-      <div style="display:flex;flex-direction:column;gap:16px">
+  <section class="bcsec bcdark">
+    <div class="bcw">
+      <span class="eyebrow">${esc(p0.eyebrow)}</span>
+      <h2>Así son <em>tus 7 días</em></h2>
+      <p class="bcintro">${esc(BC.days)}</p>
+      <ol class="bcdays">${days.map((d,i)=>`<li><span class="bcn">${String(i+1).padStart(2,'0')}</span><small>${esc(d.a)}</small><b>${esc(d.b)}</b></li>`).join('')}</ol>
+      <div class="bcmid">${buy()}</div>
+    </div>
+  </section>
+
+  <section class="bcstrip" aria-label="Fotos de The Wedding Creators">${BC.photos.map(([f,a])=>`<img src="/img/${f}" alt="${esc(a)}" loading="lazy">`).join('')}</section>
+
+  <section class="bcsec">
+    <div class="bcw bcoffer">
+      <div>
+        <span class="eyebrow">Todo lo que incluye</span>
+        <h2>Tu primera boda de práctica, <em>con todo lo necesario</em></h2>
+        <ul class="bcchecks">${BC.includes.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
+        <div class="bckit">${(p0.items||[]).map((k,i)=>`<div><span class="ico" aria-hidden="true">${['◷','☰','✿','€'][i%4]}</span><b>${esc(k.t)}</b><small>${esc(k.d)}</small></div>`).join('')}</div>
+      </div>
+      <aside class="bcbox">
+        <span class="bcpill dark">Wedding Planner Bootcamp</span>
+        <b class="bcbig num">${esc(p0.price)}</b>
+        <small>IVA incluido · pago único</small>
+        ${buy(' full')}
+        <p>${esc(p0.soon)}</p>
+        <p class="bcnote">${esc(BC.credit)}</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bcsec bcrose">
+    <div class="bcw bcabout">
+      <img src="/img/nosotras-10-anos.jpg" alt="Pilar y Ainoa, de Nubes de Algodón">
+      <div>
         <span class="eyebrow">Quiénes te acompañan</span>
         <h2>Pilar &amp; Ainoa, <em>de Nubes de Algodón</em></h2>
         <p>${esc(BC.about)}</p>
@@ -237,20 +265,25 @@ function bootcampPage(){
     </div>
   </section>
 
-  <section class="sec faq">
-    <span class="eyebrow">Preguntas frecuentes</span>
-    <h2>Lo que nos preguntáis <em>antes de empezar</em></h2>
-    <div>${BC.faq.map(f=>faq(esc(f.q),esc(f.a))).join('')}</div>
+  <section class="bcsec">
+    <div class="bcw bcfaq faq">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2>Lo que nos preguntáis <em>antes de empezar</em></h2>
+      <div>${BC.faq.map(f=>faq(esc(f.q),esc(f.a))).join('')}</div>
+    </div>
   </section>
 
-  <section class="sec bcend">
-    <h2>Siete días para descubrir <em>si este oficio es para ti</em></h2>
-    <div class="p0buy">${price}${buy()}</div>
+  <section class="bcend" style="background-image:url('/img/ws-103.jpg')">
+    <div class="bcveil"></div>
+    <div class="bcin">
+      <h2>Siete días para descubrir <em>si este oficio es para ti</em></h2>
+      <div class="bcact">${buy()}<span class="bcprice"><b>${esc(p0.price)}</b> IVA incluido</span></div>
+    </div>
   </section>
-  <footer class="pub"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
-  </div>
+
+  <footer class="pub bcw"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   <div class="stickybuy"><span><b class="num">${esc(p0.price)}</b> <small>IVA incluido</small></span>${buy(' sm')}</div>
-  ${ui('buy')?buyModal():''}`;
+  </div>${ui('buy')?buyModal():''}`;
 }
 // Online is bought straight away; Completo and Signature start with a 20-minute call
 const CALL=k=>k==='completo'||k==='signature';
