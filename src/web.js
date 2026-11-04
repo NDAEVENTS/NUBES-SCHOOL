@@ -173,6 +173,85 @@ function webPage(){
   <footer class="pub"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   </div>${ui('buy')?buyModal():''}`;
 }
+// ---------- Bootcamp landing (/bootcamp) ----------
+// One page, one product: where the Meta ads and the Bootcamp links land. No other prices, so nobody leaves to compare.
+// It reuses the Bootcamp texts, the "¿Te suena?" block and the cover photo that the team edits in Panel → Editar landing.
+const BC={
+  eyebrow:'Wedding Planner Bootcamp · 7 días',title:'¿Y si organizar bodas fuera *tu oficio*?',
+  lede:'En 7 días planificas de principio a fin tu primera boda de práctica, con lecciones reales de The Wedding Creators. Una al día, a tu ritmo y sin dejar tu trabajo. Y con nosotras, Pilar y Ainoa, en un grupo privado de WhatsApp.',
+  about:'Las dos teníamos un trabajo fijo y un día decidimos dedicarnos a las bodas. Hoy, más de diez años después, organizamos bodas para parejas que llegan de todo el mundo. En el Bootcamp te enseñamos cómo trabajamos de verdad, sin guardarnos nada, para que descubras con calma y con método si este oficio es para ti.',
+  faq:[
+    {q:'¿Necesito experiencia previa?',a:'No. El Bootcamp empieza desde cero y te guiamos día a día.'},
+    {q:'¿Puedo hacerlo sin dejar mi trabajo?',a:'Sí, está pensado justo para eso. Cada día tienes una lección corta y su herramienta, y la haces cuando mejor te venga. Nosotras también empezamos así.'},
+    {q:'¿Cuándo empiezo?',a:'Hoy mismo. Al pagar recibes un email para entrar en tu portal y empiezas el día 1 cuando quieras.'},
+    {q:'¿Y si después quiero seguir?',a:'Si en los 60 días siguientes te inscribes en The Wedding Creators, te descontamos los 47 € del Bootcamp.'},
+    {q:'¿Los 47 € incluyen IVA?',a:'Sí: lo que ves es lo que pagas. Puedes pagar con tarjeta, Apple Pay, Google Pay o PayPal.'},
+    {q:'¿Recibo factura?',a:'Sí, al pagar recibes la factura por email.'}]};
+function bootcampPage(){
+  const w=W(), p0=w.paso0, buy=(c='')=>`<button type="button" class="btn primary${c}" data-act="buy" data-arg="paso0">${esc(p0.cta)}</button>`;
+  const price=`<div><b class="price num">${esc(p0.price)}</b><small>IVA incluido</small></div>`;
+  document.title='Wedding Planner Bootcamp · Nubes de Algodón School';
+  return `<div class="wrap bc">
+  <div class="nav">${brand()}</div>
+  <section class="hero">
+    <div>
+      <span class="eyebrow">${esc(BC.eyebrow)}</span>
+      <h1>${em(BC.title)}</h1>
+      <p class="lede">${esc(BC.lede)}</p>
+      <div class="p0buy bchero">${price}${buy()}<p class="hint">${esc(p0.soon)}</p></div>
+    </div>
+    ${w.hero.photo?`<img class="heroimg" src="${esc(w.hero.photo)}" alt="${esc(w.hero.alt||'')}" fetchpriority="high">`:''}
+  </section>
+
+  <section class="sec">
+    <span class="eyebrow">${esc(w.who.eyebrow)}</span>
+    <h2>${em(w.who.title)}</h2>
+    <div class="who">${w.who.items.map(i=>`<div><b>${esc(i.t)}</b><span>${esc(i.d)}</span></div>`).join('')}</div>
+  </section>
+
+  <section class="sec" id="paso0">
+    <div class="paso0">
+      <div class="p0copy">
+        <span class="eyebrow">${esc(p0.eyebrow)}</span>
+        <h2>Así son <em>tus 7 días</em></h2>
+        <p class="intro">${esc(p0.intro)}</p>
+        <ol class="days">${(p0.days||[]).map(d=>{ const [a,b]=String(d).split(' · '); return `<li>${b?`<small>${esc(a)}</small><b>${esc(b)}</b>`:`<b>${esc(a)}</b>`}</li>`; }).join('')}</ol>
+      </div>
+      <div class="p0side">
+        <h3>${esc(p0.kitTitle)}</h3>
+        <div class="kit">${(p0.items||[]).map((k,i)=>`<div class="tool t${i%4}"><span class="ico" aria-hidden="true">${['◷','☰','✿','€'][i%4]}</span><b>${esc(k.t)}</b><small>${esc(k.d)}</small></div>`).join('')}</div>
+        <div class="p0buy">${price}<p class="hint">${esc(p0.soon)}</p>${buy()}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="about">
+      <img class="portrait" src="/img/nosotras-10-anos.jpg" alt="Pilar y Ainoa, de Nubes de Algodón">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <span class="eyebrow">Quiénes te acompañan</span>
+        <h2>Pilar &amp; Ainoa, <em>de Nubes de Algodón</em></h2>
+        <p>${esc(BC.about)}</p>
+        ${w.about.quote?`<blockquote>“${esc(w.about.quote)}”</blockquote>`:''}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec faq">
+    <span class="eyebrow">Preguntas frecuentes</span>
+    <h2>Lo que nos preguntáis <em>antes de empezar</em></h2>
+    <div>${BC.faq.map(f=>faq(esc(f.q),esc(f.a))).join('')}</div>
+  </section>
+
+  <section class="sec bcend">
+    <h2>Siete días para descubrir <em>si este oficio es para ti</em></h2>
+    <div class="p0buy">${price}${buy()}</div>
+  </section>
+  <footer class="pub"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
+  </div>
+  <div class="stickybuy"><span><b class="num">${esc(p0.price)}</b> <small>IVA incluido</small></span>${buy(' sm')}</div>
+  ${ui('buy')?buyModal():''}`;
+}
 // Online is bought straight away; Completo and Signature start with a 20-minute call
 const CALL=k=>k==='completo'||k==='signature';
 function planCard(k,sub,items,star,who,tag){ const p=PLANS[k];

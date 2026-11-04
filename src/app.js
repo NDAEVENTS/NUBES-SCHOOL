@@ -82,9 +82,10 @@ const ui=(k,v)=>v===undefined?S.ui[k]:(S.ui[k]=v);
 const root=$('#root');
 function render(){
   const r=S.route, focusId=document.activeElement?.id;
-  let html;
+  let html; document.title='Nubes de Algodón School · Formación para wedding planners';
   if(r.startsWith('/legal/')) html=legalPage(r.slice(7));
   else if(r==='/gracias') html=thanksPage();
+  else if(r==='/bootcamp'||r==='/bootcamp/') html=bootcampPage();
   else if(r==='/acceso') html=authPage();
   else if(r.startsWith('/portal')||r.startsWith('/panel')) html=S.booting?`<div class="loading">Abriendo tu escuela…</div>`:!S.user?authPage():S.me?.role==='nubes'?panel():portal();
   else html=webPage();

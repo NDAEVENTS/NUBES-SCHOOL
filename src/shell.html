@@ -85,6 +85,11 @@ textarea{resize:vertical;min-height:80px}
 .p0buy{background:var(--sheet);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px}
 .p0buy .price{font-family:var(--display);font-size:38px;line-height:1;font-weight:400;margin-right:10px}
 .p0buy small{font-size:13px;color:var(--muted)}
+.bc .bchero{margin-top:26px;max-width:420px;box-shadow:0 18px 40px -28px rgba(34,35,43,.35)}
+.bc .p0buy>div{display:flex;align-items:baseline;gap:4px}
+.bcend{align-items:center;text-align:center}.bcend .p0buy{min-width:min(100%,340px)}
+.stickybuy{display:none}
+@media (max-width:760px){.stickybuy{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:12px;background:var(--sheet);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}.stickybuy b{font-family:var(--display);font-weight:400;font-size:24px}.stickybuy small{color:var(--muted);font-size:12px}.bc footer.pub{padding-bottom:84px}}
 .p0form{display:flex;flex-direction:column;gap:10px}
 .p0form .row{flex-wrap:nowrap}
 .plan .ptag{margin:-6px 0 0;font-family:var(--display);font-style:italic;font-size:17px;color:var(--rose)}
