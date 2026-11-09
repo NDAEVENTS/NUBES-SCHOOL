@@ -1,0 +1,71 @@
+<title>Piezas Instagram School</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column of groups, each a grid of pieces at their true proportions */
+:root{--bg:#F3F3F5;--fg:#22232B;--muted:#6E655B;--line:#DCCFBE;--card:#FBF8F3;--accent:#8E5A5E;
+  --display:"Bodoni Moda",Georgia,serif;--body:"Jost",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);font-weight:300;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:8px 0 0;max-width:65ch}
+h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 4px;padding-top:20px;border-top:1px solid var(--line)}
+.note{margin:0 0 14px;color:var(--muted);font-size:13px}
+code{font-size:12px;background:var(--card);border:1px solid var(--line);padding:1px 6px;border-radius:4px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+img{width:100%;max-width:100%;height:auto;display:block;border:1px solid var(--line)}
+figcaption{display:flex;flex-direction:column;font-size:12px;color:var(--muted);word-break:break-word}
+a{color:#4F6A82;text-decoration:underline}
+.file{letter-spacing:.04em}.photo-note{color:var(--fg);opacity:.8}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital@0;1&family=Jost:wght@300;400&display=swap">
+<main>
+  <header><h1>Instagram School · martes 10/11 · Cuántas horas hacen falta (y carrusel del miércoles)</h1>
+  <p class="lead">Para guardar una imagen en el móvil, mantén el dedo encima. En el ordenador:</p>
+  <p class="lead"><a href="piezas-2026-11-10.zip">⬇ Descargar todas las imágenes (ZIP)</a></p>
+  <p class="lead"><a href="stories-canva.pptx">⬇ Archivo para Canva: stories</a> · <a href="carrusel-canva.pptx">⬇ Archivo para Canva: carrusel</a></p>
+  <p class="lead">En Canva: Crear un diseño → Importar archivo → el .pptx, y todo sigue siendo editable. Donde pone «Aquí va una foto», poned vosotras la foto.</p></header>
+  
+<section>
+  <h2>Stories</h2>
+  <p class="note">Archivo para Canva: <code>stories-canva.pptx</code></p>
+  <div class="grid stories">
+    <figure id="story-1-0830-horas"><img src="story-1-0830-horas.png" alt="Menos de las que crees" loading="lazy">
+      <figcaption><span class="file">story-1-0830-horas.png</span><span class="photo-note">Foto: vuestra agenda o planificador de la semana abierto sobre la mesa, luz de mañana, sin caras</span></figcaption></figure>
+    <figure id="story-2-1200-quiz"><img src="story-2-1200-quiz.png" alt="¿Cuántas horas a la semana hacen falta para arrancar?" loading="lazy">
+      <figcaption><span class="file">story-2-1200-quiz.png</span></figcaption></figure>
+    <figure id="story-3-1230-respuesta"><img src="story-3-1230-respuesta.png" alt="Unas 6 horas, bien repartidas" loading="lazy">
+      <figcaption><span class="file">story-3-1230-respuesta.png</span></figcaption></figure>
+    <figure id="story-4-1500-bootcamp"><img src="story-4-1500-bootcamp.png" alt="Cabe en tus tardes" loading="lazy">
+      <figcaption><span class="file">story-4-1500-bootcamp.png</span></figcaption></figure>
+    <figure id="story-5-1930-pregunta"><img src="story-5-1930-pregunta.png" alt="¿Qué te frena para empezar?" loading="lazy">
+      <figcaption><span class="file">story-5-1930-pregunta.png</span></figcaption></figure>
+    <figure id="story-6-2100-90dias"><img src="story-6-2100-90dias.png" alt="Los primeros 90 días" loading="lazy">
+      <figcaption><span class="file">story-6-2100-90dias.png</span></figcaption></figure>
+  </div>
+</section>
+<section>
+  <h2>Carrusel</h2>
+  <p class="note">Archivo para Canva: <code>carrusel-canva.pptx</code></p>
+  <div class="grid carrusel">
+    <figure id="carrusel-1"><img src="carrusel-1.png" alt="De la oficina a las bodas" loading="lazy">
+      <figcaption><span class="file">carrusel-1.png</span><span class="photo-note">Foto: escritorio con una agenda abierta y un jarrón de flores, luz natural, sin caras</span></figcaption></figure>
+    <figure id="carrusel-2"><img src="carrusel-2.png" alt="No dejes tu trabajo mañana" loading="lazy">
+      <figcaption><span class="file">carrusel-2.png</span></figcaption></figure>
+    <figure id="carrusel-3"><img src="carrusel-3.png" alt="La base" loading="lazy">
+      <figcaption><span class="file">carrusel-3.png</span></figcaption></figure>
+    <figure id="carrusel-4"><img src="carrusel-4.png" alt="Tu marca" loading="lazy">
+      <figcaption><span class="file">carrusel-4.png</span></figcaption></figure>
+    <figure id="carrusel-5"><img src="carrusel-5.png" alt="Tus primeras parejas" loading="lazy">
+      <figcaption><span class="file">carrusel-5.png</span></figcaption></figure>
+    <figure id="carrusel-6"><img src="carrusel-6.png" alt="Tu semana tipo" loading="lazy">
+      <figcaption><span class="file">carrusel-6.png</span></figcaption></figure>
+    <figure id="carrusel-7"><img src="carrusel-7.png" alt="Te mandamos la guía" loading="lazy">
+      <figcaption><span class="file">carrusel-7.png</span></figcaption></figure>
+  </div>
+</section>
+</main>
