@@ -1,0 +1,51 @@
+<title>Piezas Instagram School</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column of groups, each a grid of pieces at their true proportions */
+:root{--bg:#F3F3F5;--fg:#22232B;--muted:#6E655B;--line:#DCCFBE;--card:#FBF8F3;--accent:#8E5A5E;
+  --display:"Bodoni Moda",Georgia,serif;--body:"Jost",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);font-weight:300;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:8px 0 0;max-width:65ch}
+h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 4px;padding-top:20px;border-top:1px solid var(--line)}
+.note{margin:0 0 14px;color:var(--muted);font-size:13px}
+code{font-size:12px;background:var(--card);border:1px solid var(--line);padding:1px 6px;border-radius:4px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+img{width:100%;max-width:100%;height:auto;display:block;border:1px solid var(--line)}
+figcaption{display:flex;flex-direction:column;font-size:12px;color:var(--muted);word-break:break-word}
+a{color:#4F6A82;text-decoration:underline}
+.file{letter-spacing:.04em}.photo-note{color:var(--fg);opacity:.8}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital@0;1&family=Jost:wght@300;400&display=swap">
+<main>
+  <header><h1>Facebook School · 6 publicaciones de inicio</h1>
+  <p class="lead">Para guardar una imagen en el móvil, mantén el dedo encima. En el ordenador:</p>
+  <p class="lead"><a href="piezas-fb-inicio.zip">⬇ Descargar todas las imágenes (ZIP)</a></p>
+  <p class="lead"><a href="post-canva.pptx">⬇ Archivo para Canva: post</a></p>
+  <p class="lead">En Canva: Crear un diseño → Importar archivo → el .pptx, y todo sigue siendo editable. Donde pone «Aquí va una foto», poned vosotras la foto.</p></header>
+  
+<section>
+  <h2>Post</h2>
+  <p class="note">Archivo para Canva: <code>post-canva.pptx</code></p>
+  <div class="grid post">
+    <figure id="fb-1-bienvenida"><img src="fb-1-bienvenida.png" alt="Aquí empieza tu nuevo camino" loading="lazy">
+      <figcaption><span class="file">fb-1-bienvenida.png</span><span class="photo-note">Foto: Pilar y Ainoa juntas, sonriendo, plano medio, luz natural, fondo limpio</span></figcaption></figure>
+    <figure id="fb-2-frase"><img src="fb-2-frase.png" alt="Si nosotras pudimos, tú también" loading="lazy">
+      <figcaption><span class="file">fb-2-frase.png</span></figcaption></figure>
+    <figure id="fb-3-quienes-somos"><img src="fb-3-quienes-somos.png" alt="Dos planners que un día dieron el paso" loading="lazy">
+      <figcaption><span class="file">fb-3-quienes-somos.png</span><span class="photo-note">Foto: Pilar y Ainoa revisando juntas una mesa montada o una libreta, plano medio, luz natural</span></figcaption></figure>
+    <figure id="fb-4-workshop"><img src="fb-4-workshop.png" alt="Aprender haciendo" loading="lazy">
+      <figcaption><span class="file">fb-4-workshop.png</span><span class="photo-note">Foto: una foto del workshop de noviembre de 2025: manos montando una mesa o eligiendo papelería (caras de alumnas solo con su permiso por escrito)</span></figcaption></figure>
+    <figure id="fb-5-bootcamp"><img src="fb-5-bootcamp.png" alt="Wedding Planner Bootcamp" loading="lazy">
+      <figcaption><span class="file">fb-5-bootcamp.png</span></figcaption></figure>
+    <figure id="fb-6-guia-90-dias"><img src="fb-6-guia-90-dias.png" alt="Tus primeros 90 días" loading="lazy">
+      <figcaption><span class="file">fb-6-guia-90-dias.png</span><span class="photo-note">Foto: una libreta abierta con una lista escrita a mano y una taza de café, luz de mañana, sin personas</span></figcaption></figure>
+  </div>
+</section>
+</main>
