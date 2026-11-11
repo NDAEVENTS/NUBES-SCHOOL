@@ -171,7 +171,7 @@ function webPage(){
         <label class="check"><input id="lnews" name="news" type="checkbox"> <span><b style="color:var(--ink);font-weight:400">Quiero recibir la newsletter de Nubes de Algodón School:</b> novedades, nuevos cursos, workshops y plazas antes que nadie. Puedes darte de baja cuando quieras.</span></label>
         <label class="check"><input id="lok" name="ok" type="checkbox" required> <span>He leído la <a href="/legal/privacidad">política de privacidad</a> y quiero recibir la guía gratuita.</span></label>
         <button class="btn primary" type="submit">Quiero la guía</button>
-        <p class="hint">Responsable: Nubes de Algodón Events, S.L. Finalidad: enviarte la guía y, si lo marcas, nuestra newsletter. Derechos: acceso, rectificación, supresión y otros, en ainoa@nubesdealgodonevents.com. Más información en la <a href="/legal/privacidad">política de privacidad</a>.</p></form>`}
+        <p class="hint">Responsable: Nubes de Algodón Events, S.L. Finalidad: enviarte la guía y, si lo marcas, nuestra newsletter. Derechos: acceso, rectificación, supresión y otros, en hola@nubesdealgodonevents.com. Más información en la <a href="/legal/privacidad">política de privacidad</a>.</p></form>`}
     </div>
   </section>
 
@@ -180,7 +180,7 @@ function webPage(){
     <h2>${em(w.faq.title)}</h2>
     <div>${w.faq.items.map(f=>faq(esc(f.q),esc(f.a))).join('')}</div>
   </section>
-  <footer class="pub"><div class="fsocial"><span class="eyebrow">Síguenos</span>${socialLinks()}</div><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
+  <footer class="pub"><div class="fsocial"><span class="eyebrow">Síguenos</span>${socialLinks()}</div><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   </div>${ui('buy')?buyModal():''}`;
 }
 // ---------- Bootcamp landing (/bootcamp) ----------
@@ -299,7 +299,7 @@ function bootcampPage(){
     </div>
   </section>
 
-  <footer class="pub bcw"><div class="fsocial"><span class="eyebrow">Síguenos</span>${socialLinks()}</div><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
+  <footer class="pub bcw"><div class="fsocial"><span class="eyebrow">Síguenos</span>${socialLinks()}</div><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   <div class="stickybuy"><span><b class="num">${esc(p0.price)}</b> <small>IVA incluido</small></span>${buy(' sm')}</div>
   </div>${ui('buy')?buyModal():''}`;
 }
