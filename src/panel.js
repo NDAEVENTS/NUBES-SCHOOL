@@ -194,11 +194,18 @@ const wantsNews=l=>l.extra?.newsletter===true;
 const consentAt=l=>{ const t=l.extra?.consent_at||l.created_at; return t?new Date(t).toLocaleString('es-ES',{timeZone:'Europe/Madrid',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):''; };
 ACT.copyNews=()=>{ const t=S.leads.filter(l=>l.source!=='signature'&&wantsNews(l)).map(l=>l.email).join(', '); navigator.clipboard?.writeText(t).then(()=>toast('Emails de la newsletter copiados'),()=>toast('No se ha podido copiar')); };
 ACT.copyEmails=()=>{ const t=S.leads.filter(l=>l.source!=='signature').map(l=>l.email).join(', '); navigator.clipboard?.writeText(t).then(()=>toast('Emails copiados'),()=>toast('No se ha podido copiar')); };
+// Where each sale came from: the utm_source of the visit, saved with the payment (supabase/origen-compras.sql).
+// Sales from before that, or without it, borrow the origin of a lead with the same email when there is one
+const FROM_T={instagram:'Instagram (ManyChat)',ig_bio:'Instagram (bio)',meta_a:'Anuncio Meta A',meta_b:'Anuncio Meta B',meta_c:'Anuncio Meta C',facebook:'Facebook',enlace:'Enlace de pago del panel'};
+const fromName=k=>FROM_T[k]||k;
+function saleFrom(p){ if(p.source) return fromName(p.source);
+  const l=S.leads.find(x=>x.email===p.email&&x.extra?.from); return l?fromName(l.extra.from)+' (por su lead)':'Directo o sin dato'; }
 function pVentas(){
   const tot=S.purchases.reduce((a,p)=>a+(+p.amount||0),0);
   return `<header><h1>Ventas</h1><p>Cada pago completado en la web. Las facturas y los cobros a plazos se ven en Stripe.</p></header>
   <div class="sheet pad"><div class="spread"><h3 style="font-size:20px">Total</h3><span class="result num">${eur(tot)}</span></div>
-  ${S.purchases.length?`<div class="tblwrap"><table><thead><tr><th>Fecha</th><th>Email</th><th>Nivel</th><th>Pago</th><th>Importe</th></tr></thead><tbody>${S.purchases.map(p=>`<tr><td>${fdate(p.created_at,{day:'numeric',month:'short',year:'numeric'})}</td><td>${esc(p.email)}</td><td>${PLANS[p.plan]?.t||esc(p.plan)}</td><td>${p.installments>1?p.installments+' cuotas':'Único'}</td><td class="num">${eur(p.amount)}</td></tr>`).join('')}</tbody></table></div>`:`<p class="empty">Todavía no hay ventas.</p>`}</div>`;
+  ${S.purchases.length?`<p class="hint">Por origen: ${Object.entries(S.purchases.reduce((a,p)=>{ const k=saleFrom(p); a[k]=(a[k]||0)+1; return a; },{})).map(([k,n])=>`${esc(k)} ${n}`).join(' · ')}</p>`:''}
+  ${S.purchases.length?`<div class="tblwrap"><table><thead><tr><th>Fecha</th><th>Email</th><th>Nivel</th><th>Pago</th><th>Origen</th><th>Importe</th></tr></thead><tbody>${S.purchases.map(p=>`<tr><td>${fdate(p.created_at,{day:'numeric',month:'short',year:'numeric'})}</td><td>${esc(p.email)}</td><td>${PLANS[p.plan]?.t||esc(p.plan)}</td><td>${p.installments>1?p.installments+' cuotas':'Único'}</td><td>${esc(saleFrom(p))}</td><td class="num">${eur(p.amount)}</td></tr>`).join('')}</tbody></table></div>`:`<p class="empty">Todavía no hay ventas.</p>`}</div>`;
 }
 
 // ---------- Seeing the portal as a student ----------

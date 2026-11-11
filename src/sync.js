@@ -99,8 +99,9 @@ const DB={
     return {biz:B?.data||{},notes:N}; },
   // ---------- Web ----------
   async addLead(name,email,source,extra){ if(CFG.demo) return; ok(await sb.rpc('add_lead',{p_name:name,p_email:email,p_source:source,p_extra:extra||{}})); },
-  async checkout(planKey,email,installments){ if(CFG.demo) return null;
-    const r=await sb.functions.invoke('checkout',{body:{plan:planKey,email,installments}}); if(r.error||!r.data?.url) throw Object.assign(new Error('checkout'),{friendly:'No hemos podido abrir el pago. Vuelve a intentarlo o escríbenos a hola@nubesdealgodonevents.com.'}); return r.data.url; },
+  // from: where the visit came from (utm_source), kept with the purchase so Panel → Ventas shows the origin of each sale
+  async checkout(planKey,email,installments,from){ if(CFG.demo) return null;
+    const r=await sb.functions.invoke('checkout',{body:{plan:planKey,email,installments,from}}); if(r.error||!r.data?.url) throw Object.assign(new Error('checkout'),{friendly:'No hemos podido abrir el pago. Vuelve a intentarlo o escríbenos a hola@nubesdealgodonevents.com.'}); return r.data.url; },
 
   // ---------- Equipo ----------
   async review(sub,feedback){ Object.assign(sub,{status:'rev',feedback,feedback_by:S.me.name,feedback_at:new Date().toISOString()}); if(CFG.demo) return;
@@ -112,7 +113,7 @@ const DB={
   async updateMember(m,patch){ Object.assign(m,patch); if(CFG.demo) return; ok(await sb.from('members').update(patch).eq('user_id',m.user_id)); },
   async invite(body){ if(CFG.demo){ S.members.unshift({user_id:uid('u'),role:'alumna',name:body.name,email:body.email,plan:body.plan,started_at:todayISO(),access_until:addDays(todayISO(),365),created_at:new Date().toISOString()}); return; }
     const r=await sb.functions.invoke('invite',{body:Object.assign({redirect:CFG.site+'/acceso'},body)}); if(r.error||!r.data?.ok) throw Object.assign(new Error('invite'),{friendly:r.data?.error==='exists'?'Ese email ya tiene acceso.':'No se ha podido enviar la invitación.'}); await loadPanel(); },
-  async paymentLink(planKey,email){ if(CFG.demo) return 'https://checkout.stripe.com/c/pay/ejemplo'; return DB.checkout(planKey,email); },
+  async paymentLink(planKey,email){ if(CFG.demo) return 'https://checkout.stripe.com/c/pay/ejemplo'; return DB.checkout(planKey,email,false,'enlace'); },
   async saveEvent(ev){ if(CFG.demo){ if(!S.events.includes(ev)) S.events.push(ev); return; } ok(await sb.from('events').upsert(ev)); },
   async deleteEvent(ev){ S.events=S.events.filter(x=>x!==ev); if(CFG.demo) return; ok(await sb.from('events').delete().eq('id',ev.id)); },
   async addLibrary(item,file){ if(file){ const up=await DB.uploadFile('course',file); item.path=up.path; item.file=up.name; } if(!CFG.demo) ok(await sb.from('library').insert(item)); S.library.push(item); },
@@ -179,7 +180,7 @@ function demoSeed(){
     {id:'ig3',kind:'post',day:addDays(mon,0),data:{type:'Reel',topic:'Si eres la que organiza todos los cumpleaños',pillar:IG_PILLARS[0],kw:'SEÑALES',reach:2300,saves:64,shares:31,comments:18,dms:12}},
     {id:'ig4',kind:'post',day:addDays(mon,2),data:{type:'Carrusel',topic:'7 señales de que esto es para ti',pillar:IG_PILLARS[0],kw:'SEÑALES',reach:1400,saves:88,shares:12,comments:9,dms:6}}];
   S.leads.push(...[1,2,3].map(i=>({id:'di'+i,name:['Chari','Noelia','Laura'][i-1],email:`ig${i}@ejemplo.com`,source:'guia',extra:{guide:'senales',from:'instagram'},created_at:new Date(D(mon).getTime()+i*864e5).toISOString()})),{id:'di4',name:'Rocío',email:'rocio@ejemplo.com',source:'signature',extra:{plan:'completo',from:'instagram',country:'España',why:'Trabajo en un banco y quiero cambiar.'},created_at:new Date(D(mon).getTime()+4*864e5).toISOString()});
-  S.purchases=[{id:'p1',email:'carmen@ejemplo.com',plan:'signature',amount:3500,created_at:iso(-3)},{id:'p2',email:'lucia@ejemplo.com',plan:'completo',amount:1990,created_at:iso(-9)}];
+  S.purchases=[{id:'p1',email:'carmen@ejemplo.com',plan:'signature',amount:3500,source:'enlace',created_at:iso(-3)},{id:'p2',email:'lucia@ejemplo.com',plan:'completo',amount:1990,source:'meta_a',created_at:iso(-9)}];
 }
 function demoAs(role){
   if(!S.demo) demoSeed();

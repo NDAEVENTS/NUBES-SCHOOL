@@ -111,6 +111,7 @@ create table if not exists public.purchases(
   plan text not null,
   amount numeric not null,
   installments int not null default 1,
+  source text,
   created_at timestamptz not null default now()
 );
 
