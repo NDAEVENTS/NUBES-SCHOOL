@@ -305,6 +305,31 @@ td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
 @media print{body.print-plan .side,body.print-plan .main>:not(#p0-plan),body.print-plan .noprint,body.print-plan .demo-note,body.print-plan .toast{display:none!important}
   body.print-plan .app{display:block}body.print-plan #p0-plan{border:0;box-shadow:none}body.print-plan input{border:0;border-bottom:1px solid #ccc;border-radius:0;background:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* Social buttons (footer and thank-you screens), students' reviews and notices with real figures */
+.fsocial{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.social{display:flex;flex-wrap:wrap;gap:10px}
+.sbtn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:13px;text-decoration:none}
+.sbtn:hover{border-color:var(--rose)}
+.sbtn svg{width:18px;height:18px;flex:none;stroke:var(--rose);fill:none;stroke-width:1.6}
+.follow{background:var(--rose-soft);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.follow p{font-size:14px;color:var(--ink)}
+.reviews{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:28px;align-items:start}
+.rcard{margin:0;background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.rcard blockquote{margin:0;font-family:var(--display);font-style:italic;font-size:19px;line-height:1.45;color:var(--ink)}
+.rcard figcaption{display:flex;flex-direction:column;font-size:13.5px;color:var(--muted)}
+.rcard figcaption b{font-weight:500;color:var(--ink)}
+.rmore summary{cursor:pointer;color:var(--rose);font-size:13.5px;text-decoration:underline;list-style:none}
+.rmore summary::-webkit-details-marker{display:none}
+.rmore[open] summary{margin-bottom:10px}
+.rmore p{font-size:14px;color:var(--muted);margin:0 0 10px}
+.bcrev .reviews{text-align:left}
+@media (max-width:760px){.reviews{grid-template-columns:minmax(0,1fr)}}
+.notice{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;max-width:340px;width:calc(100% - 32px);background:var(--sheet);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 26px rgba(34,35,43,.16);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.45}
+.notice .ndot{width:32px;height:32px;border-radius:50%;background:var(--rose-soft);color:var(--rose);display:flex;align-items:center;justify-content:center;flex:none}
+.notice .nx{margin-left:auto;background:none;border:0;color:var(--muted);font-size:15px;line-height:1;padding:2px}
+@media (max-width:760px){.notice.above{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+@media (prefers-reduced-motion:no-preference){.notice{animation:nin .45s ease-out both}@keyframes nin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
 </style>
 <style>
 /* App additions on top of the approved demo styles */

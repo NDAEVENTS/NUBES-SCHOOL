@@ -120,7 +120,7 @@ function fail(err){ console.error(err); S.busy=false; toast(err?.friendly||'No s
 async function start(){
   render();
   try{ await boot(); }catch(e){ console.error(e); S.err='No hemos podido abrir la escuela. Vuelve a intentarlo en un momento.'; }
-  S.booting=false; render();
+  S.booting=false; render(); startNotice();
   // A link to a section (/#guia) lands on it once the page is drawn; sign-in links also use the hash, with key=value
   const h=location.hash.slice(1); if(h&&!h.includes('=')) document.getElementById(h)?.scrollIntoView();
 }
