@@ -105,6 +105,13 @@ Una sola vez: **SQL Editor → New query** → pega todo [`supabase/borrar-alumn
 
 Desde ese momento: **Panel → Alumnas → la alumna → Eliminar alumna → Sí, eliminar**. Deja de poder entrar y se borran su progreso, ejercicios, tutorías, mensajes y “Mi negocio”. Sus pagos (Panel → Ventas) y su lead se quedan. Si solo quieres cerrarle el acceso, cambia «Acceso hasta». Las cuentas del equipo (Pilar y Ainoa) no se pueden eliminar desde aquí.
 
+## 9. Origen de cada venta 👉
+
+1. **SQL Editor → New query** → pega todo [`supabase/origen-compras.sql`](supabase/origen-compras.sql) → **Run**. Abajo debe salir `origen de compras listo`.
+2. **Edge Functions**: abre `checkout`, pega el contenido nuevo de [`supabase/functions/checkout/index.ts`](supabase/functions/checkout/index.ts) y pulsa **Deploy**. Igual con `stripe-webhook` ([`supabase/functions/stripe-webhook/index.ts`](supabase/functions/stripe-webhook/index.ts)).
+
+Desde ese momento, **Panel → Ventas** muestra el origen de cada compra (Instagram, anuncio de Meta, Facebook, enlace de pago del panel…). Las ventas anteriores toman el origen de su lead si compraron con el mismo email.
+
 ---
 
 ## Antes de abrir las ventas

@@ -44,7 +44,7 @@ export async function stripe(path: string, body?: Record<string, unknown>, metho
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   try {
-    const { plan, email, installments } = await req.json();
+    const { plan, email, installments, from } = await req.json();
     const P = PLANS[plan];
     const mail = String(email || '').trim().toLowerCase();
     if (!P || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return reply({ error: 'missing data' }, 400);
@@ -66,7 +66,8 @@ Deno.serve(async (req) => {
       const c = await stripe('coupons', { amount_off: credit * 100, currency: 'eur', duration: 'once', name: 'Lo que ya has pagado', max_redemptions: 1 });
       discounts = [{ coupon: c.id }];
     }
-    const meta = { plan, installments: split ? split.n : 1, each, credit };
+    // Where the visit came from (utm_source on the web, 'enlace' for a payment link made in the panel): saved with the purchase
+    const meta = { plan, installments: split ? split.n : 1, each, credit, from: String(from || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40) };
     const body: Record<string, unknown> = {
       mode: split ? 'subscription' : 'payment',
       customer_email: mail,

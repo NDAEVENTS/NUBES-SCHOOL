@@ -322,7 +322,7 @@ function thanksPage(){
 ACT.buy=k=>{ ui('buy',k); render(); };
 ACT.closeBuy=()=>{ ui('buy',null); render(); };
 FORM.buy=async f=>{ if(CFG.demo){ ui('buy',null); toast('En la versión real, aquí se abre la página de pago de Stripe.'); return; }
-  S.busy=true; render(); const url=await DB.checkout(ui('buy'),f.email.trim(),!!f.installments); location.href=url; };
+  S.busy=true; render(); const url=await DB.checkout(ui('buy'),f.email.trim(),!!f.installments,FROM); location.href=url; };
 // Call requests are stored as leads with source 'signature' (the only other source the database accepts) and the level in extra.plan
 FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',withFrom({plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why})); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
 FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',withFrom({guide:guideNow().id,newsletter:f.news==='on',consent_at:new Date().toISOString()})); ui('leadDone',true); render(); };
