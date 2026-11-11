@@ -228,3 +228,13 @@ drop policy if exists ent_read on storage.objects;
 create policy ent_read on storage.objects for select to authenticated using (bucket_id='entregas' and (public.is_nubes() or (storage.foldername(name))[1]=auth.uid()::text));
 drop policy if exists ent_write on storage.objects;
 create policy ent_write on storage.objects for insert to authenticated with check (bucket_id='entregas' and public.is_active() and (storage.foldername(name))[1]=auth.uid()::text);
+
+-- Counts for the notices on the public web (supabase/avisos-web.sql): numbers only, no personal data
+create or replace function public.public_stats() returns json
+language sql stable security definer set search_path=public as $$
+  select json_build_object(
+    'guias7',(select count(distinct email) from leads where source='guia' and created_at>now()-interval '7 days'),
+    'bootcamp30',(select count(distinct email) from purchases where plan='paso0' and created_at>now()-interval '30 days'));
+$$;
+revoke all on function public.public_stats() from public;
+grant execute on function public.public_stats() to anon, authenticated;

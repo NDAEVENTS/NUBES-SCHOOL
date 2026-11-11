@@ -23,7 +23,9 @@ const WEB_DEFAULT={
   program:{eyebrow:'El programa',title:'The Wedding Creators, *en cuatro etapas*',
     intro:'Primero aprendes el oficio y después montamos juntas tu negocio. Cada módulo es corto, se compagina con tu vida y termina con una herramienta que te quedas para siempre: tu mood board, tu base de proveedores, tus tarifas o tu dossier.',
     items:[{t:'El oficio',d:'Cómo se organiza una boda de principio a fin: presupuesto, proveedores, diseño, invitados y el gran día.'},{t:'Tu negocio',d:'Tu clienta ideal, tu marca, la parte legal y cuánto cobrar por tu trabajo, sin miedo.'},{t:'Visibilidad',d:'Tu web, tu Instagram, tu red de proveedores y tu primer shooting, para que las parejas te encuentren.'},{t:'Clientas y experiencia',d:'De la primera reunión a la firma, y cómo cuidar a cada pareja para que te recomiende con los ojos cerrados.'}]},
-  testimonials:{eyebrow:'Lo que dicen nuestras alumnas',title:'Ellas ya lo han conseguido',items:[]},
+  testimonials:{eyebrow:'Lo que dicen nuestras alumnas',title:'Ellas ya lo han conseguido',items:[
+    {quote:'El temario es impecable y realista, el finde de workshops fue brutal y las prácticas en una boda real son la guinda del pastel. Si buscas una escuela donde te enseñen el oficio con rigor y mucho corazón, este es el lugar.',name:'Xenia · La Distinguida',detail:'Alumna Signature · 1.ª edición',full:'Mi paso por Nubes de Algodón School ha sido el impulso definitivo para mi marca, La DISTINGUIDA. El temario es impecable y realista, el finde de workshops fue brutal, perfecto para aterrizar conceptos y vivir la realidad del sector de tú a tú, las prácticas en una boda real son la guinda del pastel, donde vives la adrenalina y la responsabilidad que conlleva nuestro trabajo, pero lo que realmente marca la diferencia es el factor humano.\n\nQuiero mencionar especialmente a Pilar, mi tutora, quien ha sido una pieza fundamental no solo en mi formación técnica, sino en mi crecimiento personal. Su apoyo y guía han sido la clave para sentirme totalmente preparada y segura de cara a mis próximos proyectos, como nuestra presencia en la feria TOT BODA SITGES.\n\nSi buscas una escuela donde te enseñen el oficio con rigor y mucho corazón, este es el lugar. ¡Gracias, Pilar, por creer en mí y en La DISTINGUIDA!'},
+    {quote:'Para mí, The Wedding Creators está siendo un antes y un después. Es una formación útil, cercana y de calidad. Sin duda, si volviese atrás, elegiría de nuevo The Wedding Creators.',name:'Núria',detail:'Alumna Signature · 1.ª edición',full:'Para mí, The Wedding Creators está siendo un antes y un después. Es una formación útil, cercana y de calidad.\n\nLa facilidad de poder hacerlo online y a tu ritmo es maravillosa y facilita mucho el hacerlo sin presión.\n\n¡El fin de semana de los workshops hay que vivirlo para saber lo que pasa ahí! Pero, en resumen, hizo que reafirmara que este es el camino que quiero, y ojalá hubiese durado más, porque, aunque fue muchísimo, supo a poco.\n\nSin duda, si volviese atrás, elegiría de nuevo The Wedding Creators.'}]},
   prices:{eyebrow:'Precios',title:'Elige *cómo quieres recorrer este camino*',intro:'Tres caminos, según hasta dónde quieras llegar y cuánto quieras que te acompañemos. Elijas el que elijas, estaremos a tu lado. Todos los precios llevan el IVA incluido y puedes pagar con tarjeta, Apple Pay, Google Pay o PayPal, también a plazos.',
     tOnline:'Aprende el oficio a tu ritmo',tCompleto:'Lanza tu negocio acompañada',tSignature:'Lujo y bodas destino, con Nubes',
     online:['Las cuatro etapas del programa en tu portal','Plantillas y herramientas visuales para tu negocio','Una sesión grupal de dudas al mes, en directo','Certificado The Wedding Creators'],
@@ -32,7 +34,7 @@ const WEB_DEFAULT={
     forOnline:'Para ti si quieres aprender la profesión a tu ritmo, sin dejar todavía tu trabajo.',
     forCompleto:'Para ti si ya has decidido dar el paso y quieres darlo de nuestra mano.',
     forSignature:'Para ti si sueñas con bodas de lujo y parejas que llegan de todo el mundo.',
-    edition:'Próxima edición: febrero de 2027 · 8 plazas',
+    edition:'Próxima edición: febrero de 2027 · 8 plazas',sigSold:'1',
     paso0:'¿Aún no lo tienes claro? Es normal. Empieza por el Bootcamp.',
     upgrade:'Y si después quieres subir de nivel, solo pagas la diferencia.'},
   guide:{mode:'90dias'},
@@ -65,6 +67,14 @@ const FROM=(()=>{ const f=(Q.get('utm_source')||'').toLowerCase().slice(0,40); t
 const withFrom=x=>FROM?Object.assign({from:FROM},x):x;
 function guideNow(){ const m=GUIDES.some(g=>g.id===Q.get('guia'))?Q.get('guia'):W().guide.mode, d=new Date(); return GUIDES.find(g=>g.id===m)||GUIDES[(d.getFullYear()*12+d.getMonth())%GUIDES.length]; }
 const fill=t=>esc(t).replace('{modulos}',pub().mods.length).replace('{lecciones}',pub().mods.reduce((a,m)=>a+m.lessons.length,0));
+// Social networks of the school: footer and thank-you screens
+const SOCIAL=[['Instagram','https://www.instagram.com/nubesdealgodonschool/','<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6"/>'],
+  ['Facebook','https://www.facebook.com/share/1E17DG73vd/','<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/>']];
+const socialLinks=()=>`<div class="social">${SOCIAL.map(([n,u,ico])=>`<a class="sbtn" href="${u}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true">${ico}</svg>${n}</a>`).join('')}</div>`;
+const followBox=t=>`<div class="follow"><p>${esc(t)}</p>${socialLinks()}</div>`;
+// Students' reviews (Panel → Editar landing → Testimonios): the short quote, and the whole text behind «Leer su opinión completa»
+// On /bootcamp (bc) the line under the name never names another level: that page sells only the Bootcamp
+const reviews=(w,bc)=>`<div class="reviews">${w.testimonials.items.map(t=>`<figure class="rcard"><blockquote>“${esc(t.quote)}”</blockquote><figcaption><b>${esc(t.name)}</b>${t.detail?`<span>${esc(bc?'Alumna de The Wedding Creators':t.detail)}</span>`:''}</figcaption>${t.full?`<details class="rmore"><summary>Leer su opinión completa</summary>${String(t.full).split(/\n\s*\n/).map(p=>`<p>${esc(p)}</p>`).join('')}</details>`:''}</figure>`).join('')}</div>`;
 function brand(){ return `<a class="brand" href="/" style="text-decoration:none;color:inherit"><b>Nubes de Algodón</b><span>School</span></a>`; }
 function webPage(){
   const w=W(), p0=w.paso0;
@@ -136,7 +146,7 @@ function webPage(){
   ${w.testimonials.items.length?`<section class="sec">
     <span class="eyebrow">${esc(w.testimonials.eyebrow)}</span>
     <h2>${em(w.testimonials.title)}</h2>
-    <div class="who">${w.testimonials.items.map(t=>`<div><span>“${esc(t.quote)}”</span><b>${esc(t.name)}</b>${t.detail?`<small class="hint">${esc(t.detail)}</small>`:''}</div>`).join('')}</div>
+    ${reviews(w)}
   </section>`:''}
 
   <section class="sec" id="precios">
@@ -155,7 +165,7 @@ function webPage(){
   <section class="sec" id="guia">
     <div class="lead">
       <div class="guidecopy">${guideNow().cover?`<img class="gcover" src="${guideNow().cover}" alt="Portada de la guía">`:''}<div><span class="eyebrow">Guía gratuita en PDF</span><h2>${em(guideNow().t)}</h2><p class="hint" style="margin-top:8px">${esc(guideNow().sub)}</p></div></div>
-      ${ui('leadDone')?`<div style="display:flex;flex-direction:column;gap:10px"><p class="ok">¡Gracias! Aquí tienes tu guía.</p><a class="btn primary" href="${guideNow().pdf}" target="_blank" rel="noopener">Descargar la guía (PDF)</a></div>`:
+      ${ui('leadDone')?`<div style="display:flex;flex-direction:column;gap:10px"><p class="ok">¡Gracias! Aquí tienes tu guía.</p><a class="btn primary" href="${guideNow().pdf}" target="_blank" rel="noopener" style="align-self:flex-start">Descargar la guía (PDF)</a>${followBox('Cada semana compartimos en redes trucos del oficio y lo que pasa detrás de nuestras bodas. ¿Te vienes?')}</div>`:
       `<form data-form="lead"><div class="field"><span>Tu nombre</span><input id="lname" name="name" required autocomplete="given-name"></div>
         <div class="field"><span>Tu email</span><input id="lmail" name="email" type="email" required autocomplete="email"></div>
         <label class="check"><input id="lnews" name="news" type="checkbox"> <span><b style="color:var(--ink);font-weight:400">Quiero recibir la newsletter de Nubes de Algodón School:</b> novedades, nuevos cursos, workshops y plazas antes que nadie. Puedes darte de baja cuando quieras.</span></label>
@@ -170,7 +180,7 @@ function webPage(){
     <h2>${em(w.faq.title)}</h2>
     <div>${w.faq.items.map(f=>faq(esc(f.q),esc(f.a))).join('')}</div>
   </section>
-  <footer class="pub"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
+  <footer class="pub"><div class="fsocial"><span class="eyebrow">Síguenos</span>${socialLinks()}</div><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   </div>${ui('buy')?buyModal():''}`;
 }
 // ---------- Bootcamp landing (/bootcamp) ----------
@@ -234,6 +244,14 @@ function bootcampPage(){
 
   <section class="bcstrip" aria-label="Fotos de The Wedding Creators">${BC.photos.map(([f,a])=>`<img src="/img/${f}" alt="${esc(a)}" loading="lazy">`).join('')}</section>
 
+  ${w.testimonials.items.length?`<section class="bcsec bcrev">
+    <div class="bcw">
+      <span class="eyebrow">${esc(w.testimonials.eyebrow)}</span>
+      <h2>${em(w.testimonials.title)}</h2>
+      ${reviews(w,true)}
+    </div>
+  </section>`:''}
+
   <section class="bcsec">
     <div class="bcw bcoffer">
       <div>
@@ -281,7 +299,7 @@ function bootcampPage(){
     </div>
   </section>
 
-  <footer class="pub bcw"><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
+  <footer class="pub bcw"><div class="fsocial"><span class="eyebrow">Síguenos</span>${socialLinks()}</div><span>Nubes de Algodón School · <span style="user-select:all">${CONTACT}</span><br><span class="hint">${CO.name} · NIF ${CO.nif} · ${CO.addr} · ${CO.reg} · EUID ${CO.euid} · ${CO.mail}</span></span><span class="row"><a href="/legal/aviso-legal">Aviso legal</a><a href="/legal/privacidad">Privacidad</a><a href="/legal/cookies">Cookies</a><a href="/legal/condiciones">Condiciones de venta</a></span></footer>
   <div class="stickybuy"><span><b class="num">${esc(p0.price)}</b> <small>IVA incluido</small></span>${buy(' sm')}</div>
   </div>${ui('buy')?buyModal():''}`;
 }
@@ -317,7 +335,8 @@ function thanksPage(){
     <span class="eyebrow">The Wedding Creators</span><h1>¡Bienvenida a la escuela!</h1>
     <p>Tu pago se ha completado. En unos minutos recibirás un email para crear tu contraseña y entrar en tu portal. La factura llega en otro email de Stripe.</p>
     <p class="hint">Si no lo ves, revisa la carpeta de spam o escríbenos a <span style="user-select:all">${CONTACT}</span>.</p>
-    <a class="btn primary" href="/portal" style="align-self:flex-start">Ir a mi portal</a></div></div></div>`;
+    <a class="btn primary" href="/portal" style="align-self:flex-start">Ir a mi portal</a>
+    ${followBox('Ya eres una de las Creators. Síguenos para no perderte los directos y las novedades de la escuela.')}</div></div></div>`;
 }
 ACT.buy=k=>{ ui('buy',k); render(); };
 ACT.closeBuy=()=>{ ui('buy',null); render(); };
@@ -326,3 +345,22 @@ FORM.buy=async f=>{ if(CFG.demo){ ui('buy',null); toast('En la versión real, aq
 // Call requests are stored as leads with source 'signature' (the only other source the database accepts) and the level in extra.plan
 FORM.apply=async f=>{ await DB.addLead(f.name,f.email,'signature',withFrom({plan:ui('buy'),country:f.country,phone:f.phone||'',why:f.why})); ui('buy',null); toast('¡Gracias! Te escribimos en 48 horas para agendar la llamada.'); };
 FORM.lead=async f=>{ await DB.addLead(f.name,f.email,'guia',withFrom({guide:guideNow().id,newsletter:f.news==='on',consent_at:new Date().toISOString()})); ui('leadDone',true); render(); };
+
+// ---------- Notices with real figures (home and /bootcamp) ----------
+// The figures come from public_stats() (counts only, no names) and from the Signature places sold that the team types in Panel → Editar landing → Precios.
+// A notice only shows above a minimum, so a low figure never shows. One per visit, after 10 seconds, gone after 6.
+const SIG_PLACES=8;
+function noticeText(){ const st=S.stats||{}, sold=parseInt(W().prices.sigSold,10), left=Number.isFinite(sold)?SIG_PLACES-sold:null, out=[];
+  if(st.guias7>=10) out.push(`${st.guias7} personas han descargado una guía gratuita en los últimos 7 días`);
+  if(st.bootcamp30>=5) out.push(`${st.bootcamp30} alumnas han empezado el Bootcamp en los últimos 30 días`);
+  if(S.route==='/'&&left!==null&&left>0&&left<=5) out.push(`Signature, próxima edición: quedan ${left} de ${SIG_PLACES} plazas`);
+  return out.length?out[Math.floor(Math.random()*out.length)]:''; }
+const noticeRoute=()=>['/','/bootcamp','/bootcamp/'].includes(S.route);
+function startNotice(){
+  try{ if(sessionStorage.getItem('notice')) return; }catch{}
+  setTimeout(()=>{ const t=noticeText(); if(!t||!noticeRoute()||ui('buy')) return;
+    try{ sessionStorage.setItem('notice','1'); }catch{}
+    const el=document.createElement('div'); el.className='notice'+(S.route.startsWith('/bootcamp')?' above':''); el.setAttribute('role','status');
+    el.innerHTML=`<span class="ndot" aria-hidden="true">✦</span><span>${esc(t)}</span><button type="button" class="nx" aria-label="Cerrar">✕</button>`;
+    el.querySelector('.nx').onclick=()=>el.remove(); document.body.appendChild(el); setTimeout(()=>el.remove(),CFG.demo?3000:6000);
+  },CFG.demo?400:10000); }

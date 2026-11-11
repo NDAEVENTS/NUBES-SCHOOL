@@ -10,6 +10,7 @@ async function boot(){
   const outline=Promise.all([
     sb.rpc('course_outline').then(r=>{ if(r.data) S.pub=pubFrom(r.data); }),
     sb.from('site_content').select('data').eq('id','web').maybeSingle().then(r=>{ if(r.data) S.web=r.data.data; }),
+    sb.rpc('public_stats').then(r=>{ if(r.data) S.stats=r.data; }),
   ]).catch(()=>{});
   const {data}=await sb.auth.getSession();
   const user=data.session?.user;
@@ -148,6 +149,7 @@ const DB={
 function demoSeed(){
   const now=Date.now(), iso=d=>new Date(now+d*864e5).toISOString();
   const c=seedCourse(); setCourse(c.stages,c.mods);
+  S.stats={guias7:14,bootcamp30:9};
   S.demo={
     alumna:{user_id:'u-lucia',role:'alumna',name:'Lucía Martín',email:'lucia@ejemplo.com',plan:'completo',started_at:addDays(todayISO(),-9),access_until:addDays(todayISO(),356),country:'España',last_seen:iso(0),created_at:iso(-9)},
     nubes:{user_id:'u-ainoa',role:'nubes',name:'Ainoa',email:'ainoa@ejemplo.com'},
