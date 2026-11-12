@@ -1,0 +1,61 @@
+<title>Piezas Instagram School</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column of groups, each a grid of pieces at their true proportions */
+:root{--bg:#F3F3F5;--fg:#22232B;--muted:#6E655B;--line:#DCCFBE;--card:#FBF8F3;--accent:#8E5A5E;
+  --display:"Bodoni Moda",Georgia,serif;--body:"Jost",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#181614;--fg:#F1EAE0;--muted:#A99F92;--line:#38322C;--card:#211E1A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);font-weight:300;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:8px 0 0;max-width:65ch}
+h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 4px;padding-top:20px;border-top:1px solid var(--line)}
+.note{margin:0 0 14px;color:var(--muted);font-size:13px}
+code{font-size:12px;background:var(--card);border:1px solid var(--line);padding:1px 6px;border-radius:4px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+img{width:100%;max-width:100%;height:auto;display:block;border:1px solid var(--line)}
+figcaption{display:flex;flex-direction:column;font-size:12px;color:var(--muted);word-break:break-word}
+a{color:#4F6A82;text-decoration:underline}
+.file{letter-spacing:.04em}.photo-note{color:var(--fg);opacity:.8}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital@0;1&family=Jost:wght@300;400&display=swap">
+<main>
+  <header><h1>Instagram y Facebook School · viernes 13/11 · Así fue nuestro workshop</h1>
+  <p class="lead">Para guardar una imagen en el móvil, mantén el dedo encima. En el ordenador:</p>
+  <p class="lead"><a href="piezas-2026-11-13.zip">⬇ Descargar todas las imágenes (ZIP)</a></p>
+  <p class="lead"><a href="carrusel-canva.pptx">⬇ Archivo para Canva: carrusel</a> · <a href="stories-canva.pptx">⬇ Archivo para Canva: stories</a></p>
+  <p class="lead">En Canva: Crear un diseño → Importar archivo → el .pptx, y todo sigue siendo editable. Donde pone «Aquí va una foto», poned vosotras la foto.</p></header>
+  
+<section>
+  <h2>Carrusel</h2>
+  <p class="note">Archivo para Canva: <code>carrusel-canva.pptx</code></p>
+  <div class="grid carrusel">
+    <figure id="vie13-carrusel-1"><img src="vie13-carrusel-1.png" alt="Así fue nuestro workshop" loading="lazy">
+      <figcaption><span class="file">vie13-carrusel-1.png</span><span class="photo-note">Foto: foto del workshop de noviembre de 2025: la mesa montada o el grupo de espaldas (caras de alumnas solo con su permiso por escrito)</span></figcaption></figure>
+    <figure id="vie13-carrusel-2"><img src="vie13-carrusel-2.png" alt="Un fin de semana juntas" loading="lazy">
+      <figcaption><span class="file">vie13-carrusel-2.png</span><span class="photo-note">Foto: manos montando una mesa durante el workshop: copas, minutas, flor</span></figcaption></figure>
+    <figure id="vie13-carrusel-3"><img src="vie13-carrusel-3.png" alt="Proveedores reales" loading="lazy">
+      <figcaption><span class="file">vie13-carrusel-3.png</span><span class="photo-note">Foto: papelería de boda o la mesa dulce del workshop, plano cerrado</span></figcaption></figure>
+    <figure id="vie13-carrusel-4"><img src="vie13-carrusel-4.png" alt="Mentoría de cerca" loading="lazy">
+      <figcaption><span class="file">vie13-carrusel-4.png</span><span class="photo-note">Foto: Pilar o Ainoa explicando algo en el workshop, de perfil o de espaldas</span></figcaption></figure>
+    <figure id="vie13-carrusel-5"><img src="vie13-carrusel-5.png" alt="Volvemos. ¿Quieres saberlo antes que nadie?" loading="lazy">
+      <figcaption><span class="file">vie13-carrusel-5.png</span></figcaption></figure>
+  </div>
+</section>
+<section>
+  <h2>Stories</h2>
+  <p class="note">Archivo para Canva: <code>stories-canva.pptx</code></p>
+  <div class="grid stories">
+    <figure id="vie13-story-1000-grabamos"><img src="vie13-story-1000-grabamos.png" alt="Hoy grabamos" loading="lazy">
+      <figcaption><span class="file">vie13-story-1000-grabamos.png</span><span class="photo-note">Foto: vídeo o foto real de la grabación de hoy: luces, mesa, el móvil en el trípode</span></figcaption></figure>
+    <figure id="vie13-story-1300-bootcamp"><img src="vie13-story-1300-bootcamp.png" alt="Wedding Planner Bootcamp" loading="lazy">
+      <figcaption><span class="file">vie13-story-1300-bootcamp.png</span></figcaption></figure>
+    <figure id="vie13-story-1700-pregunta"><img src="vie13-story-1700-pregunta.png" alt="¿Qué te gustaría que te contáramos?" loading="lazy">
+      <figcaption><span class="file">vie13-story-1700-pregunta.png</span></figcaption></figure>
+  </div>
+</section>
+</main>
